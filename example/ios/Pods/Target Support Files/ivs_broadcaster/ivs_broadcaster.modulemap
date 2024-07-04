@@ -1,0 +1,6 @@
+framework module ivs_broadcaster {
+  umbrella header "ivs_broadcaster-umbrella.h"
+
+  export *
+  module * { export * }
+}
