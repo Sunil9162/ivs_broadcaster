@@ -122,21 +122,38 @@ class IvsBroadcaster {
     return false;
   }
 
-  Future<void> startBroadcast({
+  Future<void> startPreview({
     required String imgset,
     required String streamKey,
     CameraType cameraType = CameraType.BACK,
   }) async {
-    if (imgset.isEmpty || streamKey.isEmpty) {
-      throw Exception('imgset or streamKey is empty');
+    try {
+      if (imgset.isEmpty || streamKey.isEmpty) {
+        throw Exception('imgset or streamKey is empty');
+      }
+      WidgetsBinding.instance.addPostFrameCallback(
+        (timeStamp) {
+          _channel?.invokeMethod<void>('startPreview', <String, dynamic>{
+            'imgset': imgset,
+            'streamKey': streamKey,
+            'cameraType': cameraType.index.toString(),
+          });
+          _eventChannel
+              ?.receiveBroadcastStream()
+              .listen(_onEvent, onError: _onError);
+        },
+      );
+    } catch (e) {
+      throw Exception("$e [Start Preview]");
     }
+  }
 
-    _channel?.invokeMethod<void>('startBroadcast', <String, dynamic>{
-      'imgset': imgset,
-      'streamKey': streamKey,
-      'cameraType': cameraType.index.toString(),
-    });
-    _eventChannel?.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+  Future<void> startBroadcast() async {
+    try {
+      _channel?.invokeMethod("startBroadcast");
+    } catch (e) {
+      throw throw Exception("$e [Start Broadcast]");
+    }
   }
 
   Future<void> stopBroadcast() async {

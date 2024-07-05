@@ -1,0 +1,1 @@
+ /Users/giteshdang/Documents/FlutterDev/ivs_broadcaster/example/.dart_tool/flutter_build/2980a22e4d83cb48eae70783b4e83596/native_assets.yaml: 

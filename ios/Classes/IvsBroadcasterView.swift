@@ -28,6 +28,8 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     var _eventSink: FlutterEventSink?
     private var previewView: UIView
     private var broadcastSession: IVSBroadcastSession?
+    private var streamKey : String?
+    private var rtmpsKey : String?
     
     
     init(_ frame: CGRect,
@@ -75,11 +77,14 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
             switch(call.method){
-            case "startBroadcast":
+            case "startPreview":
                 let args = call.arguments as? [String: Any]
                 let url = args?["imgset"] as? String
                 let key = args?["streamKey"] as? String
                 setupSession(url!, key!)
+                result(true)
+            case "startBroadcast":
+                startBroadcast()
                 result(true)
             case "mute":
                 applyMute()
@@ -96,6 +101,14 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
                 result(FlutterMethodNotImplemented)
             }
         }
+    
+    func startBroadcast(){
+        do  { 
+           try self.broadcastSession?.start(with: URL(string: rtmpsKey!)!, streamKey: streamKey!)} catch{
+            
+        }
+    }
+    
     func changeCamera(type: String){
         let devices = IVSBroadcastSession.listAvailableDevices()
         if(type == "0"){
@@ -172,10 +185,13 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         _ url: String,
         _ key: String
     ) {
+        
         do {
+            self.streamKey = key
+            self.rtmpsKey = url
             // Create the session with a preset config and camera/microphone combination.
             IVSBroadcastSession.applicationAudioSessionStrategy = .playAndRecord
-            let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardPortrait(),
+            let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardLandscape(),
                                                            descriptors: IVSPresets.devices().backCamera(),
                                                            delegate: self)
             broadcastSession.awaitDeviceChanges { [weak self] in
@@ -188,7 +204,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
                 self?.attachedMicrophone = devices.first(where: { $0.descriptor().type == .microphone })
             }
             self.broadcastSession = broadcastSession
-            try self.broadcastSession?.start(with: URL(string: url)!, streamKey: key)
+//            try self.broadcastSession?.start(with: URL(string: url)!, streamKey: key)
         } catch {
         }
         
