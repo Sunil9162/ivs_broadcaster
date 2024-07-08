@@ -1,3 +1,10 @@
+## 0.0.9
+updated ivs-broadcaster to 1.19.0 for ios
+fix potrait streaming issue
+
+## 0.0.8
+Removed Getx and camera package Solved camera flickering in IOS
+
 ## 0.0.7
 Change Camera Issue fixed
 

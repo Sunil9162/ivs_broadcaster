@@ -4,13 +4,13 @@ version: 0.0.9
 homepage: https://flutter.io/
 
 environment:
-  sdk: ">=3.1.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
   flutter: ">=3.3.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  permission_handler: 
+  permission_handler: ^11.3.1 
   plugin_platform_interface: ^2.0.2
 
 dev_dependencies:
