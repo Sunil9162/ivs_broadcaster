@@ -317,6 +317,14 @@ SWIFT_CLASS("_TtC15ivs_broadcaster20IvsBroadcasterPlugin")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
+
+SWIFT_CLASS("_TtC15ivs_broadcaster16IvsPlayerFactory")
+@interface IvsPlayerFactory : NSObject <FlutterPlatformViewFactory>
+- (id <FlutterPlatformView> _Nonnull)createWithFrame:(CGRect)frame viewIdentifier:(int64_t)viewId arguments:(id _Nullable)args SWIFT_WARN_UNUSED_RESULT;
+- (nonnull instancetype)init SWIFT_UNAVAILABLE;
++ (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
+@end
+
 #endif
 #if __has_attribute(external_source_symbol)
 # pragma clang attribute pop

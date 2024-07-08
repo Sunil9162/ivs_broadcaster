@@ -24,6 +24,16 @@
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>https://player.live-video.net/LICENSE.txt</string>
+			<key>License</key>
+			<string>Custom</string>
+			<key>Title</key>
+			<string>AmazonIVSPlayer</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.
 </string>
 			<key>License</key>

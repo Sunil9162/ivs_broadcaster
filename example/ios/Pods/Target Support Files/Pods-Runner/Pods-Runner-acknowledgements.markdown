@@ -5,6 +5,10 @@ This application makes use of the following third party libraries:
 
 https://broadcast.live-video.net/LICENSE.txt
 
+## AmazonIVSPlayer
+
+https://player.live-video.net/LICENSE.txt
+
 ## integration_test
 
 Use of this source code is governed by a BSD-style license that can be found in the LICENSE file.

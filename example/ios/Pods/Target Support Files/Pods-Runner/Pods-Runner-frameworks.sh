@@ -179,16 +179,19 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ivs_broadcaster/ivs_broadcaster.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSBroadcast/Core/AmazonIVSBroadcast.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSPlayer/AmazonIVSPlayer.framework"
 fi
 if [[ "$CONFIGURATION" == "Profile" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ivs_broadcaster/ivs_broadcaster.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSBroadcast/Core/AmazonIVSBroadcast.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSPlayer/AmazonIVSPlayer.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/ivs_broadcaster/ivs_broadcaster.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSBroadcast/Core/AmazonIVSBroadcast.framework"
+  install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/AmazonIVSPlayer/AmazonIVSPlayer.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

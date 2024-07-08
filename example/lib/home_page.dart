@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         elevation: 0,
-        toolbarHeight: 100,
+        toolbarHeight: 150,
         title: Wrap(
           children: [
             // Start Broadcast
