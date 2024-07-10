@@ -23,6 +23,7 @@ enum CameraType {
   BACK,
 }
 
+
 class IvsBroadcaster {
   IvsBroadcaster._() {
     init();

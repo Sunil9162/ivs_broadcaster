@@ -14,8 +14,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   // String key = "sk_us-east-************************************";
   // String url = "rtmps:-***************************************";
-  String key = "sk_us-east-1_UjZKSPgr268l_Hn1I1xDGr8PFYbSNGAeiyOkjm2tV8U";
-  String url = "rtmps://e18918b433c0.global-contribute.live-video.net:443/app/";
+  String key = "sk_us-east-1_dlRMJ6WlOcyg_CwLLXPU4gYptgdy07S4uF6bixWu3sq";
+  String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
   @override
   void initState() {
     super.initState();
@@ -46,10 +46,7 @@ class _HomePageState extends State<HomePage> {
             // Start Broadcast
             ElevatedButton(
               onPressed: () async {
-                await widget.ivsBroadcaster?.startPreview(
-                  imgset: url,
-                  streamKey: key,
-                );
+                await widget.ivsBroadcaster?.startBroadcast();
               },
               child: const Text('Start Broadcast'),
             ),

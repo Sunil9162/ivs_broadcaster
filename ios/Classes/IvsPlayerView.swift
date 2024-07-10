@@ -89,7 +89,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             _ivsPlayerView?.player = player
             player.load(URL(string: url))
             player.play()
-            attachPreview(playerView, _ivsPlayerView!) 
+            attachPreview(container: playerView, preview: _ivsPlayerView!)
         }
     }
 

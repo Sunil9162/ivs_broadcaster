@@ -20,13 +20,11 @@ class _PlayerPageState extends State<PlayerPage> {
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
         _player.startPlayer(playBackUrl);
+        setState(() {
+          _player.initPreview();
+        });
       },
     );
-    Future.delayed(Durations.extralong4, () {
-      setState(() {
-        _player.initPreview();
-      });
-    });
   }
 
   @override
@@ -38,21 +36,13 @@ class _PlayerPageState extends State<PlayerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 200,
-        title: Wrap(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                _player.initPreview();
-                setState(() {});
-              },
-              child: const Text("Play"),
-            ),
-          ],
+      body: Transform.flip(
+        flipX: true,
+        child: RotatedBox(
+          quarterTurns: 1,
+          child: _player.player,
         ),
       ),
-      body: _player.player,
     );
   }
 }

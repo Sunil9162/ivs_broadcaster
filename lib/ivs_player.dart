@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -5,6 +7,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/ivs_player_abstract.dart';
+
+enum PlayerState {
+  PlayerStateIdle,
+
+  /// Indicates that the player is ready to play the selected source.
+  PlayerStateReady,
+
+  /// Indicates that the player is buffering content.
+  PlayerStateBuffering,
+
+  /// Indicates that the player is playing.
+  PlayerStatePlaying,
+
+  /// Indicates that the player reached the end of the stream.
+  PlayerStateEnded,
+}
 
 class IvsPlayer extends PlayerControls {
   IvsPlayer._() {
@@ -58,7 +76,7 @@ class IvsPlayer extends PlayerControls {
   }
 
   void _onData(dynamic data) {
-    log("Player State: $data");
+    log("Player State: ${PlayerState.values[data]}");
   }
 
   void _onError(Object error) {}
