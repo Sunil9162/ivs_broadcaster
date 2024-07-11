@@ -22,6 +22,7 @@ class IvsPlayer {
   StreamController<String> qualityStream = StreamController.broadcast();
   StreamController<PlayerState> playeStateStream = StreamController.broadcast();
   StreamController<String> errorStream = StreamController.broadcast();
+  StreamController<bool> isAutoQualityStream = StreamController.broadcast();
 
   StreamSubscription? _positionStreamSubs;
 
@@ -41,7 +42,7 @@ class IvsPlayer {
     _controller.startPlayer(
       url,
       autoPlay: autoPlay,
-      onData: (data) {
+      onData: (data) async {
         final Map<String, dynamic> parsedData = Map<String, dynamic>.from(data);
         if (parsedData.containsKey(AppStrings.state)) {
           final value = parsedData[AppStrings.state];
@@ -49,6 +50,7 @@ class IvsPlayer {
         } else if (parsedData.containsKey(AppStrings.quality)) {
           final value = parsedData[AppStrings.quality];
           qualityStream.add(value);
+          isAutoQualityStream.add(await isAutoQuality());
         } else if (parsedData.containsKey(AppStrings.duration)) {
           final value = parsedData[AppStrings.duration];
           final duration = double.tryParse(value.toString());
@@ -89,15 +91,17 @@ class IvsPlayer {
   final qualities = ValueNotifier<List<String>>([]);
 
   Future<void> getQualities() async {
-    qualities.value = await _controller.getQualities();
+    qualities.value = (await _controller.getQualities()).toSet().toList();
   }
 
   Future<void> setQuality(String value) async {
     await _controller.setQuality(value);
+    isAutoQualityStream.add(await isAutoQuality());
   }
 
   Future<void> toggleAutoQuality() async {
     await _controller.toggleAutoQuality();
+    isAutoQualityStream.add(await isAutoQuality());
   }
 
   Future<bool> isAutoQuality() async {

@@ -12,7 +12,6 @@ class PlayerPage extends StatefulWidget {
 
 class _PlayerPageState extends State<PlayerPage> {
   late IvsPlayer _player;
-  ValueNotifier<bool> autoQuality = ValueNotifier(true);
   ValueNotifier<bool> autoPlay = ValueNotifier(true);
   final urlController = TextEditingController();
 
@@ -20,7 +19,8 @@ class _PlayerPageState extends State<PlayerPage> {
   void initState() {
     _player = IvsPlayer.instance;
     super.initState();
-    urlController.text = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8";
+    urlController.text =
+        "https://d35j504z0x2vu2.cloudfront.net/v1/manifest/0bc8e8376bd8417a1b6761138aa41c26c7309312/mastiii/ab2b6cce-f7be-4037-83f0-926cf111131e/2.m3u8";
   }
 
   @override
@@ -124,14 +124,13 @@ class _PlayerPageState extends State<PlayerPage> {
                   const Text(
                     "Auto",
                   ),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: autoQuality,
-                    builder: (context, value, child) {
+                  StreamBuilder<bool>(
+                    stream: _player.isAutoQualityStream.stream,
+                    builder: (context, value) {
                       return Switch(
-                        value: value,
+                        value: value.data ?? false,
                         onChanged: (newvalue) async {
                           await _player.toggleAutoQuality();
-                          autoQuality.value = await _player.isAutoQuality();
                         },
                       );
                     },
@@ -253,6 +252,6 @@ class _PlayerPageState extends State<PlayerPage> {
         position!.inSeconds != 0) {
       return position.inSeconds.toDouble();
     }
-    return duration!.inSeconds.toDouble();
+    return duration?.inSeconds.toDouble() ?? 0.0;
   }
 }

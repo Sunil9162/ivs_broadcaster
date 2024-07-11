@@ -161,9 +161,9 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     func stopBroadCast() {
         broadcastSession?.stop()
         broadcastSession = nil
-        if self._eventSink != nil{
-            self._eventSink!("DISCONNECTED");
-        } 
+        if self._eventSink != nil {
+            self._eventSink?("DISCONNECTED");
+        }
         previewView.subviews.forEach { $0.removeFromSuperview() }
     }
     
