@@ -13,10 +13,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // String key = "sk_us-east-************************************";
-  // String url = "rtmps:-***************************************";
-  String key = "sk_us-east-1_dlRMJ6WlOcyg_CwLLXPU4gYptgdy07S4uF6bixWu3sq";
-  String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
+  String key = "sk_us-east-************************************";
+  String url = "rtmps:-***************************************";
 
   IvsBroadcaster? ivsBroadcaster;
 
