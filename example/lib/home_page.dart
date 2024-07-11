@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:ivs_broadcaster/ivs_broadcaster.dart';
+import 'package:ivs_broadcaster/Broadcaster/Widgets/preview_widget.dart';
+import 'package:ivs_broadcaster/Broadcaster/ivs_broadcaster.dart';
+import 'package:ivs_broadcaster/helpers/enums.dart';
 
 class HomePage extends StatefulWidget {
-  final IvsBroadcaster? ivsBroadcaster;
-  const HomePage({Key? key, this.ivsBroadcaster}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -16,22 +17,28 @@ class _HomePageState extends State<HomePage> {
   // String url = "rtmps:-***************************************";
   String key = "sk_us-east-1_dlRMJ6WlOcyg_CwLLXPU4gYptgdy07S4uF6bixWu3sq";
   String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
+
+  IvsBroadcaster? ivsBroadcaster;
+
   @override
   void initState() {
     super.initState();
-    log("Home init called");
+    ivsBroadcaster = IvsBroadcaster.instance;
+    ivsBroadcaster!.broadcastState.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster");
+    });
     init();
   }
 
   @override
   void dispose() {
-    widget.ivsBroadcaster!.stopBroadcast();
+    ivsBroadcaster!.stopBroadcast();
     super.dispose();
   }
 
   init() async {
     // await Future.delayed(Durations.extralong4);
-    await widget.ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
+    await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
   }
 
   @override
@@ -46,27 +53,26 @@ class _HomePageState extends State<HomePage> {
             // Start Broadcast
             ElevatedButton(
               onPressed: () async {
-                await widget.ivsBroadcaster?.startBroadcast();
+                await ivsBroadcaster?.startBroadcast();
               },
               child: const Text('Start Broadcast'),
             ),
             // Stop Broadcast
             ElevatedButton(
               onPressed: () async {
-                await widget.ivsBroadcaster?.stopBroadcast();
+                await ivsBroadcaster?.stopBroadcast();
               },
               child: const Text('Stop Broadcast'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await widget.ivsBroadcaster?.changeCamera();
+                await ivsBroadcaster?.changeCamera(CameraType.FRONT);
               },
               child: const Text('Change'),
             ),
             ElevatedButton(
               onPressed: () async {
-                await widget.ivsBroadcaster!
-                    .startPreview(imgset: url, streamKey: key);
+                await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
               },
               child: const Text('Start preview'),
             ),
@@ -74,11 +80,9 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          IvsBroadcaster.instance.changeCamera();
-        },
+        onPressed: null,
         label: StreamBuilder<BroadCastState>(
-          stream: widget.ivsBroadcaster?.broadcastStateController.stream,
+          stream: ivsBroadcaster?.broadcastState.stream,
           builder: (context, snapshot) {
             return Text(
               snapshot.data?.name ?? 'INVALID',
@@ -86,7 +90,7 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      body: widget.ivsBroadcaster?.previewWidget,
+      body: const BroadcaterPreview(),
     );
   }
 }

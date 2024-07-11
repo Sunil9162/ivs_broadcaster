@@ -12,23 +12,62 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     let player =  IVSPlayer()
     private var _ivsPlayerView: IVSPlayerView?
     
-    private var videoSize: CGFloat {
-           let padding: CGFloat = 24
-        var orientation = UIDevice.current.orientation
-        var size = orientation.isPortrait ? UIScreen.main.bounds.width - padding : UIScreen.main.bounds.height - padding
-           while size * 2 + padding > (orientation.isPortrait ? UIScreen.main.bounds.height : UIScreen.main.bounds.width) {
-               size -= padding
-           }
-           return size
-       }
-    
+   
     func view() -> UIView {
         return playerView;
     }
     
     func player(_ player: IVSPlayer, didChangeState state: IVSPlayer.State) {
         if _eventSink != nil {
-            self._eventSink!(state.rawValue)
+            var dict = [String: Any]()
+            dict = [:]
+            dict["state"] = state.rawValue
+            self._eventSink!(dict)
+        }
+    }
+    
+    func player(_ player: IVSPlayer, didChangeDuration time: CMTime) {
+        if _eventSink != nil {
+            var dict = [String: Any]()
+            dict = [:]
+            dict["duration"] = time.seconds
+            self._eventSink!(dict)
+        }
+    }
+    
+    func player(_ player: IVSPlayer, didChangeSyncTime time: CMTime) {
+        if _eventSink != nil {
+            var dict = [String: Any]()
+            dict = [:]
+            dict["syncTime"] = time.seconds
+            self._eventSink!(dict)
+        }
+    }
+    
+    func player(_ player: IVSPlayer, didChangeQuality quality: IVSQuality?) {
+        if _eventSink != nil {
+            var dict = [String: Any]()
+            dict = [:]
+            dict["quality"] = quality?.name
+            self._eventSink!(dict)
+        }
+    }
+    
+    func player(_ player: IVSPlayer, didFailWithError error: any Error) {
+        if _eventSink != nil {
+            var dict = [String: Any]()
+            dict = [:]
+            dict["error"] = error.localizedDescription
+            self._eventSink!(dict)
+        }
+    }
+    
+    func player(_ player: IVSPlayer, didSeekTo time: CMTime) {
+        if _eventSink != nil {
+            var dict = [String: Any]()
+            dict = [:]
+            dict["seekedtotime"] = time.seconds
+            self._eventSink!(dict)
         }
     }
     
@@ -64,7 +103,8 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         case "startPlayer":
             let args = call.arguments as? [String: Any]
             let url = args?["url"] as? String
-            startPlayer(url!)
+            let autoPlay = args?["autoPlay"] as? Bool
+            startPlayer(url!, autoPlay!)
             result(true)
         case "stopPlayer":
             stopPlayer()
@@ -78,17 +118,82 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         case "resume":
             resumePlayer()
             result(true)
+        case "seek":
+            let args = call.arguments as? [String: Any]
+            let time = args?["time"] as? String
+            seekPlayer(time!)
+            result(true)
+        case "position":
+            result(getPosition())
+        case "qualities":
+            var qualities = getQualities()
+            print(qualities)
+            result(qualities)
+        case "setQuality":
+            let args = call.arguments as? [String: Any]
+            let quality = args?["quality"] as? String
+            setQuality(quality!)
+            result(true)
+        case "autoQuality":
+            toggleAutoQuality()
+             result(true)
+        case "isAuto":
+             result(isAuto()) 
         default:
             result(FlutterMethodNotImplemented)
         }
     }
     
-    func startPlayer(_ url:String){
+    func isAuto()-> Bool{
+        if _ivsPlayerView != nil {
+          return  _ivsPlayerView?.player?.autoQualityMode ?? false
+        }
+        return false
+    }
+    
+    func toggleAutoQuality(){
+        if _ivsPlayerView != nil {
+            _ivsPlayerView?.player?.autoQualityMode.toggle()
+        }
+    }
+    
+    func setQuality(_ quality: String) {
+        if _ivsPlayerView != nil {
+            var qualities = _ivsPlayerView?.player?.qualities
+            var qualitytobechange = qualities?.first(where: { $0.name == quality } )
+            _ivsPlayerView?.player?.setQuality(qualitytobechange!, adaptive: true) 
+        }
+    }
+    
+    func getQualities() -> Array<String> {
+        if _ivsPlayerView != nil {
+            return _ivsPlayerView?.player?.qualities.map{$0.name} as! Array<String>
+        }
+        return []
+    }
+    
+    func getPosition ()-> String {
+        if _ivsPlayerView != nil {
+            return _ivsPlayerView?.player?.position.seconds.description ?? "0"
+        }
+        return "0";
+    }
+    
+    
+    func seekPlayer(_ time: String){
+        if _ivsPlayerView != nil {
+            _ivsPlayerView?.player?.seek(to:  CMTimeMake(value: Int64(time) ?? 0, timescale: 1))
+        }
+    }
+    
+    func startPlayer(_ url:String, _ autoPlay:Bool){
         do{
             _ivsPlayerView = IVSPlayerView() 
             _ivsPlayerView?.player = player
             player.load(URL(string: url))
-            player.play()
+            if autoPlay {
+                player.play()
+            }
             attachPreview(container: playerView, preview: _ivsPlayerView!)
         }
     }

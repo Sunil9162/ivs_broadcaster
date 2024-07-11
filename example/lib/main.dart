@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:ivs_broadcaster/ivs_broadcaster.dart';
 import 'package:ivs_broadcaster_example/home_page.dart';
 
 import 'player_page.dart';
@@ -39,24 +36,6 @@ class BroadCastWidget extends StatefulWidget {
 }
 
 class _BroadCastWidgetState extends State<BroadCastWidget> {
-  IvsBroadcaster? ivsBroadcaster;
-
-  @override
-  void initState() {
-    super.initState();
-    ivsBroadcaster = IvsBroadcaster.instance;
-    ivsBroadcaster!.broadcastStateController.stream.listen((event) {
-      log(event.name.toString(), name: "IVS Broadcaster");
-    });
-    // controller = CameraController(cameras[0], ResolutionPreset.medium)
-    //   ..initialize().then((_) {
-    //     if (!mounted) {
-    //       return;
-    //     }
-    //     setState(() {});
-    //   });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,15 +49,10 @@ class _BroadCastWidgetState extends State<BroadCastWidget> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomePage(
-                      ivsBroadcaster: ivsBroadcaster,
-                    ),
+                    builder: (context) => const HomePage(),
                   ),
                 );
               },
-              // child: controller.value.isInitialized
-              //     ? CameraPreview(controller)
-              //     : const SizedBox()),
               child: const Text('Start Broadcast'),
             ),
             ElevatedButton(
@@ -90,9 +64,6 @@ class _BroadCastWidgetState extends State<BroadCastWidget> {
                   ),
                 );
               },
-              // child: controller.value.isInitialized
-              //     ? CameraPreview(controller)
-              //     : const SizedBox()),
               child: const Text('Start Player'),
             ),
           ],
