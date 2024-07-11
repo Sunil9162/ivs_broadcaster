@@ -1,3 +1,8 @@
+## 0.0.10
+  * Added New Ivs Player
+  * Changed Broadcater view
+  
+
 ## 0.0.9
 updated ivs-broadcaster to 1.19.0 for ios
 fix potrait streaming issue
