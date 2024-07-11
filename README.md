@@ -1,10 +1,15 @@
 # ivs_broadcaster
 
-A new Flutter project for broadcasting live video using AWS IVS.
+A new Flutter project for broadcasting live video using AWS IVS and Play the stream.
 
 ## Getting Started  
 
 To use this package you need to have an AWS account and an IVS channel.
+
+| Service                        | Android | iOS |
+| ------------------------------ | :-----: | :-: |
+| BroadCaster                    | ✅      | ✅  |
+| Player                         |         | ✅  |
 
 
 ## Android Setup
@@ -45,27 +50,73 @@ void initState() {
 
 //In your widget tree   
 ....
-child:  ivsBroadcaster?.previewWidget,
+child:  BroadcaterPreview(),
 ....
 
 //This will give you a preview of the camera
 ```
 
-## METHODS
+## METHODS FOR BROADCASTING
 
 ```dart
-//Starts the broadcast
-ivsBroadcaster?.startBroadcast(imgset, streamKy,CameraType.BACK);
+  Future<bool> requestPermissions();
 
-//Stops the broadcast
-ivsBroadcaster?.stopBroadcast();
+  Future<void> startPreview({
+    required String imgset,
+    required String streamKey,
+    CameraType cameraType = CameraType.BACK,
+    void Function(dynamic)? onData,
+    void Function(dynamic)? onError,
+  });
+
+  Future<void> startBroadcast();
+  Future<void> stopBroadcast();
+  Future<void> changeCamera(CameraType cameraType);
 
 //Listen to the broadcast state
-ivsBroadcaster!.broadcastStateController.stream.listen((event) {
+ivsBroadcaster!.broadcastState.stream.listen((event) {
     log(event.name.toString());
 });
 ```
+## METHODS FOR PLAYER
 
+```dart
+ void startPlayer(
+    String url, {
+    required bool autoPlay,
+    void Function(dynamic)? onData,
+    void Function(dynamic)? onError,
+  });
+  void resume();
+  void pause();
+  void muteUnmute();
+  void stopPlayer();
+
+  Future<List<String>> getQualities();
+
+  Future<void> setQuality(String value);
+
+  Future<void> toggleAutoQuality();
+
+  Future<bool> isAutoQuality();
+
+  Future<void> seekTo(Duration duration);
+
+  Future<Duration> getPosition();
+
+```
+
+## LISTNERS OF PLAYER
+
+```dart
+  StreamController<Duration> positionStream = StreamController.broadcast();
+  StreamController<Duration> syncTimeStream = StreamController.broadcast();
+  StreamController<Duration> durationStream = StreamController.broadcast();
+  StreamController<String> qualityStream = StreamController.broadcast();
+  StreamController<PlayerState> playeStateStream = StreamController.broadcast();
+  StreamController<String> errorStream = StreamController.broadcast();
+  StreamController<bool> isAutoQualityStream = StreamController.broadcast();
+```
 
 
  
