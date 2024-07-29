@@ -7,8 +7,9 @@ import AmazonIVSBroadcast
 import AVFoundation
 import Flutter
 
-class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate, AVCaptureAudioDataOutputSampleBufferDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
-//    ivs broadcatersession =>
+class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate , IVSCameraDelegate{
+    
+    
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         _eventSink = events
         return nil
@@ -97,10 +98,21 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             case "stopBroadcast":
                 stopBroadCast()
                 result(true)
+            case "applyzoom":
+                let args = call.arguments as? [String: Any]
+                let zoom = args?["zoom"] as? Int
+                applyZoom(zoom!)
+                result(true)
             default:
                 result(FlutterMethodNotImplemented)
             }
         }
+    
+    func applyZoom(_ zoom:Int){
+        if attachedCamera != nil {
+            (attachedCamera as? IVSCamera)?.setVideoZoomFactor(CGFloat(zoom))
+        }
+    }
     
     func startBroadcast(){
         do  { 
@@ -139,12 +151,15 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             
 
             if let preview = try? (attachedCamera as? IVSImageDevice)?.previewView(with: .fill) {
+                 
                 attachCameraPreview(container: previewView, preview: preview)
             } else {
                 previewView.subviews.forEach { $0.removeFromSuperview() }
             }
         }
     }
+    
+    
     private var attachedMicrophone: IVSDevice? {
         didSet {
             
@@ -206,7 +221,6 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
                 self?.attachedMicrophone = devices.first(where: { $0.descriptor().type == .microphone })
             }
             self.broadcastSession = broadcastSession
-//            try self.broadcastSession?.start(with: URL(string: url)!, streamKey: key)
         } catch {
         }
         
