@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/AmazonIVSBroadcast.framework/AmazonIVSBroadcast</key>
 		<data>
-		6qTU8NG0REIAhl3/zrrqw6IDWSE=
+		EJK3ciCfzsXlJazh9y7CNmWlqOI=
 		</data>
 		<key>Frameworks/AmazonIVSBroadcast.framework/Info.plist</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Frameworks/AmazonIVSPlayer.framework/AmazonIVSPlayer</key>
 		<data>
-		Vsu+aZfJk2EBzUJLa9x+U0Q5bP8=
+		UHDhsAEhO7PhUCbDiwF/fBMHmpY=
 		</data>
 		<key>Frameworks/AmazonIVSPlayer.framework/Info.plist</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		pZN72MIxR8CI654HTy7hT/mHUZQ=
+		3ltpkINhLV15La+wzY5ZSLA2U/4=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -90,7 +90,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		L4RYHwhAT/xQS+e5wXJ636BmFVU=
+		/HSUPAW8mkIV0q9ptkn1Q+kSEks=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		cbwMH6wV4+EKHcRGeS3S+YkHamU=
+		tqp4Gafh2kr1TCc+hK2evlKK1oE=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -130,7 +130,7 @@
 		</data>
 		<key>Frameworks/Flutter.framework/Flutter</key>
 		<data>
-		K5ELL3AQSwb7DoUeUc1ntFHI1/M=
+		VIl9upTBC/PzHgurjZmy72oRwBo=
 		</data>
 		<key>Frameworks/Flutter.framework/Headers/Flutter.h</key>
 		<data>
@@ -226,7 +226,7 @@
 		</data>
 		<key>Frameworks/integration_test.framework/integration_test</key>
 		<data>
-		/z/PbCI733CEIwJkKTYfx9+T1FM=
+		rwZCRXZlkGI9LNUN6vF8eGLfg1w=
 		</data>
 		<key>Frameworks/ivs_broadcaster.framework/Info.plist</key>
 		<data>
@@ -238,7 +238,7 @@
 		</data>
 		<key>Frameworks/ivs_broadcaster.framework/ivs_broadcaster</key>
 		<data>
-		qkYRXpJJ6FJNGdzPd+vcZjX13Oo=
+		Dtij0/mpP0xJb6o+0uV035qqfS0=
 		</data>
 		<key>Info.plist</key>
 		<data>
@@ -337,7 +337,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			hIJKsAgLKiuV4WxCrTceeSJFlLs8tgqicO1YzzG9KVI=
+			Ns5Ksf2i6H9MqLEzLCBspxim8glLEzzawZFxE25wvVk=
 			</data>
 		</dict>
 		<key>Frameworks/AmazonIVSBroadcast.framework/Info.plist</key>
@@ -372,7 +372,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rHnPbOLXtyJ25bP6ntLTEkB+wpQFMRso27AHhtQFiXc=
+			cYeZzGPd5/1WMVTkmAm8zxlQ4XcomODKmvFJmUb2Xg0=
 			</data>
 		</dict>
 		<key>Frameworks/AmazonIVSPlayer.framework/Info.plist</key>
@@ -400,7 +400,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			A74r0usA4HGPU5t0lws2RyOOVMec15X2XTVwTdUzpz0=
+			BxF/tDbsXMtgZgD8DRrftnX3dN1Or16PzAyMCjjtPss=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -414,7 +414,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5TcY+mUj82Dqsfz6w00wg3x9LL3taHFZkT57il/eaJM=
+			a2KWUvuxoX/XyXdLAanyjEZG/MBAEC1iPz7u1XGTgic=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
@@ -463,7 +463,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L0CHbhnKUm4VK1vvs83PzRw3uaLLQ+kL8XGrEqN9mgQ=
+			vxJ8HQhbPiPCRJH3lWCpPRlm3reTrJHRneiobVNuAkg=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>
@@ -484,7 +484,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			01cWu7eucAKDV6baHM1kNNgJxyBCWA44zgsT3GiEehw=
+			QiELS+ZN+ptpO5wksImAAYtkWjgl7v5HsJPwF5ffmlo=
 			</data>
 		</dict>
 		<key>Frameworks/Flutter.framework/Headers/Flutter.h</key>
@@ -652,7 +652,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			U0Iv4K3AhX9wYrcIg1gy20oO3r35OACHqKxQezMT45Q=
+			m/PViavXP+jjZOLYpinVaF0R9Tm2eZ1pdD2gRn0GWbQ=
 			</data>
 		</dict>
 		<key>Frameworks/ivs_broadcaster.framework/Info.plist</key>
@@ -673,7 +673,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			25M+uAKYsGASkohrGqu7bSqAXKHkkQ5THhF1E4SJGeE=
+			mdcOObWf6604Z5m4qhYlLCa+xnR/E6QqMyO7WVq9q8c=
 			</data>
 		</dict>
 		<key>embedded.mobileprovision</key>

@@ -123,6 +123,8 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             }
         }
     
+ 
+    
     func startBroadcast(){
         do  { 
            try self.broadcastSession?.start(with: URL(string: rtmpsKey!)!, streamKey: streamKey!)} catch{
@@ -160,12 +162,15 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             
 
             if let preview = try? (attachedCamera as? IVSImageDevice)?.previewView(with: .fill) {
+                 
                 attachCameraPreview(container: previewView, preview: preview)
             } else {
                 previewView.subviews.forEach { $0.removeFromSuperview() }
             }
         }
     }
+    
+    
     private var attachedMicrophone: IVSDevice? {
         didSet {
             
@@ -228,7 +233,6 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
                 self?.attachedMicrophone = devices.first(where: { $0.descriptor().type == .microphone })
             }
             self.broadcastSession = broadcastSession
-//            try self.broadcastSession?.start(with: URL(string: url)!, streamKey: key)
         } catch {
         }
         
