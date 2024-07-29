@@ -13,8 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String key = "sk_us-east-************************************";
-  String url = "rtmps:-***************************************";
+  // String key = "sk_us-east-************************************";
+  // String url = "rtmps:-***************************************";
+  String key = "sk_us-east-1_qsiThe1Jkr3R_TCewOnvTqbIqG2nkxuy7CoWjfkfhg7";
+  String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
 
   IvsBroadcaster? ivsBroadcaster;
 
@@ -38,6 +40,8 @@ class _HomePageState extends State<HomePage> {
     // await Future.delayed(Durations.extralong4);
     await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
   }
+
+  ValueNotifier<int> zoomLevel = ValueNotifier(0);
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +92,26 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      body: const BroadcaterPreview(),
+      body: Stack(
+        children: [
+          const BroadcaterPreview(),
+          ValueListenableBuilder(
+            valueListenable: zoomLevel,
+            builder: (context, value, child) {
+              return Slider(
+                value: value.toDouble(),
+                onChanged: (v) {
+                  zoomLevel.value = v.toInt();
+                  ivsBroadcaster?.setZoomLevel(v.toInt());
+                },
+                min: 0,
+                max: 4,
+                label: zoomLevel.value.toString(),
+              );
+            },
+          )
+        ],
+      ),
     );
   }
 }

@@ -93,4 +93,15 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       throw Exception("$e [Stop Broadcast]");
     }
   }
+
+  @override
+  Future<void> setZoomLevel(int zoomLevel) {
+    try {
+      return methodChannel.invokeMethod<void>('applyzoom', <String, dynamic>{
+        'zoom': zoomLevel,
+      });
+    } catch (e) {
+      throw Exception("$e [Set Zoom Level]");
+    }
+  }
 }

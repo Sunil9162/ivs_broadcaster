@@ -30,4 +30,5 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
   Future<void> startBroadcast();
   Future<void> stopBroadcast();
   Future<void> changeCamera(CameraType cameraType);
+  Future<void> setZoomLevel(int zoomLevel);
 }

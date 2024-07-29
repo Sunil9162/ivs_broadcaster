@@ -71,4 +71,8 @@ class IvsBroadcaster {
   Future<void> stopBroadcast() {
     return broadcater.stopBroadcast();
   }
+
+  Future<void> setZoomLevel(int zoomLevel) {
+    return broadcater.setZoomLevel(zoomLevel);
+  }
 }
