@@ -71,4 +71,8 @@ class IvsBroadcaster {
   Future<void> stopBroadcast() {
     return broadcater.stopBroadcast();
   }
+
+  Future<dynamic> zoomCamera(double zoomValue) {
+    return broadcater.zoomCamera(zoomValue);
+  }
 }

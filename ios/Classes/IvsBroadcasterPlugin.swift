@@ -13,6 +13,7 @@ public class IvsBroadcasterPlugin: NSObject, FlutterPlugin {
           IvsPlayerFactory(messenger: registrar.messenger()),
           withId: "ivs_player"
       )
+      
   }
 }
 

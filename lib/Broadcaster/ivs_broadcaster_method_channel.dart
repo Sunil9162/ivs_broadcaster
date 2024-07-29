@@ -93,4 +93,16 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       throw Exception("$e [Stop Broadcast]");
     }
   }
+
+  @override
+  Future<dynamic> zoomCamera(double zoomValue) async {
+    try {
+      return await methodChannel
+          .invokeMethod<void>("zoomCamera", <String, dynamic>{
+        'zoom': zoomValue,
+      });
+    } catch (e) {
+      throw Exception("$e [Zoom Camera]");
+    }
+  }
 }

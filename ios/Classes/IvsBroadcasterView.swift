@@ -7,7 +7,7 @@ import AmazonIVSBroadcast
 import AVFoundation
 import Flutter
 
-class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate, AVCaptureAudioDataOutputSampleBufferDelegate, AVCaptureVideoDataOutputSampleBufferDelegate {
+class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate,IVSCameraDelegate  {
 //    ivs broadcatersession =>
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         _eventSink = events
@@ -28,6 +28,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     var _eventSink: FlutterEventSink?
     private var previewView: UIView
     private var broadcastSession: IVSBroadcastSession?
+    
     private var streamKey : String?
     private var rtmpsKey : String?
     
@@ -74,7 +75,23 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             preview.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
         ])
     }
-    
+    func onZoomCamera(value: Double) -> [String: Any] {
+        guard let camera = attachedCamera as? IVSCamera else {
+            // Handle the case where the camera is not available or not of type IVSCamera
+            return ["min": NSNull(), "max": NSNull()]
+        }
+
+        // Set the video zoom factor
+        camera.setVideoZoomFactor(CGFloat(value))
+
+        // Retrieve the minimum and maximum zoom factors
+        let minZoomFactor = camera.minAvailableVideoZoomFactor
+        let maxZoomFactor = camera.maxAvailableVideoZoomFactor
+
+        // Return the minimum and maximum zoom factors in a dictionary
+        return ["min": minZoomFactor, "max": maxZoomFactor]
+    }
+
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
             switch(call.method){
             case "startPreview":
@@ -86,6 +103,10 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             case "startBroadcast":
                 startBroadcast()
                 result(true)
+            case "zoomCamera":
+                let args = call.arguments as? [String: Any]
+               
+                result( onZoomCamera(value:args?["zoom"] as? Double ?? 0.0))
             case "mute":
                 applyMute()
                 result(true)
@@ -196,6 +217,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardLandscape(),
                                                            descriptors: IVSPresets.devices().backCamera(),
                                                            delegate: self)
+            
             broadcastSession.awaitDeviceChanges { [weak self] in
                 let devices = broadcastSession.listAttachedDevices()
                 let cameras = devices

@@ -13,8 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String key = "sk_us-east-************************************";
-  String url = "rtmps:-***************************************";
+  // String key = "sk_us-east-************************************";
+  // String url = "rtmps:-***************************************";
+  String key = "sk_us-east-1_qsiThe1Jkr3R_TCewOnvTqbIqG2nkxuy7CoWjfkfhg7";
+  String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
 
   IvsBroadcaster? ivsBroadcaster;
 
@@ -37,6 +39,19 @@ class _HomePageState extends State<HomePage> {
   init() async {
     // await Future.delayed(Durations.extralong4);
     await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
+  }
+
+  double _scale = 1.0;
+  double _previousScale = 1.0;
+  double minZoom = 1.0; // Minimum zoom level
+  double maxZoom = 4.0; // Maximum zoom level
+
+  Future<void> _zoomCamera(double scale) async {
+    // Call your zoom function here
+    final v = await ivsBroadcaster?.zoomCamera(scale);
+    if (v != null) {
+      maxZoom = v["max"] ?? 4.0; // Update maxZoom if needed
+    }
   }
 
   @override
@@ -88,7 +103,22 @@ class _HomePageState extends State<HomePage> {
           },
         ),
       ),
-      body: const BroadcaterPreview(),
+      body: GestureDetector(
+        onScaleStart: (ScaleStartDetails details) {
+          _previousScale = _scale;
+        },
+        onScaleUpdate: (ScaleUpdateDetails details) async {
+          _scale = (_previousScale * details.scale).clamp(minZoom, maxZoom);
+          log("Scale value is $_scale and detail scale ${details.scale} previous scale $_previousScale");
+
+          // Call the zoom function if needed
+          _zoomCamera(_scale);
+        },
+        onScaleEnd: (ScaleEndDetails details) {
+          // Optional: Reset or finalize the zoom scale if needed
+        },
+        child: const BroadcaterPreview(),
+      ),
     );
   }
 }

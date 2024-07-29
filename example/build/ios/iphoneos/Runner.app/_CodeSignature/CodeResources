@@ -18,7 +18,7 @@
 		</data>
 		<key>Assets.car</key>
 		<data>
-		ELZQfkc4c3AdR7kRcmymAh3470c=
+		2Ap4TeCaYGlsbWPxR7eK/G83MDQ=
 		</data>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
 		<data>
@@ -46,7 +46,7 @@
 		</data>
 		<key>Frameworks/AmazonIVSBroadcast.framework/AmazonIVSBroadcast</key>
 		<data>
-		0tVaVFJYefSBX5tHkUjO5IdNF20=
+		6qTU8NG0REIAhl3/zrrqw6IDWSE=
 		</data>
 		<key>Frameworks/AmazonIVSBroadcast.framework/Info.plist</key>
 		<data>
@@ -66,7 +66,7 @@
 		</data>
 		<key>Frameworks/AmazonIVSPlayer.framework/AmazonIVSPlayer</key>
 		<data>
-		OF/TxSsq9GAWE35kGyqNaaduzJs=
+		Vsu+aZfJk2EBzUJLa9x+U0Q5bP8=
 		</data>
 		<key>Frameworks/AmazonIVSPlayer.framework/Info.plist</key>
 		<data>
@@ -82,7 +82,7 @@
 		</data>
 		<key>Frameworks/App.framework/App</key>
 		<data>
-		NaPYbGdwH0SooaVP+pSc/xsG1T4=
+		pZN72MIxR8CI654HTy7hT/mHUZQ=
 		</data>
 		<key>Frameworks/App.framework/Info.plist</key>
 		<data>
@@ -90,7 +90,7 @@
 		</data>
 		<key>Frameworks/App.framework/_CodeSignature/CodeResources</key>
 		<data>
-		6gJ2wcT1zNGkhszM8c7NmVUBbPc=
+		L4RYHwhAT/xQS+e5wXJ636BmFVU=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
 		<data>
@@ -106,7 +106,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/NOTICES.Z</key>
 		<data>
-		3OtMLBw5/8Sfy7KMEMGQRg6Zm2s=
+		cUViSO4OV1n5E+6RF9E4jC/JWiY=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/kernel_blob.bin</key>
 		<data>
-		bKY5qrQQj/EX+E8l//7k76uKOG8=
+		cbwMH6wV4+EKHcRGeS3S+YkHamU=
 		</data>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -130,7 +130,7 @@
 		</data>
 		<key>Frameworks/Flutter.framework/Flutter</key>
 		<data>
-		FDTVXORH1vj7VXJ92YGGztIPlHs=
+		K5ELL3AQSwb7DoUeUc1ntFHI1/M=
 		</data>
 		<key>Frameworks/Flutter.framework/Headers/Flutter.h</key>
 		<data>
@@ -218,31 +218,31 @@
 		</data>
 		<key>Frameworks/integration_test.framework/Info.plist</key>
 		<data>
-		eoplkqkkCP6k527VCvNcucHtLqI=
+		6caBjSPIbb+SRh0TX+gWLPMI4vc=
 		</data>
 		<key>Frameworks/integration_test.framework/_CodeSignature/CodeResources</key>
 		<data>
-		yJilElQtNgfXDGYi3g8UBNkyamQ=
+		9wH14IWlklCqXjW2v8ahoHy52P0=
 		</data>
 		<key>Frameworks/integration_test.framework/integration_test</key>
 		<data>
-		OvnI4XpXuFquJiN9lk4UDfqwuyk=
+		/z/PbCI733CEIwJkKTYfx9+T1FM=
 		</data>
 		<key>Frameworks/ivs_broadcaster.framework/Info.plist</key>
 		<data>
-		2KResuTmn1cCSw2aiHWIc4uFQo0=
+		hMwJjkyyU6sg1UosTH8k6u6t1N0=
 		</data>
 		<key>Frameworks/ivs_broadcaster.framework/_CodeSignature/CodeResources</key>
 		<data>
-		orbZkaGKeA2plhBh0RdPb91ZO+M=
+		VohrvfRsOgB4o9F7F0RuxuQEe0o=
 		</data>
 		<key>Frameworks/ivs_broadcaster.framework/ivs_broadcaster</key>
 		<data>
-		ijlnZbuaFrVO4BSD5P6eIcCSp2c=
+		qkYRXpJJ6FJNGdzPd+vcZjX13Oo=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		IWYwYlkwjN3TsKYN778m8XjCSQs=
+		tPmEBqalSWb6LzoTgfsfGp93JTs=
 		</data>
 		<key>PkgInfo</key>
 		<data>
@@ -250,11 +250,11 @@
 		</data>
 		<key>embedded.mobileprovision</key>
 		<data>
-		XMjjJWIbHC2Y8/pL8Px167sz9kw=
+		WjgQ1cAMCTHeIUxUg3iIZRBYqgs=
 		</data>
 		<key>permission_handler_apple_privacy.bundle/Info.plist</key>
 		<data>
-		O5WJkXzdfq9+vNvlrZDH73dvBnU=
+		gFpfupKcESI4mI6OAEMFB7zu+M8=
 		</data>
 		<key>permission_handler_apple_privacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -288,7 +288,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			MJTycAKFHDnIWJ/XOysOqemG28dwGlz12lTR7sRMnD4=
+			sF+PPRh0WJlKX7Sz5n9EQvuvLM5a0V3K7iRVxdIf7I4=
 			</data>
 		</dict>
 		<key>Base.lproj/LaunchScreen.storyboardc/01J-lp-oVM-view-Ze5-6b-2t3.nib</key>
@@ -337,7 +337,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Z+33uvTNTX4uE8cepaCz64mx2u5It7MZ3WDSQFkNg3Q=
+			hIJKsAgLKiuV4WxCrTceeSJFlLs8tgqicO1YzzG9KVI=
 			</data>
 		</dict>
 		<key>Frameworks/AmazonIVSBroadcast.framework/Info.plist</key>
@@ -372,7 +372,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			3C94o1P6oc3LKl2/dT39jOcZk7wFI78vrZ8viWBCQSo=
+			rHnPbOLXtyJ25bP6ntLTEkB+wpQFMRso27AHhtQFiXc=
 			</data>
 		</dict>
 		<key>Frameworks/AmazonIVSPlayer.framework/Info.plist</key>
@@ -400,7 +400,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			xg/vI9vk9/El7d8I5lIO0BA2ukGAyd78HSWqnZCNmFI=
+			A74r0usA4HGPU5t0lws2RyOOVMec15X2XTVwTdUzpz0=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/Info.plist</key>
@@ -414,7 +414,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			MtlnsTFZcVPJnPLw1ZAW3nuKIrNDGUpOU/ISk+U92h0=
+			5TcY+mUj82Dqsfz6w00wg3x9LL3taHFZkT57il/eaJM=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/AssetManifest.bin</key>
@@ -442,7 +442,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			5+6j2FPrYgfnMVQr/XvA1vp4y3D6bsRwpNAX3TCbkkk=
+			sejCFu3Dj77mue1Cf72XQq3VEVII7hbf/7wEZRpejJ4=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -463,7 +463,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			0oqh5Xx5+9By8AVwGdBxCg2Z72lrNcEB8q+tNQIPNO8=
+			L0CHbhnKUm4VK1vvs83PzRw3uaLLQ+kL8XGrEqN9mgQ=
 			</data>
 		</dict>
 		<key>Frameworks/App.framework/flutter_assets/shaders/ink_sparkle.frag</key>
@@ -484,7 +484,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			cWzO7KDV5IfI6CvwQQNdfFUiLvZsEjJVGpPXK8AdZcA=
+			01cWu7eucAKDV6baHM1kNNgJxyBCWA44zgsT3GiEehw=
 			</data>
 		</dict>
 		<key>Frameworks/Flutter.framework/Headers/Flutter.h</key>
@@ -638,56 +638,56 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			PnLHk2HsmboY1IYh1ZDfqtb+95Ldo6O/Q8HzN6Wvt9I=
+			H/eKS+/T2OCK/duWSCqmKpvgQChF3BP4b7T/OzkJ0KY=
 			</data>
 		</dict>
 		<key>Frameworks/integration_test.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			87khNiRKoJC8AzWKk90yMI4pnF3ZodUygymf4pIQdUQ=
+			+2DbGIznNd9Ai/xTZWu+SPocmVMRWB0lGIAD3VqjWas=
 			</data>
 		</dict>
 		<key>Frameworks/integration_test.framework/integration_test</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			gS/1iJnNdcKgR+g/x+JvbBEJ23ZQPGUx6w4JNPWGKEo=
+			U0Iv4K3AhX9wYrcIg1gy20oO3r35OACHqKxQezMT45Q=
 			</data>
 		</dict>
 		<key>Frameworks/ivs_broadcaster.framework/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			vzTwr0tiCCP44DXgnA/OPMQcVzqhR2Cwrsnh/5QsL0I=
+			4okv7bA+brIGRep+sWGXLSeWjohlkRzZlLoQDjDyEKM=
 			</data>
 		</dict>
 		<key>Frameworks/ivs_broadcaster.framework/_CodeSignature/CodeResources</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			3rwDAsXzfz3r24KdglckfgKS7ZHpv1H3wwipdJBiyf0=
+			jhJHiRwojSJeOqGbl85MZzDG2/yRX9ycOs5SzHJnXF0=
 			</data>
 		</dict>
 		<key>Frameworks/ivs_broadcaster.framework/ivs_broadcaster</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			ikqX3mwLgdMqMNaWFWKfj8KsEzsJwoRXBUy80nvPFW4=
+			25M+uAKYsGASkohrGqu7bSqAXKHkkQ5THhF1E4SJGeE=
 			</data>
 		</dict>
 		<key>embedded.mobileprovision</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			8Uw4eXPx4JDCq8NU8cd88WcZeXhj2tvl3sulKqEnWL0=
+			rbz9sxwqrj6x5UwW2OBj73x9+9SX6ALlm4vd25aG4Eg=
 			</data>
 		</dict>
 		<key>permission_handler_apple_privacy.bundle/Info.plist</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			iSlsKX/Pp7jRq94GFQt7Jbs7MXmUuEpzamegv+GAbfc=
+			m5bxI+iXbRv5QMINlL1eThZNoyI3IqRnxgkLWEu+OtQ=
 			</data>
 		</dict>
 		<key>permission_handler_apple_privacy.bundle/PrivacyInfo.xcprivacy</key>
