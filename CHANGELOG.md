@@ -1,3 +1,6 @@
+## 0.0.11
+  * Added Zoom For the Ivs Broadcaster
+
 ## 0.0.10
   * Added New Ivs Player
   * Changed Broadcater view
