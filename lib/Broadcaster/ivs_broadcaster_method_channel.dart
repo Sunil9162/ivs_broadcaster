@@ -105,4 +105,13 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       throw Exception("$e [Zoom Camera]");
     }
   }
+
+  @override
+  Future<void> fetchNetwork() async {
+    try {
+      return await methodChannel.invokeMethod("networkTest");
+    } catch (e) {
+      throw Exception("$e [Network Test]");
+    }
+  }
 }

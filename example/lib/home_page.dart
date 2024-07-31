@@ -13,8 +13,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String key = "sk_us-east-************************************";
-  String url = "rtmps:-***************************************";
+  // String key = "sk_us-east-************************************";
+  // String url = "rtmps:-***************************************";
+  String key = "sk_us-east-1_qsiThe1Jkr3R_TCewOnvTqbIqG2nkxuy7CoWjfkfhg7";
+  String url = "rtmps://7453a0e95db4.global-contribute.live-video.net:443/app/";
 
   IvsBroadcaster? ivsBroadcaster;
 
@@ -86,6 +88,12 @@ class _HomePageState extends State<HomePage> {
                 await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
               },
               child: const Text('Start preview'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await ivsBroadcaster!.fetchNetwork();
+              },
+              child: const Text('Check'),
             ),
           ],
         ),

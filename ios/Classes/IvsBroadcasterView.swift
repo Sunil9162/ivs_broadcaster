@@ -75,6 +75,16 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             preview.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
         ])
     }
+//    private func setFocusPoint(_ point: CGPoint) {
+//          guard let camera = attachedCamera as? IVSCamera else { return }
+//          camera.setFocusPointOfInterest(point)
+//          camera.setFocusMode(.continuousAutoFocus)
+//      }
+//    private func disableAutoFocus() {
+//        guard let camera = attachedCamera as? IVSCamera else { return }
+//        camera.setFocusMode(.locked)
+//    }
+
     func onZoomCamera(value: Double) -> [String: Any] {
         guard let camera = attachedCamera as? IVSCamera else {
             // Handle the case where the camera is not available or not of type IVSCamera
@@ -118,16 +128,41 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             case "stopBroadcast":
                 stopBroadCast()
                 result(true)
+            case "networkTest":
+                    runBroadcastTest()
+                result(true)
             default:
                 result(FlutterMethodNotImplemented)
             }
         }
     
- 
+// check video test
     
+    func runBroadcastTest() {
+        broadcastSession?.recommendedVideoSettings(with: URL(string: rtmpsKey!)!, streamKey: streamKey!) { [weak self] result in
+            if result.status == .success {
+                if let recommendation = result.recommendations.first {
+                    print("First Recommendation: \(recommendation)")
+                } else {
+                    print("No Recommendations Fetched")
+                }
+            } else {
+                print("Failed to fetch recommendations with status: \(result.status)")
+            }
+            print("Result: \(result)")
+        }
+    }
+
+
+
+    
+    
+    
+// Start Broadcasting with rtmps and stream key
     func startBroadcast(){
-        do  { 
-           try self.broadcastSession?.start(with: URL(string: rtmpsKey!)!, streamKey: streamKey!)} catch{
+        do  {
+            try self.broadcastSession?.start(with: URL(string: rtmpsKey!)!, streamKey: streamKey!)
+        } catch{
             
         }
     }
@@ -218,6 +253,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             self.streamKey = key
             self.rtmpsKey = url
             // Create the session with a preset config and camera/microphone combination.
+            
             IVSBroadcastSession.applicationAudioSessionStrategy = .playAndRecord
             let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardLandscape(),
                                                            descriptors: IVSPresets.devices().backCamera(),

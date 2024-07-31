@@ -38,6 +38,10 @@ class IvsBroadcaster {
     }
   }
 
+  Future<void> fetchNetwork() {
+    return broadcater.fetchNetwork();
+  }
+
   Future<void> changeCamera(CameraType cameraType) {
     return broadcater.changeCamera(cameraType);
   }
