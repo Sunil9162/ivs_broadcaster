@@ -1,3 +1,6 @@
+## 0.0.12
+  * Added BroadcastQuality and NetworkHealth Stream for Brodcasting
+
 ## 0.0.11
   * Added Zoom For the Ivs Broadcaster
 

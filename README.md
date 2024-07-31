@@ -77,6 +77,16 @@ child:  BroadcaterPreview(),
 ivsBroadcaster!.broadcastState.stream.listen((event) {
     log(event.name.toString());
 });
+
+//Listen to the broadcast Quality
+ivsBroadcaster!.broadcastQuality.stream.listen((event) {
+    log(event.name.toString());
+});
+
+//Listen to the broadcast network health
+ivsBroadcaster!.broadcastHealth.stream.listen((event) {
+    log(event.name.toString());
+});
 ```
 ## METHODS FOR PLAYER
 
