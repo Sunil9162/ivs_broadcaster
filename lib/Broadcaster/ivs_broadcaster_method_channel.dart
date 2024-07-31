@@ -106,12 +106,6 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
     }
   }
 
-  @override
-  Future<void> fetchNetwork() async {
-    try {
-      return await methodChannel.invokeMethod("networkTest");
-    } catch (e) {
-      throw Exception("$e [Network Test]");
-    }
-  }
+
+  
 }
