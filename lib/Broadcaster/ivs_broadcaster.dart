@@ -48,24 +48,20 @@ class IvsBroadcaster {
       if (data.containsKey("state")) {
         broadcastState.add(_parseBroadCastState(data["state"]));
       }
-      if (data.containsKey("settings")) {
-        final settings = data["settings"] as Map;
-        if (settings.containsKey("quality")) {
-          broadcastQuality.add(
-            BroadcastQuality.values[settings["quality"] as int],
-          );
-        }
-        if (settings.containsKey("network")) {
-          broadcastHealth.add(
-            BroadcastHealth.values[settings["network"] as int],
-          );
-        }
+      // if (data.containsKey("settings")) {
+      final settings = data;
+      if (settings.containsKey("quality")) {
+        broadcastQuality.add(
+          BroadcastQuality.values[settings["quality"] as int],
+        );
       }
+      if (settings.containsKey("network")) {
+        broadcastHealth.add(
+          BroadcastHealth.values[settings["network"] as int],
+        );
+      }
+      // }
     }
-  }
-
-  Future<void> fetchNetwork() {
-    return broadcater.fetchNetwork();
   }
 
   Future<void> changeCamera(CameraType cameraType) {

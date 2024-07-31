@@ -45,13 +45,13 @@
     },
     {
       "name": "flutter",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/flutter",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_driver",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/flutter_driver",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/flutter_driver",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -63,25 +63,25 @@
     },
     {
       "name": "flutter_test",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/flutter_test",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/flutter_test",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "flutter_web_plugins",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/flutter_web_plugins",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/flutter_web_plugins",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "fuchsia_remote_debug_protocol",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/fuchsia_remote_debug_protocol",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/fuchsia_remote_debug_protocol",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
     {
       "name": "integration_test",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/packages/integration_test",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/packages/integration_test",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -195,7 +195,7 @@
     },
     {
       "name": "sky_engine",
-      "rootUri": "file:///Users/giteshdang/Documents/Development/flutter/bin/cache/pkg/sky_engine",
+      "rootUri": "file:///Users/giteshdang/Documents/FlutterDev/flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -266,10 +266,10 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-07-31T07:08:00.750468Z",
+  "generated": "2024-07-31T08:46:17.144196Z",
   "generator": "pub",
   "generatorVersion": "3.4.3",
-  "flutterRoot": "file:///Users/giteshdang/Documents/Development/flutter",
+  "flutterRoot": "file:///Users/giteshdang/Documents/FlutterDev/flutter",
   "flutterVersion": "3.22.2",
   "pubCache": "file:///Users/giteshdang/.pub-cache"
 }

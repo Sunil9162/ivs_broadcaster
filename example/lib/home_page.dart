@@ -27,6 +27,12 @@ class _HomePageState extends State<HomePage> {
     ivsBroadcaster!.broadcastState.stream.listen((event) {
       log(event.name.toString(), name: "IVS Broadcaster");
     });
+    ivsBroadcaster!.broadcastQuality.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster Quality");
+    });
+    ivsBroadcaster!.broadcastHealth.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster Health");
+    });
     init();
   }
 
@@ -38,6 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   init() async {
     // await Future.delayed(Durations.extralong4);
+
     await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
   }
 
@@ -88,12 +95,6 @@ class _HomePageState extends State<HomePage> {
                 await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
               },
               child: const Text('Start preview'),
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await ivsBroadcaster!.fetchNetwork();
-              },
-              child: const Text('Check'),
             ),
           ],
         ),
