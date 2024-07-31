@@ -1,5 +1,0 @@
-framework module AmazonIVSPlayer_Private {
-  umbrella header "AmazonIVSPlayer_Private.h"
-
-  export *
-}

@@ -19,6 +19,11 @@ class IvsBroadcaster {
   StreamController<BroadCastState> broadcastState =
       StreamController<BroadCastState>.broadcast();
 
+  StreamController<BroadcastQuality> broadcastQuality =
+      StreamController<BroadcastQuality>.broadcast();
+  StreamController<BroadcastHealth> broadcastHealth =
+      StreamController<BroadcastHealth>.broadcast();
+
   final broadcater = IvsBroadcasterPlatform.instance;
 
   _parseBroadCastState(String state) {
@@ -35,6 +40,27 @@ class IvsBroadcaster {
         return BroadCastState.ERROR;
       default:
         return BroadCastState.INVALID;
+    }
+  }
+
+  _parseRawData(data) {
+    if (data is Map) {
+      if (data.containsKey("state")) {
+        broadcastState.add(_parseBroadCastState(data["state"]));
+      }
+      if (data.containsKey("settings")) {
+        final settings = data["settings"] as Map;
+        if (settings.containsKey("quality")) {
+          broadcastQuality.add(
+            BroadcastQuality.values[settings["quality"] as int],
+          );
+        }
+        if (settings.containsKey("network")) {
+          broadcastHealth.add(
+            BroadcastHealth.values[settings["network"] as int],
+          );
+        }
+      }
     }
   }
 
@@ -64,11 +90,9 @@ class IvsBroadcaster {
       streamKey: streamKey,
       cameraType: cameraType,
       onData: (data) {
-        broadcastState.add(_parseBroadCastState(data.toString()));
+        _parseRawData(data);
       },
-      onError: (error) {
-        broadcastState.addError(error.toString());
-      },
+      onError: (error) {},
     );
   }
 

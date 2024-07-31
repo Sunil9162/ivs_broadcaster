@@ -1,6 +1,0 @@
-framework module AmazonIVSBroadcast {
-  umbrella header "AmazonIVSBroadcast.h"
-  export *
-
-  module * { export * }
-}

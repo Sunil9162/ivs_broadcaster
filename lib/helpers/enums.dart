@@ -8,6 +8,22 @@ enum BroadCastState {
   ERROR;
 }
 
+enum BroadcastQuality {
+  NearMaximum,
+  High,
+  Medium,
+  Low,
+  NearMinimum,
+}
+
+enum BroadcastHealth {
+  Excellent,
+  High,
+  Medium,
+  Low,
+  Bad,
+}
+
 enum CameraType {
   FRONT,
   BACK,

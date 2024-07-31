@@ -8,6 +8,8 @@ import AVFoundation
 import Flutter
 
 class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate,IVSCameraDelegate  {
+   
+    
 //    ivs broadcatersession =>
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         _eventSink = events
@@ -128,42 +130,17 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             case "stopBroadcast":
                 stopBroadCast()
                 result(true)
-            case "networkTest":
-                    runBroadcastTest()
-                result(true)
             default:
                 result(FlutterMethodNotImplemented)
             }
         }
     
-// check video test
-    
-    func runBroadcastTest() {
-        broadcastSession?.recommendedVideoSettings(with: URL(string: rtmpsKey!)!, streamKey: streamKey!) { [weak self] result in
-            if result.status == .success {
-                if let recommendation = result.recommendations.first {
-                    print("First Recommendation: \(recommendation)")
-                } else {
-                    print("No Recommendations Fetched")
-                }
-            } else {
-                print("Failed to fetch recommendations with status: \(result.status)")
-            }
-            print("Result: \(result)")
-        }
-    }
-
-
-
-    
-    
-    
-// Start Broadcasting with rtmps and stream key
+    // Start Broadcasting with rtmps and stream key
     func startBroadcast(){
         do  {
             try self.broadcastSession?.start(with: URL(string: rtmpsKey!)!, streamKey: streamKey!)
         } catch{
-            
+            print("Unable to Start Streaming")
         }
     }
     
@@ -194,8 +171,6 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
 //    provide camera to preview (attached camera)
     private var attachedCamera: IVSDevice? {
         didSet {
-            
-
             if let preview = try? (attachedCamera as? IVSImageDevice)?.previewView(with: .fill) {
                  
                 attachCameraPreview(container: previewView, preview: preview)
@@ -208,22 +183,16 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
     private var attachedMicrophone: IVSDevice? {
         didSet {
-            
             applyMute()
         }
     }
- 
-
-      
-      private func startTapped(url : String , key : String) {
-                
-    }
+  
     
     func stopBroadCast() {
         broadcastSession?.stop()
         broadcastSession = nil
         if self._eventSink != nil {
-            self._eventSink?("DISCONNECTED");
+            self._eventSink?(["state": "DISCONNECTED"]);
         }
         previewView.subviews.forEach { $0.removeFromSuperview() }
     }
@@ -270,6 +239,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             }
             self.broadcastSession = broadcastSession
         } catch {
+            print("Unable to setup session")
         }
         
     }
@@ -316,21 +286,22 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     func broadcastSession(_ session: IVSBroadcastSession, didChange state: IVSBroadcastSession.State) {
         print("IVSBroadcastSession state did change to \(state.rawValue)")
         DispatchQueue.main.async {
-            print("Listner state : \(state.rawValue) ")
+            var data = [String: String]()
             switch state {
             case .invalid:
-                self._eventSink!("INVALID")
+                data = ["state": "INVALID"]
             case .connecting:
-                self._eventSink!("CONNECTING")
+                data = ["state":"CONNECTING"]
             case .connected:
-                self._eventSink!("CONNECTED")
+                data = ["state":"CONNECTED"]
             case .disconnected:
-                self._eventSink!("DISCONNECTED")
+                data = ["state":"DISCONNECTED"]
             case .error:
-                self._eventSink!("ERROR")
+                data = ["state":"ERROR"]
             @unknown default:
-                self._eventSink!("INVALID")
+                data = ["state":"INVALID"]
             }
+            self._eventSink!(data)
         }
     }
 
@@ -339,25 +310,13 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         }
     }
 
-    func broadcastSession(_ session: IVSBroadcastSession, didAddDevice descriptor: IVSDeviceDescriptor) {
-        print("IVSBroadcastSession did discover device \(descriptor)") 
-        session.awaitDeviceChanges {
-            self.refreshAttachedDevices()
-        }
+    func broadcastSession(_ session: IVSBroadcastSession, transmissionStatisticsChanged statiscs: IVSTransmissionStatistics) {
+        var data = [String:Any]()
+        var quality = statiscs.broadcastQuality.rawValue
+        var health = statiscs.networkHealth.rawValue
+        data = ["quality":quality,"network":health]
+        self._eventSink?(data) 
     }
-
-    func broadcastSession(_ session: IVSBroadcastSession, didRemoveDevice descriptor: IVSDeviceDescriptor) {
-        print("IVSBroadcastSession did lose device \(descriptor)")
-        // Same comment as didAddDevice above.
-        session.awaitDeviceChanges {
-            self.refreshAttachedDevices()
-        }
-    }
-
-    func broadcastSession(_ session: IVSBroadcastSession, audioStatsUpdatedWithPeak peak: Double, rms: Double) {
-        // This fires frequently, so we don't log it here.
-    }
-
 }
 
 extension IvsBroadcasterView: IVSMicrophoneDelegate {
