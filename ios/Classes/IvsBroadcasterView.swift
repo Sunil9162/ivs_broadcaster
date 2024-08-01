@@ -8,9 +8,9 @@ import AVFoundation
 import Flutter
 
 class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler , IVSBroadcastSession.Delegate,IVSCameraDelegate  {
-   
     
-//    ivs broadcatersession =>
+    
+    //    ivs broadcatersession =>
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         _eventSink = events
         return nil
@@ -41,15 +41,15 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
          messenger: FlutterBinaryMessenger
     ) {
         _methodChannel = FlutterMethodChannel(name: "ivs_broadcaster"
-        , binaryMessenger: messenger);
+                                              , binaryMessenger: messenger);
         _eventChannel = FlutterEventChannel(name: "ivs_broadcaster_event", binaryMessenger: messenger)
         previewView =  UIView(frame: frame)
-    
+        
         super.init();
         
         _methodChannel.setMethodCallHandler(onMethodCall)
         _eventChannel.setStreamHandler(self)
-  
+        
         
     }
     
@@ -64,7 +64,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         @unknown default: mainThreadResult(false)
         }
     }
-
+    
     func attachCameraPreview(container: UIView, preview: UIView) {
         // Clear current view, and then attach the new view.
         container.subviews.forEach { $0.removeFromSuperview() }
@@ -77,63 +77,56 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             preview.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
         ])
     }
-//    private func setFocusPoint(_ point: CGPoint) {
-//          guard let camera = attachedCamera as? IVSCamera else { return }
-//          camera.setFocusPointOfInterest(point)
-//          camera.setFocusMode(.continuousAutoFocus)
-//      }
-//    private func disableAutoFocus() {
-//        guard let camera = attachedCamera as? IVSCamera else { return }
-//        camera.setFocusMode(.locked)
-//    }
-
+    
+    
     func onZoomCamera(value: Double) -> [String: Any] {
         guard let camera = attachedCamera as? IVSCamera else {
             // Handle the case where the camera is not available or not of type IVSCamera
             return ["min": NSNull(), "max": NSNull()]
         }
-
+        
         // Set the video zoom factor
         camera.setVideoZoomFactor(CGFloat(value))
-
+        
         // Retrieve the minimum and maximum zoom factors
         let minZoomFactor = camera.minAvailableVideoZoomFactor
         let maxZoomFactor = camera.maxAvailableVideoZoomFactor
-
+        
         // Return the minimum and maximum zoom factors in a dictionary
         return ["min": minZoomFactor, "max": maxZoomFactor]
     }
-
+    
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
-            switch(call.method){
-            case "startPreview":
-                let args = call.arguments as? [String: Any]
-                let url = args?["imgset"] as? String
-                let key = args?["streamKey"] as? String
-                setupSession(url!, key!)
-                result(true)
-            case "startBroadcast":
-                startBroadcast()
-                result(true)
-            case "zoomCamera":
-                let args = call.arguments as? [String: Any]
-               
-                result( onZoomCamera(value:args?["zoom"] as? Double ?? 0.0))
-            case "mute":
-                applyMute()
-                result(true)
-            case "changeCamera":
-                let args = call.arguments as? [String: Any]
-                let type = args?["type"] as? String
-                changeCamera(type: type!)
-                result(true)
-            case "stopBroadcast":
-                stopBroadCast()
-                result(true)
-            default:
-                result(FlutterMethodNotImplemented)
-            }
+        switch(call.method){
+        case "startPreview":
+            let args = call.arguments as? [String: Any]
+            let url = args?["imgset"] as? String
+            let key = args?["streamKey"] as? String
+            let quality = args?["quality"] as? String
+            setupSession(url!, key!,quality!)
+            result(true)
+        case "startBroadcast":
+            startBroadcast()
+            result(true)
+        case "zoomCamera":
+            let args = call.arguments as? [String: Any]
+            
+            result( onZoomCamera(value:args?["zoom"] as? Double ?? 0.0))
+        case "mute":
+            applyMute()
+            result(true)
+        case "changeCamera":
+            let args = call.arguments as? [String: Any]
+            let type = args?["type"] as? String
+            changeCamera(type: type!)
+            result(true)
+        case "stopBroadcast":
+            stopBroadCast()
+            result(true)
+        default:
+            result(FlutterMethodNotImplemented)
         }
+    }
     
     // Start Broadcasting with rtmps and stream key
     func startBroadcast(){
@@ -161,18 +154,18 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         }
     }
     
-
+    
     private var isMuted = false {
         didSet {
             applyMute()
         }
     }
     
-//    provide camera to preview (attached camera)
+    //    provide camera to preview (attached camera)
     private var attachedCamera: IVSDevice? {
         didSet {
             if let preview = try? (attachedCamera as? IVSImageDevice)?.previewView(with: .fill) {
-                 
+                
                 attachCameraPreview(container: previewView, preview: preview)
             } else {
                 previewView.subviews.forEach { $0.removeFromSuperview() }
@@ -186,7 +179,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             applyMute()
         }
     }
-  
+    
     
     func stopBroadCast() {
         broadcastSession?.stop()
@@ -211,11 +204,12 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             }
         }
     }
-
+    
     
     private func setupSession(
         _ url: String,
-        _ key: String
+        _ key: String,
+        _ quality: String
     ) {
         
         do {
@@ -224,16 +218,24 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             // Create the session with a preset config and camera/microphone combination.
             
             IVSBroadcastSession.applicationAudioSessionStrategy = .playAndRecord
-            let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardLandscape(),
+            
+            
+            // Create a custom configuration for 1080p video quality
+            let config = try createBroadcastConfiguration(for: quality )
+            
+            
+            //            let broadcastSession = try IVSBroadcastSession(configuration: IVSPresets.configurations().standardLandscape(),
+            //                descriptors: IVSPresets.devices().backCamera(),
+            //                delegate: self)
+            let broadcastSession = try IVSBroadcastSession(configuration: config,
                                                            descriptors: IVSPresets.devices().backCamera(),
                                                            delegate: self)
-            
             broadcastSession.awaitDeviceChanges { [weak self] in
                 let devices = broadcastSession.listAttachedDevices()
                 let cameras = devices
                     .filter { $0.descriptor().type == .camera }
                     .compactMap { $0 as? IVSImageDevice }
-
+                
                 self?.attachedCamera = cameras.first
                 self?.attachedMicrophone = devices.first(where: { $0.descriptor().type == .microphone })
             }
@@ -246,7 +248,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
     private func setCamera(_ device: IVSDeviceDescriptor) {
         guard let broadcastSession = self.broadcastSession else { return }
-
+        
         // either attach or exchange based on current state.
         if attachedCamera == nil {
             broadcastSession.attach(device, toSlotWithName: nil) { newDevice, _ in
@@ -258,10 +260,10 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             }
         }
     }
-
+    
     func setMicrophone(_ device: IVSDeviceDescriptor) {
         guard let broadcastSession = self.broadcastSession else { return }
-
+        
         // either attach or exchange based on current state.
         if attachedMicrophone == nil {
             broadcastSession.attach(device, toSlotWithName: nil) { newDevice, _ in
@@ -273,7 +275,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             }
         }
     }
-
+    
     private func refreshAttachedDevices() {
         guard let session = broadcastSession else { return }
         let attachedDevices = session.listAttachedDevices()
@@ -290,37 +292,86 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             switch state {
             case .invalid:
                 data = ["state": "INVALID"]
+                self._eventSink!(data)
             case .connecting:
                 data = ["state":"CONNECTING"]
+                self._eventSink!(data)
             case .connected:
                 data = ["state":"CONNECTED"]
+                self._eventSink!(data)
             case .disconnected:
                 data = ["state":"DISCONNECTED"]
+                self._eventSink!(data)
             case .error:
                 data = ["state":"ERROR"]
+                self._eventSink!(data)
             @unknown default:
                 data = ["state":"INVALID"]
+                self._eventSink!(data)
             }
-            self._eventSink!(data)
+            
         }
     }
-
+    
     func broadcastSession(_ session: IVSBroadcastSession, didEmitError error: Error) {
         DispatchQueue.main.async {
         }
     }
-
+    
     func broadcastSession(_ session: IVSBroadcastSession, transmissionStatisticsChanged statiscs: IVSTransmissionStatistics) {
         var data = [String:Any]()
         var quality = statiscs.broadcastQuality.rawValue
         var health = statiscs.networkHealth.rawValue
         data = ["quality":quality,"network":health]
-        self._eventSink?(data) 
+        self._eventSink?(data)
     }
 }
 
 extension IvsBroadcasterView: IVSMicrophoneDelegate {
     func underlyingInputSourceChanged(for microphone: IVSMicrophone, toInputSource inputSource: IVSDeviceDescriptor?) {
         self.attachedMicrophone = microphone
+    }
+    //    Create Broadcast Configuration that will set the configuration according to Quality
+    func createBroadcastConfiguration(for resolution: String) throws -> IVSBroadcastConfiguration {
+        let config = IVSBroadcastConfiguration()
+        
+        switch resolution {
+        case "360":
+            try config.video.setSize(CGSize(width: 640, height: 360))
+            try config.video.setMaxBitrate(1000000) // 1 Mbps
+            try config.video.setMinBitrate(500000) // 500 kbps
+            try config.video.setInitialBitrate(800000) // 800 kbps
+            try config.video.setTargetFramerate(30)
+            try config.video.setKeyframeInterval(2)
+            
+        case "1080":
+            try config.video.setSize(CGSize(width: 1920, height: 1080))
+            try config.video.setMaxBitrate(6000000) // 6 Mbps
+            try config.video.setMinBitrate(4000000) // 4 Mbps
+            try config.video.setInitialBitrate(5000000) // 5 Mbps
+            try config.video.setTargetFramerate(30)
+            try config.video.setKeyframeInterval(2)
+            
+        case "720":
+            try config.video.setSize(CGSize(width: 1280, height: 720))
+            try config.video.setMaxBitrate(3500000) // 3.5 Mbps
+            try config.video.setMinBitrate(1500000) // 1.5 Mbps
+            try config.video.setInitialBitrate(2500000) // 2.5 Mbps
+            try config.video.setTargetFramerate(30)
+            try config.video.setKeyframeInterval(2)
+            
+        default:
+            try config.video.setSize(CGSize(width: 1280, height: 720))
+            try config.video.setMaxBitrate(3500000) // 3.5 Mbps
+            try config.video.setMinBitrate(1500000) // 1.5 Mbps
+            try config.video.setInitialBitrate(2500000) // 2.5 Mbps
+            try config.video.setTargetFramerate(30)
+            try config.video.setKeyframeInterval(2)
+        }
+        
+        // Set audio bitrate
+        try config.audio.setBitrate(128000) // 128 kbps
+        
+        return config
     }
 }

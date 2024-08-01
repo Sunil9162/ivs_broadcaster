@@ -43,7 +43,11 @@ class _HomePageState extends State<HomePage> {
   init() async {
     // await Future.delayed(Durations.extralong4);
 
-    await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
+    await ivsBroadcaster!.startPreview(
+      imgset: url,
+      streamKey: key,
+      quality: IvsQuality.q360,
+    );
   }
 
   double _scale = 1.0;

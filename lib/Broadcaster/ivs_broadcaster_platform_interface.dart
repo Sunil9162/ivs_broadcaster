@@ -22,6 +22,7 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
   Future<void> startPreview({
     required String imgset,
     required String streamKey,
+    IvsQuality quality = IvsQuality.q720,
     CameraType cameraType = CameraType.BACK,
     void Function(dynamic)? onData,
     void Function(dynamic)? onError,
@@ -31,5 +32,4 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
   Future<void> stopBroadcast();
   Future<dynamic> zoomCamera(double zoomValue);
   Future<void> changeCamera(CameraType cameraType);
- 
 }

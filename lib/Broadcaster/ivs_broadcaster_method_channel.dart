@@ -57,6 +57,7 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
   Future<void> startPreview({
     required String imgset,
     required String streamKey,
+    IvsQuality quality = IvsQuality.q720,
     CameraType cameraType = CameraType.BACK,
     void Function(dynamic)? onData,
     void Function(dynamic)? onError,
@@ -75,6 +76,7 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
         'imgset': imgset,
         'streamKey': streamKey,
         'cameraType': cameraType.index.toString(),
+        "quality": quality.description
       });
       eventStream?.cancel();
       eventStream = eventChannel
@@ -105,7 +107,4 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       throw Exception("$e [Zoom Camera]");
     }
   }
-
-
-  
 }

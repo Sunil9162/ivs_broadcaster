@@ -12,7 +12,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     let player =  IVSPlayer()
     private var _ivsPlayerView: IVSPlayerView?
     
-   
+    
     func view() -> UIView {
         return playerView;
     }
@@ -136,9 +136,9 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             result(true)
         case "autoQuality":
             toggleAutoQuality()
-             result(true)
+            result(true)
         case "isAuto":
-             result(isAuto()) 
+            result(isAuto())
         default:
             result(FlutterMethodNotImplemented)
         }
@@ -146,7 +146,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     
     func isAuto()-> Bool{
         if _ivsPlayerView != nil {
-          return  _ivsPlayerView?.player?.autoQualityMode ?? false
+            return  _ivsPlayerView?.player?.autoQualityMode ?? false
         }
         return false
     }
@@ -161,7 +161,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         if _ivsPlayerView != nil {
             var qualities = _ivsPlayerView?.player?.qualities
             var qualitytobechange = qualities?.first(where: { $0.name == quality } )
-            _ivsPlayerView?.player?.setQuality(qualitytobechange!, adaptive: true) 
+            _ivsPlayerView?.player?.setQuality(qualitytobechange!, adaptive: true)
         }
     }
     
@@ -188,7 +188,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     
     func startPlayer(_ url:String, _ autoPlay:Bool){
         do{
-            _ivsPlayerView = IVSPlayerView() 
+            _ivsPlayerView = IVSPlayerView()
             _ivsPlayerView?.player = player
             player.load(URL(string: url))
             if autoPlay {
@@ -197,7 +197,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             attachPreview(container: playerView, preview: _ivsPlayerView!)
         }
     }
-
+    
     func attachPreview(container: UIView, preview: UIView) {
         // Clear current view, and then attach the new view.
         container.subviews.forEach { $0.removeFromSuperview() }

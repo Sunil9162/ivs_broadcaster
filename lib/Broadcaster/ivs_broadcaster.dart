@@ -79,12 +79,14 @@ class IvsBroadcaster {
   Future<void> startPreview({
     required String imgset,
     required String streamKey,
+    IvsQuality quality = IvsQuality.q720,
     CameraType cameraType = CameraType.BACK,
   }) async {
     return await broadcater.startPreview(
       imgset: imgset,
       streamKey: streamKey,
       cameraType: cameraType,
+      quality: quality,
       onData: (data) {
         _parseRawData(data);
       },

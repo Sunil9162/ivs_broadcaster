@@ -44,3 +44,22 @@ enum PlayerState {
   /// Indicates that the player reached the end of the stream.
   PlayerStateEnded,
 }
+
+enum IvsQuality {
+  q360,
+  q720,
+  q1080,
+}
+
+extension IvsQualityExtension on IvsQuality {
+  String get description {
+    switch (this) {
+      case IvsQuality.q360:
+        return '360';
+      case IvsQuality.q720:
+        return '720';
+      case IvsQuality.q1080:
+        return '1080';
+    }
+  }
+}
