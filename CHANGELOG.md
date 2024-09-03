@@ -1,3 +1,10 @@
+## 0.0.14
+  * Added Quality in broadcasting
+  * fixed some issue
+
+## 0.0.13
+  * Updated BroadcatState Not receiving issue (Fixed)
+
 ## 0.0.12
   * Added BroadcastQuality and NetworkHealth Stream for Brodcasting
 

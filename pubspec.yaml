@@ -1,6 +1,6 @@
 name: ivs_broadcaster
 description: IVS Broadcaster SDK for Flutter
-version: 0.0.12
+version: 0.0.14
 homepage: https://flutter.io/
 
 environment:

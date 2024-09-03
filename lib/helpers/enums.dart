@@ -29,6 +29,18 @@ enum CameraType {
   BACK,
 }
 
+enum IOSCameraLens {
+  DualCamera,
+  WideAngleCamera,
+  TripleCamera,
+  TelePhotoCamera,
+  DualWideAngleCamera,
+  TrueDepthCamera,
+  UltraWideCamera,
+  LiDarDepthCamera,
+  DefaultCamera,
+}
+
 enum PlayerState {
   PlayerStateIdle,
 
