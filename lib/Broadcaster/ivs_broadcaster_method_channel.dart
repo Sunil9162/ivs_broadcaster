@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/helpers/enums.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'Classes/zoom_factor.dart';
 import 'ivs_broadcaster_platform_interface.dart';
 
 /// A platform-specific implementation of the [IvsBroadcasterPlatform] using method channels.
@@ -183,6 +184,59 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       });
     } catch (e) {
       throw Exception("$e [Update Camera Lens]");
+    }
+  }
+
+  @override
+  Future<List<IOSCameraLens>> getAvailableCameraLens() async {
+    try {
+      final List<dynamic>? lensList = await methodChannel
+          .invokeMethod<List<dynamic>>("getAvailableCameraLens");
+      if (lensList != null) {
+        return lensList.map((e) => IOSCameraLens.values[e]).toList();
+      }
+      return [];
+    } catch (e) {
+      throw Exception("$e [Get Available Camera Lens]");
+    }
+  }
+
+  @override
+  Future<ZoomFactor> getZoomFactor() async {
+    try {
+      final Map<Object?, Object?>? zoomFactorMap = await methodChannel
+          .invokeMethod<Map<Object?, Object?>>("getCameraZoomFactor");
+      if (zoomFactorMap != null) {
+        return ZoomFactor.fromMap(Map<String, dynamic>.from(zoomFactorMap));
+      }
+      return ZoomFactor(maxZoom: 0, minZoom: 0);
+    } catch (e) {
+      throw Exception("$e [Get Zoom Factor]");
+    }
+  }
+
+  @override
+  Future<bool?> setFocusMode(FocusMode focusMode) async {
+    try {
+      return await methodChannel
+          .invokeMethod<bool>("setFocusMode", <String, dynamic>{
+        'type': focusMode.index.toString(),
+      });
+    } catch (e) {
+      throw Exception("$e [Set Focus Mode]");
+    }
+  }
+
+  @override
+  Future<bool?> setFocusPoint(double x, double y) async {
+    try {
+      return await methodChannel
+          .invokeMethod<bool>("setFocusPoint", <String, dynamic>{
+        'dx': x.toString(),
+        'dy': y.toString(),
+      });
+    } catch (e) {
+      throw Exception("$e [Set Focus Point]");
     }
   }
 }

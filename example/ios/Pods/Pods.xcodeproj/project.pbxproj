@@ -15,6 +15,7 @@
 			dependencies = (
 			);
 			name = Flutter;
+			productName = Flutter;
 		};
 		3F12C69D3243EEEBA9606C20D786B8E0 /* AmazonIVSBroadcast */ = {
 			isa = PBXAggregateTarget;
@@ -25,6 +26,7 @@
 			dependencies = (
 			);
 			name = AmazonIVSBroadcast;
+			productName = AmazonIVSBroadcast;
 		};
 		C3D9666B08CCB7CCC3EE96E269456946 /* AmazonIVSPlayer */ = {
 			isa = PBXAggregateTarget;
@@ -35,6 +37,7 @@
 			dependencies = (
 			);
 			name = AmazonIVSPlayer;
+			productName = AmazonIVSPlayer;
 		};
 /* End PBXAggregateTarget section */
 
@@ -54,6 +57,7 @@
 		2EEA44D7DF4877D126A7E1029DF025D8 /* EventPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = DB52830699B881C732D9B480521C65F1 /* EventPermissionStrategy.m */; };
 		309FC5A99AD86BA0C49C5E296C9DBA14 /* BluetoothPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = C06B0A3B6F49D7A047FF7296E21E685B /* BluetoothPermissionStrategy.m */; };
 		315A8F4C39C9B11FE61CE730B65ECE3C /* PermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E8052BD715336A98CC0D485275B623B8 /* PermissionManager.m */; };
+		354F43332C8974B600FA6485 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F43322C8974B600FA6485 /* File.swift */; };
 		37EF687F1E8D2DE98A4EB3BC1BFF2F3A /* AudioVideoPermissionStrategy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7E0DC1C3D460A639C072D685AEFC9868 /* AudioVideoPermissionStrategy.m */; };
 		3B3D601A96A628852A1659D8EEFC67DF /* PermissionHandlerEnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D385A9839B8DD67FF93EA379A98E827 /* PermissionHandlerEnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3C988957F397F7614D81EE53B4155B94 /* IntegrationTestIosTest.h in Headers */ = {isa = PBXBuildFile; fileRef = D0F3E6D026B10D38726498E4FE5ADE39 /* IntegrationTestIosTest.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -197,7 +201,7 @@
 
 /* Begin PBXFileReference section */
 		00621276448EC97748EDD908886BD7FE /* PermissionManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionManager.h; path = "../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/PermissionManager.h"; sourceTree = "<group>"; };
-		018F830CF9982660E2A4AB2236411E84 /* AmazonIVSPlayer.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; path = AmazonIVSPlayer.xcframework; sourceTree = "<group>"; };
+		018F830CF9982660E2A4AB2236411E84 /* AmazonIVSPlayer.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; path = AmazonIVSPlayer.xcframework; sourceTree = "<group>"; };
 		0242A5FF5CD1A7D5CADCA140E2BCDD4A /* MediaLibraryPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MediaLibraryPermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/MediaLibraryPermissionStrategy.m"; sourceTree = "<group>"; };
 		07D5BB6270A91E7BD7059A9334DB122E /* Codec.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Codec.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/util/Codec.m"; sourceTree = "<group>"; };
 		08A030369B4F1FB12B3BFEE43C819330 /* NotificationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NotificationPermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/NotificationPermissionStrategy.m"; sourceTree = "<group>"; };
@@ -217,11 +221,12 @@
 		2346EEDE83B3084FE3212EA350DF686F /* permission_handler_apple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler_apple.debug.xcconfig; sourceTree = "<group>"; };
 		23CC4F761C478791848E8C0D8D7CA4A8 /* AmazonIVSBroadcast-xcframeworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "AmazonIVSBroadcast-xcframeworks.sh"; sourceTree = "<group>"; };
 		29EAC8CC91E4DC65503BC978BC393397 /* permission_handler_apple-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "permission_handler_apple-dummy.m"; sourceTree = "<group>"; };
-		2D7D070D1E2EE8D01C1E50D920AE37FC /* integration_test.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = integration_test.podspec; path = ../../../../../../../../../Users/giteshdang/Documents/Development/flutter/packages/integration_test/ios/integration_test.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		2D7D070D1E2EE8D01C1E50D920AE37FC /* integration_test.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = integration_test.podspec; path = ../../../../../../../../../Users/giteshdang/Documents/Development/flutter/packages/integration_test/ios/integration_test.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		2F568CA814539DA2ACE1B60AFDFF883E /* FLTIntegrationTestRunner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FLTIntegrationTestRunner.m; path = ../../../../../../../../../../Users/giteshdang/Documents/Development/flutter/packages/integration_test/ios/Classes/FLTIntegrationTestRunner.m; sourceTree = "<group>"; };
 		3038D58B1D3F2FDA1398C12BCF14D248 /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
+		354F43322C8974B600FA6485 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = ../../../../../../../ios/Classes/File.swift; sourceTree = "<group>"; };
 		3781AA4A5012A9A48612CDC101719CF3 /* ivs_broadcaster */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = ivs_broadcaster; path = ivs_broadcaster.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		3796D27DBEF9607B82F8A341E78D5CE9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../../../../../../LICENSE; sourceTree = "<group>"; };
+		3796D27DBEF9607B82F8A341E78D5CE9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../../../../../../LICENSE; sourceTree = "<group>"; };
 		38BF8CB8811F0810889CEF77CE6FDB14 /* UnknownPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UnknownPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/UnknownPermissionStrategy.h"; sourceTree = "<group>"; };
 		3B27830E12FDA18E139E779D2B8BEA3D /* LocationPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LocationPermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/LocationPermissionStrategy.m"; sourceTree = "<group>"; };
 		3EA0F1E77EEF14D46C455089E04CFB0C /* FLTIntegrationTestRunner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FLTIntegrationTestRunner.h; path = ../../../../../../../../../../Users/giteshdang/Documents/Development/flutter/packages/integration_test/ios/Classes/FLTIntegrationTestRunner.h; sourceTree = "<group>"; };
@@ -243,11 +248,11 @@
 		6024438989FE131F3741CDA605C16A78 /* Codec.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = Codec.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/util/Codec.h"; sourceTree = "<group>"; };
 		607307C86D84CB210D44D937487CB0A1 /* ivs_broadcaster-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "ivs_broadcaster-Info.plist"; sourceTree = "<group>"; };
 		62E1181A0CFD348A8D591F2613A4494B /* Pods-Runner-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Runner-frameworks.sh"; sourceTree = "<group>"; };
-		62FA698D8DE63FF4E66103C405EBE7A8 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = "../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Resources/PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
-		655D4C0506B727FD3443E7B2FCF50632 /* permission_handler_apple.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = permission_handler_apple.podspec; path = "../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/permission_handler_apple.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		62FA698D8DE63FF4E66103C405EBE7A8 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = "../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Resources/PrivacyInfo.xcprivacy"; sourceTree = "<group>"; };
+		655D4C0506B727FD3443E7B2FCF50632 /* permission_handler_apple.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = permission_handler_apple.podspec; path = "../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/permission_handler_apple.podspec"; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		669E8F25E1897672BDB80B7EB784DA24 /* Pods-Runner */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Runner"; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		691686A2EED359E9BE6429F644930F26 /* Flutter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Flutter.release.xcconfig; sourceTree = "<group>"; };
-		6AD4D15AD3B8B9130CBA53E4DDE86A0C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = "../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/LICENSE"; sourceTree = "<group>"; };
+		6AD4D15AD3B8B9130CBA53E4DDE86A0C /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = "../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/LICENSE"; sourceTree = "<group>"; };
 		6FC490010D13B9D2ED292D28547402A8 /* AppTrackingTransparencyPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AppTrackingTransparencyPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/AppTrackingTransparencyPermissionStrategy.h"; sourceTree = "<group>"; };
 		71CDF9C61E5D46325AC4529D60A12B16 /* PhonePermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhonePermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/PhonePermissionStrategy.m"; sourceTree = "<group>"; };
 		74FCF8582665F916B5DF1B608AD7DAE5 /* integration_test-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "integration_test-Info.plist"; sourceTree = "<group>"; };
@@ -263,7 +268,7 @@
 		8FEC6F4E03FC0BD7EFC442F851DF5796 /* permission_handler_apple-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "permission_handler_apple-Info.plist"; sourceTree = "<group>"; };
 		978E48D44BCA2DF1F43DEB3FDB83097A /* permission_handler_apple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = permission_handler_apple.release.xcconfig; sourceTree = "<group>"; };
 		991BD277020A635FB928D5074D21E88D /* PhotoPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PhotoPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/PhotoPermissionStrategy.h"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9ECE878B7B0F6595D09F4DAEC2E4AB00 /* EventPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EventPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/EventPermissionStrategy.h"; sourceTree = "<group>"; };
 		A044B3E7823C0E268AFA995E1747816C /* permission_handler_apple.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = permission_handler_apple.modulemap; sourceTree = "<group>"; };
 		A10D598F5356AA1500A2B50635B919CF /* LocationPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LocationPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/LocationPermissionStrategy.h"; sourceTree = "<group>"; };
@@ -276,7 +281,7 @@
 		AFEE9CDE830C619477BB1118D7E11652 /* StoragePermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = StoragePermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/StoragePermissionStrategy.h"; sourceTree = "<group>"; };
 		B4918E0B13982BA609DAD70D97C14E45 /* MediaLibraryPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MediaLibraryPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/MediaLibraryPermissionStrategy.h"; sourceTree = "<group>"; };
 		B64831293B5D0FD236B6616B4C98EAD1 /* permission_handler_apple-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "permission_handler_apple-prefix.pch"; sourceTree = "<group>"; };
-		B8A5A31CB8FBB96FFA8CC7D083573305 /* Flutter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = Flutter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		B8A5A31CB8FBB96FFA8CC7D083573305 /* Flutter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = Flutter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		BAE95C5D9F41604A135D9E659455EDE7 /* CriticalAlertsPermissionStrategy.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CriticalAlertsPermissionStrategy.h; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/CriticalAlertsPermissionStrategy.h"; sourceTree = "<group>"; };
 		BB240A5D814E37336BBCD7EA7D5F907C /* IntegrationTestPlugin.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IntegrationTestPlugin.m; path = ../../../../../../../../../../Users/giteshdang/Documents/Development/flutter/packages/integration_test/ios/Classes/IntegrationTestPlugin.m; sourceTree = "<group>"; };
 		C06B0A3B6F49D7A047FF7296E21E685B /* BluetoothPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BluetoothPermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/BluetoothPermissionStrategy.m"; sourceTree = "<group>"; };
@@ -303,9 +308,9 @@
 		EF54BEED02A5A4DE8C36633724F64B59 /* Pods-Runner-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Runner-acknowledgements.plist"; sourceTree = "<group>"; };
 		F19DE4DE3FF2A68E0F33203D70F57803 /* AmazonIVSBroadcast.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AmazonIVSBroadcast.debug.xcconfig; sourceTree = "<group>"; };
 		F3FD89A3C35F3ED2DDAE100615C517D1 /* Pods-Runner-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Runner-umbrella.h"; sourceTree = "<group>"; };
-		F47C05B0432BD5988A0912E65403CDA9 /* AmazonIVSBroadcast.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; name = AmazonIVSBroadcast.xcframework; path = AmazonIVSBroadcast/Core/AmazonIVSBroadcast.xcframework; sourceTree = "<group>"; };
+		F47C05B0432BD5988A0912E65403CDA9 /* AmazonIVSBroadcast.xcframework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.xcframework; name = AmazonIVSBroadcast.xcframework; path = AmazonIVSBroadcast/Core/AmazonIVSBroadcast.xcframework; sourceTree = "<group>"; };
 		FBE3A9809212ED30EC303B73CB0887CE /* PhotoPermissionStrategy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PhotoPermissionStrategy.m; path = "../../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/strategies/PhotoPermissionStrategy.m"; sourceTree = "<group>"; };
-		FE89DADE8D46FEEA1744E6F996EBAA97 /* ivs_broadcaster.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = ivs_broadcaster.podspec; path = ../../../../../../ios/ivs_broadcaster.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		FE89DADE8D46FEEA1744E6F996EBAA97 /* ivs_broadcaster.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = ivs_broadcaster.podspec; path = ../../../../../../ios/ivs_broadcaster.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		FF95B60FB4D556BC192B7863B39D4A06 /* PermissionHandlerPlugin.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PermissionHandlerPlugin.h; path = "../../../../../../../../../../Users/giteshdang/.pub-cache/hosted/pub.dev/permission_handler_apple-9.4.5/ios/Classes/PermissionHandlerPlugin.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -358,7 +363,6 @@
 			children = (
 				4F7831E370BE7AA0E070FDF37D52AFEB /* example */,
 			);
-			name = ivs_broadcaster;
 			path = ivs_broadcaster;
 			sourceTree = "<group>";
 		};
@@ -375,7 +379,6 @@
 			children = (
 				62FA698D8DE63FF4E66103C405EBE7A8 /* PrivacyInfo.xcprivacy */,
 			);
-			name = Resources;
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -402,7 +405,6 @@
 			children = (
 				90C37030E06139ACA3B193E50FF695E0 /* plugins */,
 			);
-			name = .symlinks;
 			path = .symlinks;
 			sourceTree = "<group>";
 		};
@@ -411,7 +413,6 @@
 			children = (
 				0064EA93F6DF9337C3AD68F1A138F9FC /* ivs_broadcaster */,
 			);
-			name = Samsung;
 			path = Samsung;
 			sourceTree = "<group>";
 		};
@@ -420,7 +421,6 @@
 			children = (
 				0A5141725CE6441EB0B801026194FCA6 /* .symlinks */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -429,7 +429,6 @@
 			children = (
 				0C6A857942EF733C606BE7EFC9F68BA9 /* ios */,
 			);
-			name = example;
 			path = example;
 			sourceTree = "<group>";
 		};
@@ -438,7 +437,6 @@
 			children = (
 				1D5D2B23DDFFD0FE64E4A22ADA1B5AC8 /* Classes */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -478,8 +476,8 @@
 				54144591671FFDBD8A776B4A2C2BF651 /* IvsBroadcasterView.swift */,
 				75270EE6F227A2B91F4FDD54FB09C615 /* IvsPlayerFactory.swift */,
 				E8C0DF09D06645965C55FD58D1689218 /* IvsPlayerView.swift */,
+				354F43322C8974B600FA6485 /* File.swift */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -488,7 +486,6 @@
 			children = (
 				0A8713588D60B6AED0BCAF3F231EFA2F /* Samsung */,
 			);
-			name = Volumes;
 			path = Volumes;
 			sourceTree = "<group>";
 		};
@@ -532,7 +529,6 @@
 			children = (
 				913D4ABA8B460C6EF2E4A8B3276A9B89 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -541,7 +537,6 @@
 			children = (
 				D481B06AD0F5F2A41BD4870703E4D0E9 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -550,7 +545,6 @@
 			children = (
 				8431B56224ABA1F1B83AAA817A19C03A /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -575,7 +569,6 @@
 				2079236F26A34DE7100CB91709282C16 /* Core */,
 				627CA306752C28915CDAA49314C038B6 /* Support Files */,
 			);
-			name = AmazonIVSBroadcast;
 			path = AmazonIVSBroadcast;
 			sourceTree = "<group>";
 		};
@@ -584,7 +577,6 @@
 			children = (
 				1DE6EAF09DF11A2DEB675DBFBCC0D359 /* Volumes */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -604,7 +596,6 @@
 			children = (
 				A6A641D6793D2A3D21B72F8599E9FADF /* ios */,
 			);
-			name = example;
 			path = example;
 			sourceTree = "<group>";
 		};
@@ -613,7 +604,6 @@
 			children = (
 				D83B2FF51A2B9AA6ABE0562C7138A2E7 /* ivs_broadcaster */,
 			);
-			name = plugins;
 			path = plugins;
 			sourceTree = "<group>";
 		};
@@ -622,7 +612,6 @@
 			children = (
 				CE4ED5FF106BF49F809655C3E34E6261 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -631,7 +620,6 @@
 			children = (
 				573F4A9E5EFACF321112FEFAD4104367 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -671,7 +659,6 @@
 			children = (
 				0C84F3757431670271C71EB97CC6529E /* example */,
 			);
-			name = ivs_broadcaster;
 			path = ivs_broadcaster;
 			sourceTree = "<group>";
 		};
@@ -680,7 +667,6 @@
 			children = (
 				AE52F30069EEA68182BFDE6BAF9F6EF8 /* Volumes */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -717,7 +703,6 @@
 			children = (
 				6392E5B40237014C0DB4F608A21BB97C /* ivs_broadcaster */,
 			);
-			name = Samsung;
 			path = Samsung;
 			sourceTree = "<group>";
 		};
@@ -726,7 +711,6 @@
 			children = (
 				230B22AE01E0F05596F9800A6E9C80D7 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -781,7 +765,6 @@
 				38BF8CB8811F0810889CEF77CE6FDB14 /* UnknownPermissionStrategy.h */,
 				1531B7A0FA6C1FDE7AABF60CA6263B79 /* UnknownPermissionStrategy.m */,
 			);
-			name = strategies;
 			path = strategies;
 			sourceTree = "<group>";
 		};
@@ -800,7 +783,6 @@
 			children = (
 				D315A6FF9E74624EC60E61CD9325C8EE /* permission_handler_apple */,
 			);
-			name = plugins;
 			path = plugins;
 			sourceTree = "<group>";
 		};
@@ -809,7 +791,6 @@
 			children = (
 				2752536E4D96A6D79B7E4E8C4A7AE931 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -818,7 +799,6 @@
 			children = (
 				9D535B645D60A9A3F57378C18A3F2646 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -827,7 +807,6 @@
 			children = (
 				98E7C6275EB17777BC3CD1CD7064C495 /* example */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -836,7 +815,6 @@
 			children = (
 				EF1FC29CD720818F3C7006450187C21E /* ios */,
 			);
-			name = example;
 			path = example;
 			sourceTree = "<group>";
 		};
@@ -851,7 +829,6 @@
 				891F22F9661FF992BFED277ED3706250 /* strategies */,
 				F19030A21C56EA9C2787F43E737E6BCC /* util */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -870,7 +847,6 @@
 			children = (
 				B222A82A4A85F4EAD04E25F024B719AF /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -880,7 +856,6 @@
 				991D57FA9177B6D5BB8385AA8443D4EC /* Classes */,
 				0371987FD4311437367899527DB22E49 /* Resources */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -898,7 +873,6 @@
 			children = (
 				E846DB7F94435C073A6FD2A1FBC124AC /* .symlinks */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -907,7 +881,6 @@
 			children = (
 				54B670A12C39FA8B6E711E16733C57AC /* plugins */,
 			);
-			name = .symlinks;
 			path = .symlinks;
 			sourceTree = "<group>";
 		};
@@ -916,7 +889,6 @@
 			children = (
 				80E24DAF5A2D45F56CC7A8080BBCD690 /* Samsung */,
 			);
-			name = Volumes;
 			path = Volumes;
 			sourceTree = "<group>";
 		};
@@ -925,7 +897,6 @@
 			children = (
 				C634C782D7994D3DDB24397BE4FB760C /* integration_test */,
 			);
-			name = plugins;
 			path = plugins;
 			sourceTree = "<group>";
 		};
@@ -934,7 +905,6 @@
 			children = (
 				58BE54281D402BBAEB954895473BEBB7 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -959,7 +929,6 @@
 				F150EB2D5F3839E1F79CC6646D060C9F /* Frameworks */,
 				7B121544CD3A5ECDC7F703EA3A791963 /* Support Files */,
 			);
-			name = AmazonIVSPlayer;
 			path = AmazonIVSPlayer;
 			sourceTree = "<group>";
 		};
@@ -979,7 +948,6 @@
 			children = (
 				C7919A44C38B51A8335BB6977C89740F /* ios */,
 			);
-			name = integration_test;
 			path = integration_test;
 			sourceTree = "<group>";
 		};
@@ -988,7 +956,6 @@
 			children = (
 				F656A384637A15AE802A7DAED7FC5FD0 /* Classes */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -997,7 +964,6 @@
 			children = (
 				71A2E72EE59B759C35F9EA5DB05BFAA9 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -1034,7 +1000,6 @@
 			children = (
 				A3A9E5082374513D5604F55629922513 /* ios */,
 			);
-			name = permission_handler_apple;
 			path = permission_handler_apple;
 			sourceTree = "<group>";
 		};
@@ -1043,7 +1008,6 @@
 			children = (
 				42ED0F1C2D326760481C6962BF7BEB63 /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -1052,7 +1016,6 @@
 			children = (
 				127E959C50937B8E1A648B23CE9FE5A6 /* ios */,
 			);
-			name = ivs_broadcaster;
 			path = ivs_broadcaster;
 			sourceTree = "<group>";
 		};
@@ -1078,7 +1041,6 @@
 			children = (
 				B0ECF91DB01510EF6FEFA02C71D1F612 /* plugins */,
 			);
-			name = .symlinks;
 			path = .symlinks;
 			sourceTree = "<group>";
 		};
@@ -1087,7 +1049,6 @@
 			children = (
 				AE5064C547205F23033545CDDAE1FD92 /* .symlinks */,
 			);
-			name = ios;
 			path = ios;
 			sourceTree = "<group>";
 		};
@@ -1105,7 +1066,6 @@
 				6024438989FE131F3741CDA605C16A78 /* Codec.h */,
 				07D5BB6270A91E7BD7059A9334DB122E /* Codec.m */,
 			);
-			name = util;
 			path = util;
 			sourceTree = "<group>";
 		};
@@ -1114,7 +1074,6 @@
 			children = (
 				2EB33DA800FBC67C84EF6F5A03F8788B /* .. */,
 			);
-			name = ..;
 			path = ..;
 			sourceTree = "<group>";
 		};
@@ -1128,7 +1087,6 @@
 				51C112F59772EE6933CD70EDD6815282 /* IntegrationTestPlugin.h */,
 				BB240A5D814E37336BBCD7EA7D5F907C /* IntegrationTestPlugin.m */,
 			);
-			name = Classes;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -1467,6 +1425,7 @@
 			files = (
 				FC1672D4DB5500AFD271CC4A7DF73560 /* ivs_broadcaster-dummy.m in Sources */,
 				9E18519B504367F4ED575741871EB5D4 /* IvsBroadcasterFactory.swift in Sources */,
+				354F43332C8974B600FA6485 /* File.swift in Sources */,
 				96DEF811B407BD35BD5AD45E0C2164E7 /* IvsBroadcasterPlugin.swift in Sources */,
 				428DC6EAA019004640E459D658D3D461 /* IvsBroadcasterView.swift in Sources */,
 				9D485505D5032A6614A6133637FB9B00 /* IvsPlayerFactory.swift in Sources */,

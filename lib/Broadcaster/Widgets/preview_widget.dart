@@ -60,8 +60,7 @@ class _BroadcaterPreviewState extends State<BroadcaterPreview>
 
   @override
   Widget build(BuildContext context) {
-    super.build(
-        context); // Required for the AutomaticKeepAliveClientMixin to work.
+    super.build(context);
     // Return the platform view if it was initialized, or an empty widget if not.
     return _platformView ?? const SizedBox.shrink();
   }

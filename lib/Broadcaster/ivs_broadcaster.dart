@@ -2,6 +2,8 @@
 
 import 'dart:async';
 
+import 'package:flutter/services.dart';
+import 'package:ivs_broadcaster/Broadcaster/Classes/zoom_factor.dart';
 import 'package:ivs_broadcaster/Broadcaster/ivs_broadcaster_platform_interface.dart';
 
 import '../helpers/enums.dart';
@@ -32,6 +34,9 @@ class IvsBroadcaster {
   /// A stream controller to handle the broadcast health events.
   StreamController<BroadcastHealth> broadcastHealth =
       StreamController<BroadcastHealth>.broadcast();
+
+  /// Focus Point Stream Controller
+  StreamController<Offset> focusPoint = StreamController<Offset>.broadcast();
 
   /// An instance of the platform-specific broadcaster.
   final broadcater = IvsBroadcasterPlatform.instance;
@@ -79,6 +84,11 @@ class IvsBroadcaster {
         broadcastHealth.add(
           BroadcastHealth.values[settings["network"] as int],
         );
+      }
+      if (settings.containsKey("foucsPoint")) {
+        final data = settings["foucsPoint"].toString().split("_");
+        final offset = Offset(double.parse(data[0]), double.parse(data[1]));
+        focusPoint.add(offset);
       }
     }
   }
@@ -160,5 +170,21 @@ class IvsBroadcaster {
 
   Future<String?> updateCameraLens(IOSCameraLens cameraLens) {
     return broadcater.updateCameraLens(cameraLens);
+  }
+
+  Future<ZoomFactor?> getZoomFactor() async {
+    return await broadcater.getZoomFactor();
+  }
+
+  Future<List<IOSCameraLens>> getAvailableCameraLens() async {
+    return await broadcater.getAvailableCameraLens();
+  }
+
+  Future<bool?> setFocusMode(FocusMode focusMode) async {
+    return await broadcater.setFocusMode(focusMode);
+  }
+
+  Future<bool?> setFocusPoint(double x, double y) async {
+    return await broadcater.setFocusPoint(x, y);
   }
 }

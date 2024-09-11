@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/Broadcaster/Widgets/preview_widget.dart';
@@ -28,19 +28,18 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
     ]);
     ivsBroadcaster = IvsBroadcaster.instance;
-    ivsBroadcaster!.broadcastState.stream.listen((event) {
-      log(event.name.toString(), name: "IVS Broadcaster");
-    });
-    ivsBroadcaster!.broadcastQuality.stream.listen((event) {
-      log(event.name.toString(), name: "IVS Broadcaster Quality");
-    });
-    ivsBroadcaster!.broadcastHealth.stream.listen((event) {
-      log(event.name.toString(), name: "IVS Broadcaster Health");
-    });
+    // ivsBroadcaster!.broadcastState.stream.listen((event) {
+    //   log(event.name.toString(), name: "IVS Broadcaster");
+    // });
+    // ivsBroadcaster!.broadcastQuality.stream.listen((event) {
+    //   log(event.name.toString(), name: "IVS Broadcaster Quality");
+    // });
+    // ivsBroadcaster!.broadcastHealth.stream.listen((event) {
+    //   log(event.name.toString(), name: "IVS Broadcaster Health");
+    // });
     init();
   }
 
@@ -57,6 +56,11 @@ class _HomePageState extends State<HomePage> {
       streamKey: key,
       quality: IvsQuality.q1080,
     );
+    final zoomFactor = await ivsBroadcaster?.getZoomFactor();
+    if (zoomFactor != null) {
+      maxZoom = zoomFactor.maxZoom.toDouble();
+      minZoom = zoomFactor.minZoom.toDouble();
+    }
   }
 
   double _scale = 1.0;
@@ -67,10 +71,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _zoomCamera(double scale) async {
     // Call your zoom function here
-    final v = await ivsBroadcaster?.zoomCamera(scale);
-    if (v != null) {
-      maxZoom = v["max"] ?? 4.0; // Update maxZoom if needed
-    }
+    await ivsBroadcaster?.zoomCamera(scale);
   }
 
   ValueNotifier<IOSCameraLens> currentCamera =
@@ -95,50 +96,8 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        // toolbarHeight: 150,
-        // title: Wrap(
-        //   children: [
-        //     // Start Broadcast
-        //     ElevatedButton(
-        //       onPressed: () async {
-        //         await ivsBroadcaster?.startBroadcast();
-        //       },
-        //       child: const Text('Start Broadcast'),
-        //     ),
-        //     // Stop Broadcast
-        //     ElevatedButton(
-        //       onPressed: () async {
-        //         await ivsBroadcaster?.stopBroadcast();
-        //       },
-        //       child: const Text('Stop Broadcast'),
-        //     ),
-        //     ElevatedButton(
-        //       onPressed: () async {
-        //         await ivsBroadcaster?.changeCamera(CameraType.FRONT);
-        //       },
-        //       child: const Text('Change'),
-        //     ),
-        //     ElevatedButton(
-        //       onPressed: () async {
-        //         await ivsBroadcaster!.startPreview(imgset: url, streamKey: key);
-        //       },
-        //       child: const Text('Start preview'),
-        //     ),
-        //   ],
-        // ),
       ),
       extendBodyBehindAppBar: true,
-      // floatingActionButton: FloatingActionButton.extended(
-      //   onPressed: null,
-      //   label: StreamBuilder<BroadCastState>(
-      //     stream: ivsBroadcaster?.broadcastState.stream,
-      //     builder: (context, snapshot) {
-      //       return Text(
-      //         snapshot.data?.name ?? 'INVALID',
-      //       );
-      //     },
-      //   ),
-      // ),
       body: Stack(
         children: [
           const Center(
@@ -147,6 +106,7 @@ class _HomePageState extends State<HomePage> {
           GestureDetector(
             onScaleStart: (ScaleStartDetails details) {
               _previousScale = _scale;
+              log("Started $_previousScale");
             },
             onScaleUpdate: (ScaleUpdateDetails details) async {
               _scale = (_previousScale * details.scale).clamp(minZoom, maxZoom);
@@ -154,120 +114,162 @@ class _HomePageState extends State<HomePage> {
             },
             child: const BroadcaterPreview(),
           ),
-          Positioned(
-            height: 150,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: StreamBuilder<BroadCastState>(
-              stream: ivsBroadcaster?.broadcastState.stream,
-              builder: (context, snapshot) {
-                final isConnected = snapshot.data == BroadCastState.CONNECTED;
-                final isConnecting = snapshot.data == BroadCastState.CONNECTING;
-                return Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  padding: const EdgeInsets.all(15).copyWith(bottom: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Connection State: ${snapshot.data?.name.toString() ?? "No State"}",
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            ValueListenableBuilder(
-                              valueListenable: currentCamera,
-                              builder: (context, value, child) {
-                                return DropdownMenu(
-                                  dropdownMenuEntries: IOSCameraLens.values
-                                      .map(
-                                        (e) => DropdownMenuEntry(
-                                          value: e,
-                                          label: e.name,
-                                        ),
-                                      )
-                                      .toList(),
-                                  initialSelection: value,
-                                  inputDecorationTheme:
-                                      const InputDecorationTheme(
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  onSelected: (selectedValue) async {
-                                    if (selectedValue != null) {
-                                      final data = await ivsBroadcaster
-                                          ?.updateCameraLens(selectedValue);
-
-                                      // Only update currentCamera if the configuration was successful
-                                      if (data == "Configuration Updated") {
-                                        currentCamera.value = selectedValue;
-                                        showSnackBar(
-                                          context,
-                                          "Camera configuration updated",
-                                        );
-                                      } else {
-                                        // Handle failure case here if necessary
-                                        currentCamera.value =
-                                            IOSCameraLens.DefaultCamera;
-                                        showSnackBar(
-                                          context,
-                                          "Device does not support this camera configuration",
-                                        );
-                                      }
-                                    }
-                                  },
-                                );
-                              },
-                            ),
-                          ],
+          // Positioned(
+          //   height: 0,
+          //   bottom: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: StreamBuilder<BroadCastState>(
+          //     stream: ivsBroadcaster?.broadcastState.stream,
+          //     builder: (context, snapshot) {
+          //       final isConnected = snapshot.data == BroadCastState.CONNECTED;
+          //       final isConnecting = snapshot.data == BroadCastState.CONNECTING;
+          //       return Container(
+          //         height: 150,
+          //         width: MediaQuery.of(context).size.width,
+          //         decoration: const BoxDecoration(
+          //           color: Colors.white,
+          //         ),
+          //         padding: const EdgeInsets.all(15).copyWith(bottom: 20),
+          //         child: Row(
+          //           mainAxisAlignment: MainAxisAlignment.end,
+          //           children: [
+          //             Expanded(
+          //               child: Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.start,
+          //                 children: [
+          //                   Text(
+          //                     "Connection State: ${snapshot.data?.name.toString() ?? "No State"}",
+          //                   ),
+          //                   const SizedBox(
+          //                     height: 10,
+          //                   ),
+          //                   FutureBuilder<List<IOSCameraLens>>(
+          //                     future: ivsBroadcaster?.getAvailableCameraLens(),
+          //                     builder: (context, snapshot) {
+          //                       return ValueListenableBuilder(
+          //                         valueListenable: currentCamera,
+          //                         builder: (context, value, child) {
+          //                           if (snapshot.connectionState !=
+          //                               ConnectionState.done) {
+          //                             return const CupertinoActivityIndicator();
+          //                           }
+          //                           return DropdownMenu<IOSCameraLens>(
+          //                             dropdownMenuEntries: snapshot.data
+          //                                     ?.map(
+          //                                       (e) => DropdownMenuEntry(
+          //                                         value: e,
+          //                                         label: e.name,
+          //                                       ),
+          //                                     )
+          //                                     .toList() ??
+          //                                 [],
+          //                             initialSelection: value,
+          //                             inputDecorationTheme:
+          //                                 const InputDecorationTheme(
+          //                               border: OutlineInputBorder(),
+          //                             ),
+          //                             onSelected: (selectedValue) async {
+          //                               if (selectedValue != null) {
+          //                                 final data = await ivsBroadcaster
+          //                                     ?.updateCameraLens(selectedValue);
+          //                                 // Only update currentCamera if the configuration was successful
+          //                                 if (data == "Configuration Updated") {
+          //                                   currentCamera.value = selectedValue;
+          //                                   showSnackBar(
+          //                                     context,
+          //                                     "Camera configuration updated",
+          //                                   );
+          //                                 } else {
+          //                                   // Handle failure case here if necessary
+          //                                   currentCamera.value =
+          //                                       IOSCameraLens.DefaultCamera;
+          //                                   showSnackBar(
+          //                                     context,
+          //                                     "Device does not support this camera configuration",
+          //                                   );
+          //                                 }
+          //                               }
+          //                             },
+          //                           );
+          //                         },
+          //                       );
+          //                     },
+          //                   ),
+          //                 ],
+          //               ),
+          //             ),
+          //             const SizedBox(
+          //               width: 10,
+          //             ),
+          //             InkWell(
+          //               onTap: () async {
+          //                 if (isConnected) {
+          //                   await ivsBroadcaster?.stopBroadcast();
+          //                   return;
+          //                 }
+          //                 await ivsBroadcaster?.startPreview(
+          //                   imgset: url,
+          //                   streamKey: key,
+          //                   quality: quality,
+          //                 );
+          //                 await ivsBroadcaster?.startBroadcast();
+          //               },
+          //               child: CircleAvatar(
+          //                 radius: 35,
+          //                 backgroundColor:
+          //                     isConnected ? Colors.green : Colors.red,
+          //                 child: isConnecting
+          //                     ? const CupertinoActivityIndicator()
+          //                     : isConnected
+          //                         ? const Icon(
+          //                             Icons.stop_rounded,
+          //                             color: Colors.white,
+          //                           )
+          //                         : const Icon(
+          //                             Icons.fiber_manual_record_sharp,
+          //                             color: Colors.white,
+          //                           ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       );
+          //     },
+          //   ),
+          // ),
+          StreamBuilder<Offset>(
+            stream: ivsBroadcaster?.focusPoint.stream,
+            builder: (context, snapshot) {
+              final value = snapshot.data ?? const Offset(0, 0);
+              log(value.toString());
+              return FutureBuilder<bool>(
+                future: Future.delayed(const Duration(seconds: 2))
+                    .then((value) => false),
+                builder: (context, showBox) {
+                  final show = showBox.connectionState == ConnectionState.done
+                      ? false
+                      : true;
+                  return Positioned(
+                    top: value.dy - 25,
+                    left: value.dx - 25,
+                    child: AnimatedContainer(
+                      duration: Durations.short4,
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: show
+                              ? Colors.white.withOpacity(0.5)
+                              : Colors.transparent,
+                          width: 2,
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      InkWell(
-                        onTap: () async {
-                          if (isConnected) {
-                            await ivsBroadcaster?.stopBroadcast();
-                            return;
-                          }
-                          await ivsBroadcaster?.startPreview(
-                            imgset: url,
-                            streamKey: key,
-                            quality: quality,
-                          );
-                          await ivsBroadcaster?.startBroadcast();
-                        },
-                        child: CircleAvatar(
-                          radius: 35,
-                          backgroundColor:
-                              isConnected ? Colors.green : Colors.red,
-                          child: isConnecting
-                              ? const CupertinoActivityIndicator()
-                              : isConnected
-                                  ? const Icon(
-                                      Icons.stop_rounded,
-                                      color: Colors.white,
-                                    )
-                                  : const Icon(
-                                      Icons.fiber_manual_record_sharp,
-                                      color: Colors.white,
-                                    ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ],
       ),

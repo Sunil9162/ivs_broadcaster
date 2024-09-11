@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../helpers/enums.dart';
+import 'Classes/zoom_factor.dart';
 import 'ivs_broadcaster_method_channel.dart';
 
 /// An abstract base class that defines the interface for platform-specific implementations
@@ -103,4 +104,12 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
   /// Returns a [Future] that completes when the camera lens has been changed.
   ///
   Future<String?> updateCameraLens(IOSCameraLens cameraLens);
+
+  Future<List<IOSCameraLens>> getAvailableCameraLens();
+
+  Future<ZoomFactor> getZoomFactor();
+
+  Future<bool?> setFocusMode(FocusMode focusMode);
+
+  Future<bool?> setFocusPoint(double x, double y);
 }

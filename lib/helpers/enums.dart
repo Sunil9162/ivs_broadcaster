@@ -29,6 +29,12 @@ enum CameraType {
   BACK,
 }
 
+enum FocusMode {
+  Locked,
+  Auto,
+  ContinuousAuto,
+}
+
 enum IOSCameraLens {
   DualCamera,
   WideAngleCamera,
