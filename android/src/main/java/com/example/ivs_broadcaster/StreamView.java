@@ -24,7 +24,6 @@ import com.amazonaws.ivs.broadcast.ImagePreviewView;
 import com.amazonaws.ivs.broadcast.Presets;
 import com.amazonaws.ivs.broadcast.TransmissionStats;
 import com.google.gson.Gson;
-
 import androidx.annotation.NonNull;
 
 import java.util.HashMap;
@@ -143,27 +142,29 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
             Presets.Configuration.STANDARD_LANDSCAPE,
             Presets.Devices.BACK_CAMERA(context)
         );
-        broadcastSession.awaitDeviceChanges(() -> {
-            for (Device device : broadcastSession.listAttachedDevices()) {
-                if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA) {
-                    cameraDevice = device;
-                    View view = getView();
-                    assert view != null;
-                    ImagePreviewView preview = ((ImageDevice) device)
-                            .getPreviewView(BroadcastConfiguration.AspectMode.FILL);
-                    preview.setLayoutParams(
-                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.MATCH_PARENT)
-                    );
-                    layout.addView(preview);
-                }
-                if (device.getDescriptor().type == Device.Descriptor.DeviceType.MICROPHONE){
-                    assert device instanceof AudioDevice;
-                    audioDevice = (AudioDevice) device;
-                }
-            }
-        });
+//        broadcastSession.awaitDeviceChanges(() -> {
+//            for (Device device : broadcastSession.listAttachedDevices()) {
+//                if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA) {
+//                    cameraDevice = device;
+//                    View view = getView();
+//                    assert view != null;
+//                    ImagePreviewView preview = ((ImageDevice) device)
+//                            .getPreviewView(BroadcastConfiguration.AspectMode.FILL);
+//                    preview.setLayoutParams(
+//                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+//                            LinearLayout.LayoutParams.MATCH_PARENT)
+//                    );
+//                    layout.addView(preview);
+//                }
+//                if (device.getDescriptor().type == Device.Descriptor.DeviceType.MICROPHONE){
+//                    assert device instanceof AudioDevice;
+//                    audioDevice = (AudioDevice) device;
+//                }
+//            }
+//        });
     }
+
+    public  vo
 
     private void startBroadcast() {
         broadcastSession.start(imgset, streamKey);

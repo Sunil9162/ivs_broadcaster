@@ -44,7 +44,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         _eventChannel = FlutterEventChannel(name: "ivs_broadcaster_event", binaryMessenger: messenger)
         previewView =  UIView(frame: frame)
         super.init();
-        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
         _methodChannel.setMethodCallHandler(onMethodCall)
         _eventChannel.setStreamHandler(self)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setFocusPoint(_:)))
@@ -134,6 +134,8 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         case "mute":
             applyMute()
             result(true)
+        case "isMuted":
+            result(isMuted)
         case "changeCamera":
             let args = call.arguments as? [String: Any]
             let type = args?["type"] as? String
@@ -635,23 +637,23 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     }
      
    
-    @objc func handleOrientationChange() {
-//        setVideoOrientation() // Handle orientation changes
-    }
-    
-    func setVideoOrientation() {
-        guard let connection = videoOutput?.connections.first else { return }
-        self.captureSession?.beginConfiguration()
-        
-         
-        self.captureSession?.commitConfiguration()
-    }
-    
-    
-    deinit {
-        // Remove observer when the view controller is deallocated
-        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
-    }
+//    @objc func handleOrientationChange() {
+////        setVideoOrientation() // Handle orientation changes
+//    }
+//    
+//    func setVideoOrientation() {
+//        guard let connection = videoOutput?.connections.first else { return }
+//        self.captureSession?.beginConfiguration()
+//        
+//         
+//        self.captureSession?.commitConfiguration()
+//    }
+//    
+//    
+//    deinit {
+//        // Remove observer when the view controller is deallocated
+//        NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+//    }
 }
 
  
