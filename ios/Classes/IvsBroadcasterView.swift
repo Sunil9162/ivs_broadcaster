@@ -178,7 +178,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             return
         }
         if videoDevice.focusMode == .continuousAutoFocus {
-            print("Camera is On \(videoDevice.focusMode) Set it to autoFocus")
+            print("Camera is On Continous auto focus Set it to autoFocus")
             return
         }
         let tapPoint = gestureRecognizer.location(in: previewView)
@@ -353,6 +353,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     private var customImageSource: IVSCustomImageSource?
     private var customAudioSource: IVSCustomAudioSource?
     private var videoDevice: AVCaptureDevice?
+    private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
    
     private func setupSession(
         _ url: String,
@@ -383,7 +384,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             broadcastSession.attach(customImageSource, toSlotWithName: "custom-slot")
             self.customImageSource = customImageSource
             self.broadcastSession = broadcastSession
-            attachCameraPreview(container: previewView, preview: try customImageSource.previewView(with: .fill))
+//            attachCameraPreview(container: previewView, preview: (try self.customImageSource?.previewView(with: .fill))!)
             startSession()
         } catch {
             print("Unable to setup session")
@@ -539,59 +540,86 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         self.captureSession?.commitConfiguration()
     }
     
-    func startSession(){
+    func startSession() {
         let captureSession = AVCaptureSession()
         captureSession.beginConfiguration()
-        captureSession.sessionPreset = .high
-        if
-            let videoDevice = AVCaptureDevice.default(for: .video),
-            let videoInput = try? AVCaptureDeviceInput(device: videoDevice),
-            captureSession.canAddInput(videoInput)
+            captureSession.sessionPreset = .high
+         
+        print("Preset is \(captureSession.sessionPreset)")
+
+        // Configure video input
+        if let videoDevice = AVCaptureDevice.default(for: .video),
+           let videoInput = try? AVCaptureDeviceInput(device: videoDevice),
+           captureSession.canAddInput(videoInput)
         {
             self.videoDevice = videoDevice
             captureSession.addInput(videoInput)
             
+            // Video output setup
             let videoOutput = AVCaptureVideoDataOutput()
             videoOutput.setSampleBufferDelegate(self, queue: queue)
-            if #available(iOS 13.0, *) {
-                videoOutput.connections.first?.preferredVideoStabilizationMode = .cinematic
-            }
-          
             videoOutput.videoSettings = [
                 kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)
             ]
+            
             if captureSession.canAddOutput(videoOutput) {
                 captureSession.addOutput(videoOutput)
                 self.videoOutput = videoOutput
-                self.videoOutput?.connections.first?.videoOrientation = .landscapeRight
-                self.videoOutput?.connections.first?.videoPreviewLayer?.videoGravity = .resizeAspectFill
-                if #available(iOS 13.0, *) {
-                    self.videoOutput?.connections.first?.preferredVideoStabilizationMode = .cinematicExtended
+                
+                // Set video orientation
+                if let connection = videoOutput.connections.first {
+                    connection.videoOrientation = .landscapeRight
+                    connection.isVideoMirrored = false
+                    if #available(iOS 13.0, *) {
+                        connection.preferredVideoStabilizationMode = .cinematicExtended
+                    }
                 }
             }
+            
+            // Adjust frame rate for older devices (if needed)
+            do {
+                try videoDevice.lockForConfiguration()
+                // Set a lower frame rate for older devices
+                videoDevice.activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: 30)
+                videoDevice.activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: 30)
+                videoDevice.unlockForConfiguration()
+            } catch {
+                print("Error setting frame rate: \(error)")
+            }
         }
-        if
-            let audioDevice = AVCaptureDevice.default(for: .audio),
-            let audioInput = try? AVCaptureDeviceInput(device: audioDevice),
-            captureSession.canAddInput(audioInput)
+
+        // Configure audio input
+        if let audioDevice = AVCaptureDevice.default(for: .audio),
+           let audioInput = try? AVCaptureDeviceInput(device: audioDevice),
+           captureSession.canAddInput(audioInput)
         {
             captureSession.addInput(audioInput)
             
+            // Audio output setup
             let audioOutput = AVCaptureAudioDataOutput()
             audioOutput.setSampleBufferDelegate(self, queue: queue)
+            
             if captureSession.canAddOutput(audioOutput) {
                 captureSession.addOutput(audioOutput)
                 self.audioOutput = audioOutput
             }
         }
+        
         captureSession.commitConfiguration()
-        self.captureSession = captureSession
-        DispatchQueue.global().async {
-            self.captureSession?.startRunning()
-            DispatchQueue.main.async {
-                let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession!)
-            }
+        DispatchQueue.main.async {
+            guard let session = self.captureSession else { return }
+            let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: session) 
+            videoPreviewLayer.videoGravity = .resizeAspectFill
+            videoPreviewLayer.frame = self.previewView.bounds
+            videoPreviewLayer.connection?.videoOrientation = .landscapeRight
+            self.previewView.layer.addSublayer(videoPreviewLayer)
         }
+        
+        // Start the session in the background
+        DispatchQueue.global().async {
+            captureSession.startRunning()
+        }
+        self.captureSession = captureSession
     }
    
     
@@ -636,7 +664,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         self._eventSink?(data)
     }
      
-   
+    
 //    @objc func handleOrientationChange() {
 ////        setVideoOrientation() // Handle orientation changes
 //    }

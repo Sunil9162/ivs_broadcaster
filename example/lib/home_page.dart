@@ -46,6 +46,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     ivsBroadcaster?.stopBroadcast();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.dispose();
   }
 
