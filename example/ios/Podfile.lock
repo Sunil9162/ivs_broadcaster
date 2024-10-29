@@ -38,8 +38,8 @@ SPEC CHECKSUMS:
   AmazonIVSBroadcast: ed142d30deff374da5a5d1d490808a4bff0ca4b9
   AmazonIVSPlayer: d723049ee0d9b73f78c21a21fc61e2399e1c2650
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  integration_test: ce0a3ffa1de96d1a89ca0ac26fca7ea18a749ef4
-  ivs_broadcaster: 62250d4880c97fdd7c1ad34905a597a9ce7f9bec
+  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
+  ivs_broadcaster: 8201d232c826bd2d036fe3ef8a47f909f4dd129f
   permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
 
 PODFILE CHECKSUM: 2f637ca201e490621e2d9a5d5cfa0afc9a10c837

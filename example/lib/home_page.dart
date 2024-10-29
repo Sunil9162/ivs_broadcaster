@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/Broadcaster/Widgets/preview_widget.dart';
@@ -117,130 +118,130 @@ class _HomePageState extends State<HomePage> {
             },
             child: const BroadcaterPreview(),
           ),
-          // Positioned(
-          //   height: 0,
-          //   bottom: 0,
-          //   left: 0,
-          //   right: 0,
-          //   child: StreamBuilder<BroadCastState>(
-          //     stream: ivsBroadcaster?.broadcastState.stream,
-          //     builder: (context, snapshot) {
-          //       final isConnected = snapshot.data == BroadCastState.CONNECTED;
-          //       final isConnecting = snapshot.data == BroadCastState.CONNECTING;
-          //       return Container(
-          //         height: 150,
-          //         width: MediaQuery.of(context).size.width,
-          //         decoration: const BoxDecoration(
-          //           color: Colors.white,
-          //         ),
-          //         padding: const EdgeInsets.all(15).copyWith(bottom: 20),
-          //         child: Row(
-          //           mainAxisAlignment: MainAxisAlignment.end,
-          //           children: [
-          //             Expanded(
-          //               child: Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.start,
-          //                 children: [
-          //                   Text(
-          //                     "Connection State: ${snapshot.data?.name.toString() ?? "No State"}",
-          //                   ),
-          //                   const SizedBox(
-          //                     height: 10,
-          //                   ),
-          //                   FutureBuilder<List<IOSCameraLens>>(
-          //                     future: ivsBroadcaster?.getAvailableCameraLens(),
-          //                     builder: (context, snapshot) {
-          //                       return ValueListenableBuilder(
-          //                         valueListenable: currentCamera,
-          //                         builder: (context, value, child) {
-          //                           if (snapshot.connectionState !=
-          //                               ConnectionState.done) {
-          //                             return const CupertinoActivityIndicator();
-          //                           }
-          //                           return DropdownMenu<IOSCameraLens>(
-          //                             dropdownMenuEntries: snapshot.data
-          //                                     ?.map(
-          //                                       (e) => DropdownMenuEntry(
-          //                                         value: e,
-          //                                         label: e.name,
-          //                                       ),
-          //                                     )
-          //                                     .toList() ??
-          //                                 [],
-          //                             initialSelection: value,
-          //                             inputDecorationTheme:
-          //                                 const InputDecorationTheme(
-          //                               border: OutlineInputBorder(),
-          //                             ),
-          //                             onSelected: (selectedValue) async {
-          //                               if (selectedValue != null) {
-          //                                 final data = await ivsBroadcaster
-          //                                     ?.updateCameraLens(selectedValue);
-          //                                 // Only update currentCamera if the configuration was successful
-          //                                 if (data == "Configuration Updated") {
-          //                                   currentCamera.value = selectedValue;
-          //                                   showSnackBar(
-          //                                     context,
-          //                                     "Camera configuration updated",
-          //                                   );
-          //                                 } else {
-          //                                   // Handle failure case here if necessary
-          //                                   currentCamera.value =
-          //                                       IOSCameraLens.DefaultCamera;
-          //                                   showSnackBar(
-          //                                     context,
-          //                                     "Device does not support this camera configuration",
-          //                                   );
-          //                                 }
-          //                               }
-          //                             },
-          //                           );
-          //                         },
-          //                       );
-          //                     },
-          //                   ),
-          //                 ],
-          //               ),
-          //             ),
-          //             const SizedBox(
-          //               width: 10,
-          //             ),
-          //             InkWell(
-          //               onTap: () async {
-          //                 if (isConnected) {
-          //                   await ivsBroadcaster?.stopBroadcast();
-          //                   return;
-          //                 }
-          //                 await ivsBroadcaster?.startPreview(
-          //                   imgset: url,
-          //                   streamKey: key,
-          //                   quality: quality,
-          //                 );
-          //                 await ivsBroadcaster?.startBroadcast();
-          //               },
-          //               child: CircleAvatar(
-          //                 radius: 35,
-          //                 backgroundColor:
-          //                     isConnected ? Colors.green : Colors.red,
-          //                 child: isConnecting
-          //                     ? const CupertinoActivityIndicator()
-          //                     : isConnected
-          //                         ? const Icon(
-          //                             Icons.stop_rounded,
-          //                             color: Colors.white,
-          //                           )
-          //                         : const Icon(
-          //                             Icons.fiber_manual_record_sharp,
-          //                             color: Colors.white,
-          //                           ),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       );
-          //     },
-          //   ),
-          // ),
+          Positioned(
+            height: 150,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: StreamBuilder<BroadCastState>(
+              stream: ivsBroadcaster?.broadcastState.stream,
+              builder: (context, snapshot) {
+                final isConnected = snapshot.data == BroadCastState.CONNECTED;
+                final isConnecting = snapshot.data == BroadCastState.CONNECTING;
+                return Container(
+                  height: 150,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.3),
+                  ),
+                  padding: const EdgeInsets.all(15).copyWith(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Connection State: ${snapshot.data?.name.toString() ?? "No State"}",
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            FutureBuilder<List<IOSCameraLens>>(
+                              future: ivsBroadcaster?.getAvailableCameraLens(),
+                              builder: (context, snapshot) {
+                                return ValueListenableBuilder(
+                                  valueListenable: currentCamera,
+                                  builder: (context, value, child) {
+                                    if (snapshot.connectionState !=
+                                        ConnectionState.done) {
+                                      return const CupertinoActivityIndicator();
+                                    }
+                                    return DropdownMenu<IOSCameraLens>(
+                                      dropdownMenuEntries: snapshot.data
+                                              ?.map(
+                                                (e) => DropdownMenuEntry(
+                                                  value: e,
+                                                  label: e.name,
+                                                ),
+                                              )
+                                              .toList() ??
+                                          [],
+                                      initialSelection: value,
+                                      inputDecorationTheme:
+                                          const InputDecorationTheme(
+                                        border: OutlineInputBorder(),
+                                      ),
+                                      onSelected: (selectedValue) async {
+                                        if (selectedValue != null) {
+                                          final data = await ivsBroadcaster
+                                              ?.updateCameraLens(selectedValue);
+                                          // Only update currentCamera if the configuration was successful
+                                          if (data == "Configuration Updated") {
+                                            currentCamera.value = selectedValue;
+                                            showSnackBar(
+                                              context,
+                                              "Camera configuration updated",
+                                            );
+                                          } else {
+                                            // Handle failure case here if necessary
+                                            currentCamera.value =
+                                                IOSCameraLens.DefaultCamera;
+                                            showSnackBar(
+                                              context,
+                                              "Device does not support this camera configuration",
+                                            );
+                                          }
+                                        }
+                                      },
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          if (isConnected) {
+                            await ivsBroadcaster?.stopBroadcast();
+                            return;
+                          }
+                          await ivsBroadcaster?.startPreview(
+                            imgset: url,
+                            streamKey: key,
+                            quality: quality,
+                          );
+                          await ivsBroadcaster?.startBroadcast();
+                        },
+                        child: CircleAvatar(
+                          radius: 35,
+                          backgroundColor:
+                              isConnected ? Colors.green : Colors.red,
+                          child: isConnecting
+                              ? const CupertinoActivityIndicator()
+                              : isConnected
+                                  ? const Icon(
+                                      Icons.stop_rounded,
+                                      color: Colors.white,
+                                    )
+                                  : const Icon(
+                                      Icons.fiber_manual_record_sharp,
+                                      color: Colors.white,
+                                    ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
           StreamBuilder<Offset>(
             stream: ivsBroadcaster?.focusPoint.stream,
             builder: (context, snapshot) {

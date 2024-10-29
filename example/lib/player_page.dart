@@ -21,7 +21,7 @@ class _PlayerPageState extends State<PlayerPage> {
     _player = IvsPlayer.instance;
     super.initState();
     urlController.text =
-        "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8";
+        "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.JmLwVqcdvTLO.m3u8";
   }
 
   ValueNotifier<bool> isFullScreen = ValueNotifier(false);
@@ -216,7 +216,9 @@ class _PlayerPageState extends State<PlayerPage> {
                                             0,
                                         min: 0,
                                         max: getMax(
-                                            position.data, duration.data),
+                                          position.data,
+                                          duration.data,
+                                        ),
                                       );
                                     },
                                   );

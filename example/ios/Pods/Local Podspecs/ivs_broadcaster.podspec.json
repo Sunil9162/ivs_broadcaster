@@ -25,6 +25,9 @@
       "~> 1.29.0"
     ]
   },
+  "frameworks": [
+    "CoreMedia"
+  ],
   "platforms": {
     "ios": "12.0"
   },

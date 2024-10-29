@@ -1,31 +1,37 @@
 package com.example.ivs_broadcaster;
 
 import android.content.Context;
+import android.hardware.camera2.CameraManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Surface;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+
 import static io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.platform.PlatformView;
 
 import com.amazonaws.ivs.broadcast.AudioDevice;
+import com.amazonaws.ivs.broadcast.AudioSource;
 import com.amazonaws.ivs.broadcast.BroadcastConfiguration;
 import com.amazonaws.ivs.broadcast.BroadcastException;
 import com.amazonaws.ivs.broadcast.BroadcastSession;
+import com.amazonaws.ivs.broadcast.CustomAudioSource;
+import com.amazonaws.ivs.broadcast.CustomImageSource;
 import com.amazonaws.ivs.broadcast.Device;
-import com.amazonaws.ivs.broadcast.ImageDevice;
-import com.amazonaws.ivs.broadcast.ImagePreviewView;
-import com.amazonaws.ivs.broadcast.Presets;
+import com.amazonaws.ivs.broadcast.SurfaceSource;
 import com.amazonaws.ivs.broadcast.TransmissionStats;
 import com.google.gson.Gson;
+
 import androidx.annotation.NonNull;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +45,9 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
     private AudioDevice audioDevice;
     private final Context context;
     private final Handler handler;
+    private CustomImageSource imageSource;
+    private Surface surface;
+    private CustomAudioSource customAudioSource;
 
     private String imgset;
     private String streamKey;
@@ -63,11 +72,7 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
     public void onMethodCall(MethodCall methodCall, @NonNull MethodChannel.Result result) {
         switch (methodCall.method) {
             case "startPreview":
-                startPreview(
-                    methodCall.argument("imgset"),
-                    methodCall.argument("streamKey"),
-                    methodCall.argument("quality")
-                );
+                startPreview(methodCall.argument("imgset"), methodCall.argument("streamKey"), methodCall.argument("quality"));
                 result.success(true);
             case "startBroadcast":
                 startBroadcast();
@@ -76,15 +81,13 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
                 stopBroadcast();
                 result.success("Broadcaster Stopped");
             case "changeCamera":
-                changeCamera(
-                    methodCall.argument("type")
-                );
+                changeCamera(methodCall.argument("type"));
                 result.success("Camera Changed");
             case "mute":
                 toggleMute();
                 result.success("Muted toggled");
             case "isMuted":
-                 result.success(isMuted);
+                result.success(isMuted);
             case "zoomCamera":
                 Object zoomFactor = methodCall.argument("zoomFactor");
                 try {
@@ -106,25 +109,23 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
 
     private void changeCamera(String type) {
         assert broadcastSession.isReady();
-        List<Device> devices =
-          broadcastSession.listAttachedDevices();
+        List<Device> devices = broadcastSession.listAttachedDevices();
         Device newDevice = null;
         for (Device device : devices) {
-            if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA &&
-                    device.getDescriptor().friendlyName.toLowerCase().contains(Objects.equals(type, "0") ?"front":"back")) {
+            if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA && device.getDescriptor().friendlyName.toLowerCase().contains(Objects.equals(type, "0") ? "front" : "back")) {
                 newDevice = device;
                 break;
             }
         }
         assert Objects.requireNonNull(newDevice).isValid();
-        broadcastSession.exchangeDevices(cameraDevice,newDevice.getDescriptor(),device -> {
+        broadcastSession.exchangeDevices(cameraDevice, newDevice.getDescriptor(), device -> {
             cameraDevice = device;
         });
     }
 
     private void toggleMute() {
         assert broadcastSession.isReady();
-        if (isMuted){
+        if (isMuted) {
             audioDevice.setGain(1.0F);
             isMuted = false;
         } else {
@@ -133,38 +134,35 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
         }
     }
 
-    private void startPreview(String url, String key, String quality){
+    private void startPreview(String url, String key, String quality) {
         imgset = url;
         streamKey = key;
-        broadcastSession = new BroadcastSession(
-            context,
-            broadcastListener,
-            Presets.Configuration.STANDARD_LANDSCAPE,
-            Presets.Devices.BACK_CAMERA(context)
-        );
-//        broadcastSession.awaitDeviceChanges(() -> {
-//            for (Device device : broadcastSession.listAttachedDevices()) {
-//                if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA) {
-//                    cameraDevice = device;
-//                    View view = getView();
-//                    assert view != null;
-//                    ImagePreviewView preview = ((ImageDevice) device)
-//                            .getPreviewView(BroadcastConfiguration.AspectMode.FILL);
-//                    preview.setLayoutParams(
-//                            new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-//                            LinearLayout.LayoutParams.MATCH_PARENT)
-//                    );
-//                    layout.addView(preview);
-//                }
-//                if (device.getDescriptor().type == Device.Descriptor.DeviceType.MICROPHONE){
-//                    assert device instanceof AudioDevice;
-//                    audioDevice = (AudioDevice) device;
-//                }
-//            }
-//        });
+        BroadcastConfiguration config =  getConfig(quality);
+        broadcastSession
+            = new BroadcastSession(context,  broadcastListener,config,null);
+        SurfaceSource surfaceSource = broadcastSession.createImageInputSource();
+        AudioDevice audioSource = broadcastSession.createAudioInputSource(1, BroadcastConfiguration.AudioSampleRate.RATE_48000, AudioDevice.Format.INT16);
+        Surface surface = surfaceSource.getInputSurface();
+        broadcastSession.getMixer().bind(surfaceSource, "customSlot");
+        broadcastSession.getMixer().bind(audioSource, "customSlot");
+        createSession();
     }
 
-    public  vo
+    private void createSession(){
+        Object manager = context.getSystemService(Context.CAMERA_SERVICE);
+        CameraManager cameraManager = null;
+        cameraManager = (CameraManager) manager;
+        List<String> cameraList;
+        try {
+            assert cameraManager != null;
+            cameraList = Arrays.asList(cameraManager.getCameraIdList());
+            String cameraId = cameraList.get(0);
+//            cameraDevice = broadcastSession.attachCamera(cameraId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void startBroadcast() {
         broadcastSession.start(imgset, streamKey);
@@ -174,22 +172,22 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
         @Override
         public void onStateChanged(@NonNull BroadcastSession.State state) {
             Map<Object, Object> map = new HashMap<>();
-            map.put("state",state.name());
+            map.put("state", state.name());
             sendMapData(map);
         }
 
         @Override
         public void onError(@NonNull BroadcastException exception) {
             Map<Object, Object> map = new HashMap<>();
-            map.put("error",exception.getError().name());
+            map.put("error", exception.getError().name());
             sendMapData(map);
         }
 
         @Override
-        public void onTransmissionStatsChanged(TransmissionStats statistics){
+        public void onTransmissionStatsChanged(TransmissionStats statistics) {
             Map<Object, Object> map = new HashMap<>();
-            map.put("quality",statistics.broadcastQuality.name());
-            map.put("network",statistics.networkHealth.name());
+            map.put("quality", statistics.broadcastQuality.name());
+            map.put("network", statistics.networkHealth.name());
             sendMapData(map);
         }
     };
@@ -198,7 +196,7 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
         broadcastSession.stop();
         broadcastSession.release();
         Map<Object, Object> map = new HashMap<>();
-        map.put("state","DISCONNECTED");
+        map.put("state", "DISCONNECTED");
         sendMapData(map);
         layout.removeAllViews();
     }
@@ -212,7 +210,7 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
         this.messenger = events;
     }
 
-    private void sendMapData(Map<Object, Object> map){
+    private void sendMapData(Map<Object, Object> map) {
         Gson json = new Gson();
         sendEvent(json.toJson(map));
     }
@@ -227,5 +225,38 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
     @Override
     public void onCancel(Object arguments) {
         this.messenger = null;
+    }
+
+
+    private BroadcastConfiguration getConfig(String quality) {
+        BroadcastConfiguration config = new BroadcastConfiguration();
+        switch (quality) {
+            case "360":
+                config.video.setSize(640, 360);
+                config.video.setMaxBitrate(1000000);// 1 Mbps
+                config.video.setMinBitrate(500000); // 500 kbps
+                config.video.setInitialBitrate(800000); // 800 kbps
+                config.video.setTargetFramerate(30);
+                config.video.setKeyframeInterval(2);
+                break;
+            case "1080":
+                config.video.setSize(1920, 1080);
+                config.video.setMaxBitrate(6000000); // 6 Mbps
+                config.video.setMinBitrate(4000000); // 4 Mbps
+                config.video.setInitialBitrate(5000000); // 5 Mbps
+                config.video.setTargetFramerate(30);
+                config.video.setKeyframeInterval(2);
+                break;
+            default:
+                config.video.setSize(1280, 720);
+                config.video.setMaxBitrate(3500000); // 3.5 Mbps
+                config.video.setMinBitrate(1500000); // 1.5 Mbps
+                config.video.setInitialBitrate(2500000); // 2.5 Mbps
+                config.video.setTargetFramerate(30);
+                config.video.setKeyframeInterval(2);
+                break;
+        }
+        config.audio.setBitrate(128000); // 128 kbps
+        return config;
     }
 }

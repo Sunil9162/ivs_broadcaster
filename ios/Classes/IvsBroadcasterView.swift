@@ -44,7 +44,6 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         _eventChannel = FlutterEventChannel(name: "ivs_broadcaster_event", binaryMessenger: messenger)
         previewView =  UIView(frame: frame)
         super.init();
-//        NotificationCenter.default.addObserver(self, selector: #selector(handleOrientationChange), name: UIDevice.orientationDidChangeNotification, object: nil)
         _methodChannel.setMethodCallHandler(onMethodCall)
         _eventChannel.setStreamHandler(self)
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(setFocusPoint(_:)))
@@ -53,17 +52,15 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
     private var queue = DispatchQueue(label: "media-queue")
     private var captureSession: AVCaptureSession?
-    
-    
-    
+    let synchronizer = TimestampSynchronizer()
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+       
+        
         if output == videoOutput {
-            if #available(iOS 13.0, *) {
-                connection.preferredVideoStabilizationMode = .cinematicExtended
-            }
             customImageSource?.onSampleBuffer(sampleBuffer)
-        } else if output == audioOutput {
+        }
+        if output == audioOutput {
             customAudioSource?.onSampleBuffer(sampleBuffer)
         }
     }
@@ -325,12 +322,12 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
     
     func stopBroadCast() {
+        self.captureSession?.stopRunning()
         broadcastSession?.stop()
         broadcastSession = nil
         if self._eventSink != nil {
             self._eventSink?(["state": "DISCONNECTED"]);
         }
-        self.captureSession?.stopRunning()
         previewView.subviews.forEach { $0.removeFromSuperview() }
     }
     
@@ -348,8 +345,8 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     
      
     
-    private var videoOutput: AVCaptureOutput?
-    private var audioOutput: AVCaptureOutput?
+    private var videoOutput: AVCaptureVideoDataOutput?
+    private var audioOutput: AVCaptureAudioDataOutput?
     private var customImageSource: IVSCustomImageSource?
     private var customAudioSource: IVSCustomAudioSource?
     private var videoDevice: AVCaptureDevice?
@@ -377,12 +374,12 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             let broadcastSession = try IVSBroadcastSession(configuration: config,
                                                            descriptors: nil,
                                                            delegate: self)
+            let customImageSource = broadcastSession.createImageSource(withName: "custom-image")
             let customAudioSource = broadcastSession.createAudioSource(withName: "custom-audio")
             broadcastSession.attach(customAudioSource, toSlotWithName: "custom-slot")
-            self.customAudioSource = customAudioSource
-            let customImageSource = broadcastSession.createImageSource(withName: "custom-image")
             broadcastSession.attach(customImageSource, toSlotWithName: "custom-slot")
             self.customImageSource = customImageSource
+            self.customAudioSource = customAudioSource
             self.broadcastSession = broadcastSession
 //            attachCameraPreview(container: previewView, preview: (try self.customImageSource?.previewView(with: .fill))!)
             startSession()
@@ -396,34 +393,14 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
         var lenses = [Int]()
         lenses.append(8)
         let discoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [
-            .builtInWideAngleCamera,
-            .builtInDualCamera,
             .builtInTelephotoCamera,
-            .builtInTripleCamera,
-            .builtInTrueDepthCamera,
-            .builtInUltraWideCamera,
         ], mediaType: .video, position: .unspecified)
             for device in discoverySession.devices {
                 switch device.deviceType {
-                case .builtInWideAngleCamera:
-                    lenses.append(1)
-                    print("Device has a built-in wide-angle camera")
-                case .builtInDualCamera:
-                    lenses.append(0)
-                    print("Device has a built-in dual camera")
-                case .builtInTripleCamera:
-                    lenses.append(2)
-                    print("Device has a built-in triple camera")
                 case .builtInTelephotoCamera:
                     lenses.append(3)
                     print("Device has a built-in telephoto camera")
-                case .builtInTrueDepthCamera:
-                    lenses.append(5)
-                    print("Device has a built-in TrueDepth camera")
-                case .builtInUltraWideCamera:
-                    lenses.append(6)
-                    print("Device has a built-in UltraWide camera")
-                default: 
+                default:
                     print("Device has an unknown camera type")
                 }
             }
@@ -543,7 +520,7 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
     func startSession() {
         let captureSession = AVCaptureSession()
         captureSession.beginConfiguration()
-            captureSession.sessionPreset = .high
+        captureSession.sessionPreset = .high
          
         print("Preset is \(captureSession.sessionPreset)")
 
@@ -580,8 +557,11 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             do {
                 try videoDevice.lockForConfiguration()
                 // Set a lower frame rate for older devices
-                videoDevice.activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: 30)
+                videoDevice.activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: 15)
                 videoDevice.activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: 30)
+                if #available(iOS 18.0, *) {
+                    videoDevice.isAutoVideoFrameRateEnabled = false
+                }
                 videoDevice.unlockForConfiguration()
             } catch {
                 print("Error setting frame rate: \(error)")
@@ -598,12 +578,12 @@ class IvsBroadcasterView: NSObject , FlutterPlatformView , FlutterStreamHandler 
             // Audio output setup
             let audioOutput = AVCaptureAudioDataOutput()
             audioOutput.setSampleBufferDelegate(self, queue: queue)
-            
             if captureSession.canAddOutput(audioOutput) {
                 captureSession.addOutput(audioOutput)
                 self.audioOutput = audioOutput
             }
         }
+        
         
         captureSession.commitConfiguration()
         DispatchQueue.main.async {

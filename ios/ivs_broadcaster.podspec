@@ -17,6 +17,7 @@ A new Flutter project.
   s.dependency 'Flutter'
   s.dependency 'AmazonIVSBroadcast', '~> 1.19.0'
   s.dependency 'AmazonIVSPlayer', '~> 1.29.0'
+  s.frameworks       = ['CoreMedia']
   s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
