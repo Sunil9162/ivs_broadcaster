@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /// Types of input devices.
-typedef NS_ENUM(NSInteger, IVSDeviceType) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSDeviceType) {
     /// The device type is unknown.
     IVSDeviceTypeUnknown = 0,
     /// The device is a video camera.
@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, IVSDeviceType) {
 };
 
 /// Media types present in a stream.
-typedef NS_ENUM(NSInteger, IVSDeviceStreamType) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSDeviceStreamType) {
     /// The device stream will contain audio PCM encoded samples.
     IVSDeviceStreamTypePCM,
     /// The device stream will contain image samples.
@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, IVSDeviceStreamType) {
 };
 
 /// The position of the input device relative to the host device.
-typedef NS_ENUM(NSInteger, IVSDevicePosition) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSDevicePosition) {
     /// The device's position is unknown.
     IVSDevicePositionUnknown,
     /// The input device is located on the front of the host device.

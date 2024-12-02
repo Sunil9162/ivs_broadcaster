@@ -7,6 +7,7 @@
 #import <UIKit/UIKit.h>
 #import <AmazonIVSBroadcast/IVSDevice.h>
 #import <AmazonIVSBroadcast/IVSBase.h>
+#import <AmazonIVSBroadcast/IVSVideoCodec.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -84,6 +85,11 @@ typedef NS_ENUM(NSInteger, IVSAutomaticBitrateProfile) {
 /// A configuration object describing the desired format of the final output video stream
 IVS_EXPORT
 @interface IVSVideoConfiguration : NSObject
+
+/// The video codec for the output video stream.
+/// By default this is `H264`.
+/// To get an `IVSVideoConfiguration` with a different codec, `IVSCodecDiscovery` must be used.
+@property (nonatomic, readonly) IVSVideoCodec *codec;
 
 /// The initial bitrate for the output video stream.
 /// By default this is `2,100,000`.

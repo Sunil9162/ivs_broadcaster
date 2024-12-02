@@ -10,7 +10,7 @@
 		</data>
 		<key>Headers/AmazonIVSBroadcast.h</key>
 		<data>
-		S5LSNXV3yT1X4e3UJcA65v/gMh4=
+		riiq/kMo5/sB3/FUxecebyAXUyQ=
 		</data>
 		<key>Headers/IVSAudioDevice.h</key>
 		<data>
@@ -26,27 +26,31 @@
 		</data>
 		<key>Headers/IVSBroadcastConfiguration.h</key>
 		<data>
-		ONAf5ZIePQ5U0Uu1XVBn3qnzE70=
+		aY9+sd/brOz5c24Xb1ULHS6MxnI=
 		</data>
 		<key>Headers/IVSBroadcastErrors.h</key>
 		<data>
-		K2RoXAHFGeQEE6TkBqNQLOEdZMU=
+		B4Xq5RBVQPPAJ8V+t4iLF8XsSp8=
 		</data>
 		<key>Headers/IVSBroadcastSession.h</key>
 		<data>
-		xxE/1+JfSIOJ2pujKMXvRiB7s8Q=
+		boSR10QXwuQENTFvmonIoxN8tKw=
 		</data>
 		<key>Headers/IVSBroadcastSessionTest.h</key>
 		<data>
-		lRTHEeMJ6oJSP0Gf0r6MPBaUebY=
+		gYA/9kZTRa5nCi7knFaY+iDyano=
 		</data>
 		<key>Headers/IVSCameraFormat.h</key>
 		<data>
 		Wg2PypK5F9egIb0NEm4ho/LNDmE=
 		</data>
+		<key>Headers/IVSCodecDiscovery.h</key>
+		<data>
+		sjJxSjQ3/tFw5p7yfU8CV+t4Xu0=
+		</data>
 		<key>Headers/IVSDevice.h</key>
 		<data>
-		X7rwmxY3KFxHG5YzDfKCcrvgvSg=
+		SzxAt7uYBjovqdWbTP0rvtwzrWI=
 		</data>
 		<key>Headers/IVSDeviceDescriptor.h</key>
 		<data>
@@ -92,9 +96,13 @@
 		<data>
 		UQ8PsOMhSaL6EkwjTmGMmoSIlig=
 		</data>
+		<key>Headers/IVSVideoCodec.h</key>
+		<data>
+		K0Rkc1S/G4iCPgEMlp9XaZ7Sg3c=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		CVKtlyWSF/xi5mU17RbKOqssNfk=
+		DcApN5sygPjqqsyhFzXUQM4WiPM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -106,7 +114,7 @@
 		</data>
 		<key>default.metallib</key>
 		<data>
-		ZwlaOBb+ag3rXgoPaDQnrZhstpw=
+		qxSZZsa8qYq1yKArMRK3OAIqm9Y=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -122,7 +130,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NtbELRGy7x4A7FaFaJFg4XjbVAoKsvlrIb1x7vOeB00=
+			+n6+Zs3ZTXPjEluZNsn6Rmhx7APTlK134qqSMf73HaQ=
 			</data>
 		</dict>
 		<key>Headers/IVSAudioDevice.h</key>
@@ -150,28 +158,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			GR6hZyYSPUMcV236LN8lAEZ+13bnaOx39xwIqpnNuvg=
+			Id4m2gVstrLQMfN3ISYCpNEEbPpG8UtocXHXRbNroPI=
 			</data>
 		</dict>
 		<key>Headers/IVSBroadcastErrors.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			hibySy3HjseOtXhFexXQgPZHPPq3x4v23rH9veWTTyw=
+			yAd1Gr6EJLo2OPrJuKkL1jO1d9Inpqle5Zw3+q/jHlo=
 			</data>
 		</dict>
 		<key>Headers/IVSBroadcastSession.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Obq93Lc20zgh7shekgyAAbhhCng2LhHqFjri+6WKZwc=
+			y67bBREGaeVkCPHmKSGcrdmUcqm6NVlbfEeZ1SF3ZtM=
 			</data>
 		</dict>
 		<key>Headers/IVSBroadcastSessionTest.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RPpXVagXQYs+WSODPE2mKZFy2wh0aQ/fxqobI09TSSk=
+			7ZnQ/A4p9Ec+VLuIFMx62tNyNamLZ6CkzwxcEvWKPXA=
 			</data>
 		</dict>
 		<key>Headers/IVSCameraFormat.h</key>
@@ -181,11 +189,18 @@
 			uYvfXtKTkG3mRixf7vWeeIsuIoSmhhYFyG34ck+CJR4=
 			</data>
 		</dict>
+		<key>Headers/IVSCodecDiscovery.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			QITEdmx9jZcrcqOb9k6Wl6dD90rwhwKPJHIiDnlQZ8s=
+			</data>
+		</dict>
 		<key>Headers/IVSDevice.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			kO4QDB7mMJWwbX1J/Q9DBvJ2m7z5uiKUy6S3/EXdu4k=
+			xcCcFH5UPjl++2iWk3MFdbQaq3fav+cPmcaO/LZUp/Y=
 			</data>
 		</dict>
 		<key>Headers/IVSDeviceDescriptor.h</key>
@@ -265,6 +280,13 @@
 			ofcJzctK8xtcfw73VhN2bWObjDYU2khwpqIQEcsvpWw=
 			</data>
 		</dict>
+		<key>Headers/IVSVideoCodec.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ci3nFzE6pzNeXD+TszAIRv3CuQSsasU9SjNyoKUTBWQ=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
@@ -283,7 +305,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			cP7SneCXVLMNEUzZ/9KVASUegxuxVAmoNqPmfMJ6v1A=
+			u2p/+5OMTUArnEPdk8OHBnoXX1qLD2VN876phX+FHIg=
 			</data>
 		</dict>
 	</dict>

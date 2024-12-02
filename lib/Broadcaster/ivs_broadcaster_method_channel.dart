@@ -239,4 +239,27 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
       throw Exception("$e [Set Focus Point]");
     }
   }
+
+  @override
+  Future<void> captureVideo(int seconds) async {
+    try {
+      return await methodChannel.invokeMethod<void>(
+        "captureVideo",
+        <String, dynamic>{
+          'seconds': seconds,
+        },
+      );
+    } catch (e) {
+      throw Exception("$e [Capture Video]");
+    }
+  }
+
+  @override
+  Future<String?> stopVideoCapture() async {
+    try {
+      return await methodChannel.invokeMethod<String>("stopVideoCapture");
+    } catch (e) {
+      throw Exception("$e [Stop Video Capture]");
+    }
+  }
 }

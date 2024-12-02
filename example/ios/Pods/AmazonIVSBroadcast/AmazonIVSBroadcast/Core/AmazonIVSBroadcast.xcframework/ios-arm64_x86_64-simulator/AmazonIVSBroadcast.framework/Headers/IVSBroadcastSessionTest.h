@@ -10,7 +10,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class IVSVideoConfiguration;
 
 /// The state of a network quality test
-typedef NS_ENUM(NSInteger, IVSBroadcastSessionTestStatus) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSBroadcastSessionTestStatus) {
     /// The test is connecting to the ingest server and will start soon.
     IVSBroadcastSessionTestStatusConnecting,
     /// The test is running.

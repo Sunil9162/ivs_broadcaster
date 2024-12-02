@@ -19,7 +19,7 @@
 
     ],
     "AmazonIVSBroadcast": [
-      "~> 1.19.0"
+      "~> 1.24.0"
     ],
     "AmazonIVSPlayer": [
       "~> 1.29.0"

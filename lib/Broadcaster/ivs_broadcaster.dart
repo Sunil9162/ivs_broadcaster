@@ -3,6 +3,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:ivs_broadcaster/Broadcaster/Classes/video_capturing_model.dart';
 import 'package:ivs_broadcaster/Broadcaster/Classes/zoom_factor.dart';
 import 'package:ivs_broadcaster/Broadcaster/ivs_broadcaster_platform_interface.dart';
 
@@ -89,6 +90,14 @@ class IvsBroadcaster {
         final data = settings["foucsPoint"].toString().split("_");
         final offset = Offset(double.parse(data[0]), double.parse(data[1]));
         focusPoint.add(offset);
+      }
+      if (settings.containsKey('isRecording')) {
+        onVideoCapturingStream.add(
+          VideoCapturingModel(
+            isRecording: settings['isRecording'],
+            videoPath: settings['videoPath'],
+          ),
+        );
       }
     }
   }
@@ -186,5 +195,23 @@ class IvsBroadcaster {
 
   Future<bool?> setFocusPoint(double x, double y) async {
     return await broadcater.setFocusPoint(x, y);
+  }
+
+  /// Capture the video for given seconds
+  Future<void> captureVideo({int seconds = 30}) async {
+    return await broadcater.captureVideo(seconds);
+  }
+
+  //Stream of capturing video
+  StreamController<VideoCapturingModel> onVideoCapturingStream =
+      StreamController<VideoCapturingModel>.broadcast();
+
+  // Stop the video capturing
+  Future<String?> stopVideoCapture() async {
+    final stream = onVideoCapturingStream.stream;
+    await broadcater.stopVideoCapture();
+    return await stream.last.then(
+      (value) => value.videoPath,
+    );
   }
 }

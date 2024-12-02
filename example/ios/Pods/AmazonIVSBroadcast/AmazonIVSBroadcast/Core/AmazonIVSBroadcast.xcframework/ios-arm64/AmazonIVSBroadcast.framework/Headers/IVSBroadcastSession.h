@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^IVSSessionTestResultCallback)(IVSBroadcastSessionTestResult * _Nonnull);
 
 /// A value representing the `IVSBroadcastSession`s current state.
-typedef NS_ENUM(NSInteger, IVSBroadcastSessionState) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSBroadcastSessionState) {
     /// The session is invalid. This is the initial state after creating a session but before starting a stream.
     IVSBroadcastSessionStateInvalid,
     /// The session has disconnected. After stopping a stream the session should return to this state unless it has errored.
@@ -40,7 +40,7 @@ typedef NS_ENUM(NSInteger, IVSBroadcastSessionState) {
 } NS_SWIFT_NAME(IVSBroadcastSession.State);
 
 /// A value representing the `IVSBroadcastSession`s retry state.
-typedef NS_ENUM(NSInteger, IVSBroadcastSessionRetryState) {
+typedef NS_CLOSED_ENUM(NSInteger, IVSBroadcastSessionRetryState) {
     /// The SDK is not currently attempting to reconnect a failed broadcast
     IVSBroadcastSessionRetryStateNotRetrying,
     /// The SDK is waiting to for the internet connection to be restored before starting to backoff timer to attempt a reconnect.

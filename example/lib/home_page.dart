@@ -6,6 +6,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ivs_broadcaster/Broadcaster/Classes/video_capturing_model.dart';
 import 'package:ivs_broadcaster/Broadcaster/Widgets/preview_widget.dart';
 import 'package:ivs_broadcaster/Broadcaster/ivs_broadcaster.dart';
 import 'package:ivs_broadcaster/helpers/enums.dart';
@@ -201,6 +202,41 @@ class _HomePageState extends State<HomePage> {
                               },
                             ),
                           ],
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      InkWell(
+                        onTap: () async {
+                          await ivsBroadcaster?.captureVideo(
+                            seconds: 10,
+                          );
+                        },
+                        child: StreamBuilder<VideoCapturingModel>(
+                          stream: ivsBroadcaster?.onVideoCapturingStream.stream,
+                          builder: (context, snapshot) {
+                            final isCapturing =
+                                snapshot.data?.isRecording ?? false;
+                            if (snapshot.data?.videoPath != null) {
+                              print(snapshot.data?.videoPath);
+                            }
+                            return CircleAvatar(
+                              radius: 35,
+                              backgroundColor: isCapturing
+                                  ? Colors.green
+                                  : Colors.black.withOpacity(0.5),
+                              child: isCapturing
+                                  ? const Icon(
+                                      Icons.stop_rounded,
+                                      color: Colors.white,
+                                    )
+                                  : const Icon(
+                                      Icons.fiber_manual_record_sharp,
+                                      color: Colors.white,
+                                    ),
+                            );
+                          },
                         ),
                       ),
                       const SizedBox(

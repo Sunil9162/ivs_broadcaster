@@ -13,6 +13,7 @@
 #import <AmazonIVSBroadcast/IVSBroadcastSession.h>
 #import <AmazonIVSBroadcast/IVSBroadcastSessionTest.h>
 #import <AmazonIVSBroadcast/IVSCameraFormat.h>
+#import <AmazonIVSBroadcast/IVSCodecDiscovery.h>
 #import <AmazonIVSBroadcast/IVSDevice.h>
 #import <AmazonIVSBroadcast/IVSDeviceDescriptor.h>
 #import <AmazonIVSBroadcast/IVSDeviceDiscovery.h>
@@ -24,4 +25,5 @@
 #import <AmazonIVSBroadcast/IVSReplayKitBroadcastSession.h>
 #import <AmazonIVSBroadcast/IVSSession.h>
 #import <AmazonIVSBroadcast/IVSTransmissionStatistics.h>
+#import <AmazonIVSBroadcast/IVSVideoCodec.h>
 

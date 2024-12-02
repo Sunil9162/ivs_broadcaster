@@ -149,6 +149,17 @@ typedef NS_ENUM(NSInteger, IVSBroadcastError) {
     /// The stage audio bitrate set on the `IVSLocalStageStreamAudioConfiguration` must be between 12k and 128k. This error is thrown
     /// when the stage audio bitrate is set to a value outside this range.
     IVSBroadcastErrorConfigurationInvalidStageAudioBitrate = 10224,
+    
+    /// The stage jitter buffer min delay set on the `IVSJitterBufferConfiguration` must be between 0 and 10k. This error is thrown
+    /// when the stage jitter buffer min delay is set to a value outside this range.
+    IVSBroadcastErrorConfigurationInvalidStageJitterBufferMinDelay = 10225,
+
+    /// An encoder that matches the associated codec and video configuration could not be found.
+    IVSBroadcastErrorEncoderNotFound = 10226,
+
+    /// The configuration has been locked by the SDK to guarantee compatibility with this device and the
+    /// upstream IVS channel.
+    IVSBroadcastErrorConfigurationLocked = 10227,
 
     // MARK: - Setup Errors
 

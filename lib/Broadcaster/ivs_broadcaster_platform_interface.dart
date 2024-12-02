@@ -112,4 +112,8 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
   Future<bool?> setFocusMode(FocusMode focusMode);
 
   Future<bool?> setFocusPoint(double x, double y);
+
+  Future<void> captureVideo(int seconds);
+
+  Future<String?> stopVideoCapture();
 }
