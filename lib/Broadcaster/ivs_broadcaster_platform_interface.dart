@@ -115,5 +115,5 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
 
   Future<void> captureVideo(int seconds);
 
-  Future<String?> stopVideoCapture();
+  Future<void> stopVideoCapture();
 }

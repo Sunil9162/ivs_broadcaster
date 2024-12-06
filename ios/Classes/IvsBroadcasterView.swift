@@ -66,7 +66,6 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         _ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
     ) {
-
         if output == videoOutput {
             customImageSource?.onSampleBuffer(sampleBuffer)
         }
@@ -183,7 +182,7 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             result(FlutterMethodNotImplemented)
         }
     }
-    
+
     func stopVideoCapturing() {
         guard let movieOutput = movieOutput, movieOutput.isRecording else {
             print("No active recording to stop")
@@ -194,7 +193,7 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         captureSession?.removeOutput(movieOutput)
         self.movieOutput = nil
     }
-    
+
     private var movieOutput: AVCaptureMovieFileOutput?
 
     func captureVideo(_ seconds: Int) {
@@ -211,7 +210,9 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             do {
                 try FileManager.default.removeItem(atPath: outputFilePath)
             } catch {
-                print("Error removing existing file: \(error.localizedDescription)")
+                print(
+                    "Error removing existing file: \(error.localizedDescription)"
+                )
                 return
             }
         }
@@ -228,10 +229,10 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         movieOutput.startRecording(to: outputURL, recordingDelegate: self)
         var data = [String: Any]()
         data = [
-            "isRecording" : true,
-            "videoPath" : ""
+            "isRecording": true,
+            "videoPath": "",
         ]
-        if(self._eventSink != nil){
+        if self._eventSink != nil {
             self._eventSink!(data)
         }
         // Stop recording after the specified duration
@@ -240,10 +241,10 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             movieOutput.stopRecording()
             self?.captureSession?.removeOutput(movieOutput)
 
-//            // Open the video in the Photos app
-            UISaveVideoAtPathToSavedPhotosAlbum(
-                outputFilePath, nil, nil, nil)
-            print("Stopped Recording")
+            //            // Open the video in the Photos app
+            // UISaveVideoAtPathToSavedPhotosAlbum(
+            //     outputFilePath, nil, nil, nil)
+            // print("Stopped Recording")
         }
     }
 
@@ -431,6 +432,7 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             self._eventSink?(["state": "DISCONNECTED"])
         }
         previewView.subviews.forEach { $0.removeFromSuperview() }
+
     }
 
     private func applyMute() {
@@ -733,25 +735,26 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             switch state {
             case .invalid:
                 data = ["state": "INVALID"]
-                self._eventSink!(data)
             case .connecting:
                 data = ["state": "CONNECTING"]
-                self._eventSink!(data)
             case .connected:
                 data = ["state": "CONNECTED"]
-                self._eventSink!(data)
             case .disconnected:
                 data = ["state": "DISCONNECTED"]
-                self.stopBroadCast()
-                self._eventSink!(data)
             case .error:
                 data = ["state": "ERROR"]
-                self._eventSink!(data)
             @unknown default:
                 data = ["state": "INVALID"]
-                self._eventSink!(data)
             }
-
+            self.sendEvent(data)
+        }
+    }
+//258013
+    func sendEvent(_ event: Any) {
+        DispatchQueue.main.async {
+            if self._eventSink != nil {
+                self._eventSink!(event)
+            }
         }
     }
 
@@ -838,10 +841,10 @@ extension IvsBroadcasterView: AVCaptureFileOutputRecordingDelegate {
     ) {
         var data = [String: Any]()
         data = [
-            "isRecording" : false,
-            "videoPath" : outputFileURL.path
+            "isRecording": false,
+            "videoPath": outputFileURL.path,
         ]
-        if(self._eventSink != nil){
+        if self._eventSink != nil {
             self._eventSink!(data)
         }
     }

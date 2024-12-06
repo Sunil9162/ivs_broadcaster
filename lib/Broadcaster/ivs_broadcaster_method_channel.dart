@@ -255,9 +255,9 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
   }
 
   @override
-  Future<String?> stopVideoCapture() async {
+  Future<void> stopVideoCapture() async {
     try {
-      return await methodChannel.invokeMethod<String>("stopVideoCapture");
+      await methodChannel.invokeMethod<String>("stopVideoCapture");
     } catch (e) {
       throw Exception("$e [Stop Video Capture]");
     }

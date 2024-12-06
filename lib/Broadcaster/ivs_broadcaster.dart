@@ -207,11 +207,7 @@ class IvsBroadcaster {
       StreamController<VideoCapturingModel>.broadcast();
 
   // Stop the video capturing
-  Future<String?> stopVideoCapture() async {
-    final stream = onVideoCapturingStream.stream;
+  Future<void> stopVideoCapture() async {
     await broadcater.stopVideoCapture();
-    return await stream.last.then(
-      (value) => value.videoPath,
-    );
   }
 }
