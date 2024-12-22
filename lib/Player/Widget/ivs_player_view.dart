@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/Player/ivs_player.dart';
 
 /// [IvsPlayerView] is a stateful widget that provides a view for playing
@@ -64,35 +61,7 @@ class _IvsPlayerViewState extends State<IvsPlayerView>
     super.build(context);
     return AspectRatio(
       aspectRatio: widget.aspectRatio ?? 16 / 9,
-      child: _getView(),
-    );
-  }
-
-  /// Returns the appropriate view widget depending on the platform (Android or iOS).
-  ///
-  /// - For Android, it uses [AndroidView] to create a platform-specific view.
-  /// - For iOS, it uses [UiKitView] to create a platform-specific view.
-  /// - If the platform is not supported, a message is displayed.
-  Widget _getView() {
-    if (Platform.isAndroid) {
-      return const AndroidView(
-        viewType: 'ivs_player',
-        creationParamsCodec: StandardMessageCodec(),
-      );
-    } else if (Platform.isIOS) {
-      return const UiKitView(
-        viewType: 'ivs_player',
-        creationParamsCodec: StandardMessageCodec(),
-      );
-    }
-    return const Center(
-      child: Text(
-        'Platform not supported',
-        style: TextStyle(
-          color: Colors.red,
-          fontSize: 20,
-        ),
-      ),
+      child: widget.controller.buildPlayerView(),
     );
   }
 

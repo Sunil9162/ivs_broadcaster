@@ -1,8 +1,10 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/Player/ivs_player_interface.dart';
 import 'package:ivs_broadcaster/helpers/enums.dart';
 import 'package:ivs_broadcaster/helpers/strings.dart';
@@ -19,6 +21,40 @@ class IvsPlayer {
   /// Factory constructor to return the singleton instance.
   factory IvsPlayer() {
     return instance;
+  }
+
+  /// Returns the appropriate view widget depending on the platform (Android or iOS).
+  ///
+  /// - For Android, it uses [AndroidView] to create a platform-specific view.
+  /// - For iOS, it uses [UiKitView] to create a platform-specific view.
+  /// - If the platform is not supported, a message is displayed.
+  Widget _getView() {
+    if (Platform.isAndroid) {
+      return const AndroidView(
+        viewType: 'ivs_player',
+        creationParamsCodec: StandardMessageCodec(),
+      );
+    } else if (Platform.isIOS) {
+      return const UiKitView(
+        viewType: 'ivs_player',
+        creationParamsCodec: StandardMessageCodec(),
+      );
+    }
+    return const Center(
+      child: Text(
+        'Platform not supported',
+        style: TextStyle(
+          color: Colors.red,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+
+  /// Builds the player view widget.
+  /// The player view is created using a platform-specific view (AndroidView or UiKitView).
+  Widget buildPlayerView() {
+    return _getView();
   }
 
   /// Instance of [IvsPlayerInterface] that interacts with the platform-specific implementation.

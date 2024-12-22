@@ -36,7 +36,8 @@ android {
     dependencies {
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        implementation 'com.amazonaws:ivs-broadcast:1.21.0'
+        implementation 'com.amazonaws:ivs-broadcast:1.24.0'
+        implementation 'com.amazonaws:ivs-player:1.35.0'
         implementation 'androidx.appcompat:appcompat:1.6.1'
         implementation 'com.google.android.material:material:1.9.0'
         implementation 'com.google.code.gson:gson:2.10.1'

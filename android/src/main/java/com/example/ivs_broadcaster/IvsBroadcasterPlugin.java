@@ -14,6 +14,7 @@ public class IvsBroadcasterPlugin  implements FlutterPlugin {
         .getPlatformViewRegistry()
         .registerViewFactory(
             "ivs_broadcaster", new StreamFactory(binding.getBinaryMessenger()));
+    binding.getPlatformViewRegistry().registerViewFactory("ivs_player", new PlayerViewFactory(binding.getBinaryMessenger()));
   }
 
   @Override

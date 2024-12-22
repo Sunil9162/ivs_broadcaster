@@ -1,66 +1,59 @@
 package com.example.ivs_broadcaster;
 
 import android.content.Context;
-import android.hardware.camera2.CameraManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Surface;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import io.flutter.plugin.common.EventChannel;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
-
-import static io.flutter.plugin.common.MethodChannel.MethodCallHandler;
-
-import io.flutter.plugin.common.BinaryMessenger;
-import io.flutter.plugin.platform.PlatformView;
+import androidx.annotation.NonNull;
 
 import com.amazonaws.ivs.broadcast.AudioDevice;
-import com.amazonaws.ivs.broadcast.AudioSource;
 import com.amazonaws.ivs.broadcast.BroadcastConfiguration;
 import com.amazonaws.ivs.broadcast.BroadcastException;
 import com.amazonaws.ivs.broadcast.BroadcastSession;
-import com.amazonaws.ivs.broadcast.CustomAudioSource;
-import com.amazonaws.ivs.broadcast.CustomImageSource;
 import com.amazonaws.ivs.broadcast.Device;
-import com.amazonaws.ivs.broadcast.SurfaceSource;
+import com.amazonaws.ivs.broadcast.ImagePreviewView;
+import com.amazonaws.ivs.broadcast.Presets;
 import com.amazonaws.ivs.broadcast.TransmissionStats;
 import com.google.gson.Gson;
 
-import androidx.annotation.NonNull;
-
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class StreamView implements PlatformView, MethodCallHandler, EventChannel.StreamHandler {
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
+import io.flutter.plugin.common.BinaryMessenger;
+import io.flutter.plugin.platform.PlatformView;
+
+public class StreamView implements PlatformView, MethodChannel.MethodCallHandler, EventChannel.StreamHandler {
+
     private final LinearLayout layout;
-    private EventChannel.EventSink messenger;
+    private EventChannel.EventSink eventSink;
     private BroadcastSession broadcastSession;
     private Device cameraDevice;
     private AudioDevice audioDevice;
     private final Context context;
-    private final Handler handler;
-    private CustomImageSource imageSource;
-    private Surface surface;
-    private CustomAudioSource customAudioSource;
+    private final Handler mainHandler;
 
-    private String imgset;
+    private String streamUrl;
     private String streamKey;
-    private Boolean isMuted = false;
+    private boolean isMuted = false;
 
     StreamView(Context context, BinaryMessenger messenger) {
         this.context = context;
         layout = new LinearLayout(context);
+        mainHandler = new Handler(Looper.getMainLooper());
+
         MethodChannel methodChannel = new MethodChannel(messenger, "ivs_broadcaster");
         EventChannel eventChannel = new EventChannel(messenger, "ivs_broadcaster_event");
+
         methodChannel.setMethodCallHandler(this);
         eventChannel.setStreamHandler(this);
-        handler = new Handler(Looper.getMainLooper());
     }
 
     @Override
@@ -69,164 +62,109 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
     }
 
     @Override
-    public void onMethodCall(MethodCall methodCall, @NonNull MethodChannel.Result result) {
-        switch (methodCall.method) {
+    public void dispose() {
+        stopBroadcast();
+    }
+
+    @Override
+    public void onMethodCall(@NonNull MethodCall call, @NonNull MethodChannel.Result result) {
+        switch (call.method) {
             case "startPreview":
-                startPreview(methodCall.argument("imgset"), methodCall.argument("streamKey"), methodCall.argument("quality"));
+                startPreview(
+                        call.argument("imgset"),
+                        call.argument("streamKey"),
+                        call.argument("quality")
+                );
                 result.success(true);
+                break;
             case "startBroadcast":
                 startBroadcast();
                 result.success("Broadcasting Started");
+                break;
             case "stopBroadcast":
                 stopBroadcast();
-                result.success("Broadcaster Stopped");
+                result.success("Broadcast Stopped");
+                break;
             case "changeCamera":
-                changeCamera(methodCall.argument("type"));
+                changeCamera(call.argument("type"));
                 result.success("Camera Changed");
+                break;
             case "mute":
                 toggleMute();
-                result.success("Muted toggled");
+                result.success(isMuted ? "Muted" : "Unmuted");
+                break;
             case "isMuted":
                 result.success(isMuted);
-            case "zoomCamera":
-                Object zoomFactor = methodCall.argument("zoomFactor");
-                try {
-                    zoomCamera((Integer) zoomFactor);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                result.success("Zoom not supported in Android");
+                break;
             default:
                 result.notImplemented();
-        }
-    }
-
-    private void zoomCamera(Integer zoomFactor) throws Exception {
-        assert broadcastSession.isReady();
-        assert zoomFactor != null;
-        throw new Exception("Zoom not supported in Android");
-    }
-
-    private void changeCamera(String type) {
-        assert broadcastSession.isReady();
-        List<Device> devices = broadcastSession.listAttachedDevices();
-        Device newDevice = null;
-        for (Device device : devices) {
-            if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA && device.getDescriptor().friendlyName.toLowerCase().contains(Objects.equals(type, "0") ? "front" : "back")) {
-                newDevice = device;
                 break;
-            }
-        }
-        assert Objects.requireNonNull(newDevice).isValid();
-        broadcastSession.exchangeDevices(cameraDevice, newDevice.getDescriptor(), device -> {
-            cameraDevice = device;
-        });
-    }
-
-    private void toggleMute() {
-        assert broadcastSession.isReady();
-        if (isMuted) {
-            audioDevice.setGain(1.0F);
-            isMuted = false;
-        } else {
-            audioDevice.setGain(0.0F);
-            isMuted = true;
         }
     }
 
     private void startPreview(String url, String key, String quality) {
-        imgset = url;
+        streamUrl = url;
         streamKey = key;
-        BroadcastConfiguration config =  getConfig(quality);
-        broadcastSession
-            = new BroadcastSession(context,  broadcastListener,config,null);
-        SurfaceSource surfaceSource = broadcastSession.createImageInputSource();
-        AudioDevice audioSource = broadcastSession.createAudioInputSource(1, BroadcastConfiguration.AudioSampleRate.RATE_48000, AudioDevice.Format.INT16);
-        Surface surface = surfaceSource.getInputSurface();
-        broadcastSession.getMixer().bind(surfaceSource, "customSlot");
-        broadcastSession.getMixer().bind(audioSource, "customSlot");
-        createSession();
-    }
 
-    private void createSession(){
-        Object manager = context.getSystemService(Context.CAMERA_SERVICE);
-        CameraManager cameraManager = null;
-        cameraManager = (CameraManager) manager;
-        List<String> cameraList;
-        try {
-            assert cameraManager != null;
-            cameraList = Arrays.asList(cameraManager.getCameraIdList());
-            String cameraId = cameraList.get(0);
-//            cameraDevice = broadcastSession.attachCamera(cameraId);
-        } catch (Exception e) {
-            e.printStackTrace();
+        BroadcastConfiguration config = getConfig(quality);
+
+        broadcastSession = new BroadcastSession(context, broadcastListener, config, Presets.Devices.BACK_CAMERA(context));
+
+        ImagePreviewView preview = broadcastSession.getPreviewView();
+        preview.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+        ));
+        layout.addView(preview);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            broadcastSession.listAttachedDevices().forEach(device -> {
+                if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA) {
+                    cameraDevice = device;
+                } else if (device.getDescriptor().type == Device.Descriptor.DeviceType.MICROPHONE) {
+                    audioDevice = (AudioDevice) device;
+                }
+            });
         }
     }
-
 
     private void startBroadcast() {
-        broadcastSession.start(imgset, streamKey);
+        if (broadcastSession != null) {
+            broadcastSession.start(streamUrl, streamKey);
+        }
     }
 
-    BroadcastSession.Listener broadcastListener = new BroadcastSession.Listener() {
-        @Override
-        public void onStateChanged(@NonNull BroadcastSession.State state) {
-            Map<Object, Object> map = new HashMap<>();
-            map.put("state", state.name());
-            sendMapData(map);
-        }
-
-        @Override
-        public void onError(@NonNull BroadcastException exception) {
-            Map<Object, Object> map = new HashMap<>();
-            map.put("error", exception.getError().name());
-            sendMapData(map);
-        }
-
-        @Override
-        public void onTransmissionStatsChanged(TransmissionStats statistics) {
-            Map<Object, Object> map = new HashMap<>();
-            map.put("quality", statistics.broadcastQuality.name());
-            map.put("network", statistics.networkHealth.name());
-            sendMapData(map);
-        }
-    };
-
     private void stopBroadcast() {
-        broadcastSession.stop();
-        broadcastSession.release();
-        Map<Object, Object> map = new HashMap<>();
-        map.put("state", "DISCONNECTED");
-        sendMapData(map);
+        if (broadcastSession != null) {
+            broadcastSession.stop();
+            broadcastSession.release();
+            broadcastSession = null;
+
+            Map<Object, Object> event = new HashMap<>();
+            event.put("state", "DISCONNECTED");
+            sendEvent(event);
+        }
         layout.removeAllViews();
     }
 
-    @Override
-    public void dispose() {
-    }
-
-    @Override
-    public void onListen(Object arguments, EventChannel.EventSink events) {
-        this.messenger = events;
-    }
-
-    private void sendMapData(Map<Object, Object> map) {
-        Gson json = new Gson();
-        sendEvent(json.toJson(map));
-    }
-
-    // Send the event to Flutter on Main Thread
-    private void sendEvent(Object event) {
-        if (messenger != null) {
-            handler.post(() -> messenger.success(event));
+    private void toggleMute() {
+        if (audioDevice != null) {
+            audioDevice.setGain(isMuted ? 1.0F : 0.0F);
+            isMuted = !isMuted;
         }
     }
 
-    @Override
-    public void onCancel(Object arguments) {
-        this.messenger = null;
-    }
+    private void changeCamera(String type) {
+        if (broadcastSession == null || cameraDevice == null) return;
 
+        List<Device> devices = broadcastSession.listAttachedDevices();
+        for (Device device : devices) {
+            if (device.getDescriptor().type == Device.Descriptor.DeviceType.CAMERA &&
+                    device.getDescriptor().friendlyName.toLowerCase().contains(Objects.equals(type, "0") ? "front" : "back")) {
+                broadcastSession.exchangeDevices(cameraDevice, device.getDescriptor(), exchangedDevice -> cameraDevice = exchangedDevice);
+                break;
+            }
+        }
+    }
 
     private BroadcastConfiguration getConfig(String quality) {
         BroadcastConfiguration config = new BroadcastConfiguration();
@@ -258,5 +196,45 @@ public class StreamView implements PlatformView, MethodCallHandler, EventChannel
         }
         config.audio.setBitrate(128000); // 128 kbps
         return config;
+    }
+
+    private final BroadcastSession.Listener broadcastListener = new BroadcastSession.Listener() {
+        @Override
+        public void onStateChanged(@NonNull BroadcastSession.State state) {
+            Map<Object, Object> event = new HashMap<>();
+            event.put("state", state.name());
+            sendEvent(event);
+        }
+
+        @Override
+        public void onError(@NonNull BroadcastException exception) {
+            Map<Object, Object> event = new HashMap<>();
+            event.put("error", exception.getError().name());
+            sendEvent(event);
+        }
+
+        @Override
+        public void onTransmissionStatsChanged(@NonNull TransmissionStats stats) {
+            Map<Object, Object> event = new HashMap<>();
+            event.put("quality", stats.broadcastQuality.name());
+            event.put("network", stats.networkHealth.name());
+            sendEvent(event);
+        }
+    };
+
+    @Override
+    public void onListen(Object arguments, EventChannel.EventSink events) {
+        this.eventSink = events;
+    }
+
+    @Override
+    public void onCancel(Object arguments) {
+        this.eventSink = null;
+    }
+
+    private void sendEvent(Map<Object, Object> event) {
+        if (eventSink != null) {
+            mainHandler.post(() -> eventSink.success(new Gson().toJson(event)));
+        }
     }
 }
