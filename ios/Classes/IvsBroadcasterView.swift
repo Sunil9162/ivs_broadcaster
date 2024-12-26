@@ -61,18 +61,45 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
     private var queue = DispatchQueue(label: "media-queue")
     private var captureSession: AVCaptureSession?
     let synchronizer = TimestampSynchronizer()
+    var videoPTS: CMTime?
+    var audioPTS: CMTime?
 
     func captureOutput(
         _ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer,
         from connection: AVCaptureConnection
     ) {
+        let currentPTS = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
+        
         if output == videoOutput {
+            // Store the latest video timestamp for comparison
+            self.videoPTS = currentPTS
+            // Process the video buffer
             customImageSource?.onSampleBuffer(sampleBuffer)
-        }
-        if output == audioOutput {
-            customAudioSource?.onSampleBuffer(sampleBuffer)
+        } else if output == audioOutput {
+            // Store the latest audio timestamp for comparison
+            self.audioPTS = currentPTS
+
+            // Calculate the time difference between video and audio
+           
+                let timeDifference = CMTimeSubtract(self.videoPTS!, self.audioPTS!).seconds
+
+                if timeDifference < 0 {
+                    // Video is ahead; introduce delay to the audio buffer
+                    let delayTime = abs(timeDifference)
+                    print("Audio delay: \(delayTime) seconds")
+
+                    DispatchQueue.global().asyncAfter(deadline: .now() + delayTime) {
+                        self.customAudioSource?.onSampleBuffer(sampleBuffer)
+                    }
+                } else {
+                    // Audio is ahead or aligned; process the audio buffer immediately
+                    customAudioSource?.onSampleBuffer(sampleBuffer)
+                }
+            
         }
     }
+
+ 
 
     func checkOrGetPermission(
         for mediaType: AVMediaType, _ result: @escaping (Bool) -> Void
@@ -698,7 +725,15 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         {
             self.audioDevice = audioDevice
             captureSession.addInput(audioInput)
-
+            let audioSession = AVAudioSession.sharedInstance()
+            do {
+                try audioSession.setCategory(.playAndRecord, mode: .default, options: [.allowBluetooth, .defaultToSpeaker])
+                try audioSession.setPreferredIOBufferDuration(0.005) // Low-latency buffer
+                try audioSession.setActive(true)
+                print("Audio session successfully configured.")
+            } catch {
+                print("Failed to configure audio session: \(error)")
+            }
             // Audio output setup
             let audioOutput = AVCaptureAudioDataOutput()
             audioOutput.setSampleBufferDelegate(self, queue: queue)

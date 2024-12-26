@@ -10,49 +10,76 @@ import AVFoundation
 import CoreMedia
 
 class TimestampSynchronizer {
-    // Define tolerance for synchronization (in seconds)
-    let synchronizationTolerance: Double = 0.01
-    
-    // Store the last timestamp for video and audio
-    var lastVideoTimestamp: CMTime = .zero
-    var lastAudioTimestamp: CMTime = .zero
-    
-    // Flag to indicate if synchronization has been established
-    var isSynchronized: Bool = false
-    
-    func synchronize(videoBuffer: CMSampleBuffer, audioBuffer: CMSampleBuffer) -> (video: CMSampleBuffer?, audio: CMSampleBuffer?) {
-        // Get timestamps for video and audio buffers
-        let videoTimestamp = CMSampleBufferGetPresentationTimeStamp(videoBuffer)
-        let audioTimestamp = CMSampleBufferGetPresentationTimeStamp(audioBuffer)
-        
-        // Calculate timestamp differences
-        let videoDiff = videoTimestamp - lastVideoTimestamp
-        let audioDiff = audioTimestamp - lastAudioTimestamp
-        
-        // Check if synchronization has been established
-        if !isSynchronized {
-            // If not, set the initial timestamps and return nil
-            lastVideoTimestamp = videoTimestamp
-            lastAudioTimestamp = audioTimestamp
-            isSynchronized = true
-            return (nil, nil)
-        }
-        
-        // Check if buffers are within tolerance
-        if abs(videoDiff.seconds - audioDiff.seconds) < synchronizationTolerance {
-            // If within tolerance, return buffers
-            lastVideoTimestamp = videoTimestamp
-            lastAudioTimestamp = audioTimestamp
-            return (videoBuffer, audioBuffer)
-        } else {
-            // If not within tolerance, return nil for the lagging buffer
-            if videoDiff.seconds > audioDiff.seconds {
-                // Video is lagging, return nil for video
-                return (nil, audioBuffer)
-            } else {
-                // Audio is lagging, return nil for audio
-                return (videoBuffer, nil)
+    private var videoBufferQueue: [CMSampleBuffer] = []
+    private var audioBufferQueue: [CMSampleBuffer] = []
+    private let lock = DispatchQueue(label: "com.synchronizer.lock")
+    private let syncThreshold: Double = 0.05 // Increased threshold to allow minor mismatches
+    private let maxQueueSize = 10
+
+    func addVideoBuffer(_ videoBuffer: CMSampleBuffer) -> (video: CMSampleBuffer, audio: CMSampleBuffer)? {
+        lock.sync {
+            videoBufferQueue.append(videoBuffer)
+            if videoBufferQueue.count > maxQueueSize {
+                videoBufferQueue.removeFirst() // Prevent excessive accumulation
             }
+            return tryToPairBuffers()
         }
     }
+
+    func addAudioBuffer(_ audioBuffer: CMSampleBuffer) -> (video: CMSampleBuffer, audio: CMSampleBuffer)? {
+        lock.sync {
+            if !CMSampleBufferIsValid(audioBuffer) {
+                print("Invalid audio buffer detected, dropping")
+                return nil
+            }
+            audioBufferQueue.append(audioBuffer)
+            if audioBufferQueue.count > maxQueueSize {
+                audioBufferQueue.removeFirst() // Prevent excessive accumulation
+            }
+            return tryToPairBuffers()
+        }
+    }
+
+    private func tryToPairBuffers() -> (video: CMSampleBuffer, audio: CMSampleBuffer)? {
+        guard let videoBuffer = videoBufferQueue.first,
+              let audioBuffer = audioBufferQueue.first else { return nil }
+
+        let videoPTS = CMSampleBufferGetPresentationTimeStamp(videoBuffer)
+        let audioPTS = CMSampleBufferGetPresentationTimeStamp(audioBuffer)
+        return (video: videoBuffer, audio: audioBuffer)
+        let timeDifference = CMTimeSubtract(videoPTS, audioPTS).seconds
+
+        // Debugging logs for analysis
+        print("Video PTS: \(videoPTS.seconds), Audio PTS: \(audioPTS.seconds), Difference: \(timeDifference)")
+
+        // Synchronization threshold
+        let syncThreshold = 0.05 // 50 milliseconds
+
+        if abs(timeDifference) < syncThreshold {
+            videoBufferQueue.removeFirst()
+            audioBufferQueue.removeFirst()
+            return (video: videoBuffer, audio: audioBuffer)
+        }
+
+        // Handle large discrepancies (e.g., >1 second)
+        if timeDifference > 1 {
+            print("Audio significantly ahead. Dropping audio buffer.")
+            audioBufferQueue.removeFirst()
+        } else if timeDifference < -1 {
+            print("Video significantly ahead. Dropping video buffer.")
+            videoBufferQueue.removeFirst()
+        } else {
+            // Normal mismatch: Drop the earlier frame
+            if timeDifference < 0 {
+                videoBufferQueue.removeFirst()
+            } else {
+                audioBufferQueue.removeFirst()
+            }
+        }
+
+        return nil
+    }
+
 }
+
+
