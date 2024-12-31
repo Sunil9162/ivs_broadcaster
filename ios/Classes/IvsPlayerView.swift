@@ -126,7 +126,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         case "position":
             result(getPosition())
         case "qualities":
-            var qualities = getQualities()
+            let qualities = getQualities()
             print(qualities)
             result(qualities)
         case "setQuality":
@@ -159,8 +159,10 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     
     func setQuality(_ quality: String) {
         if _ivsPlayerView != nil {
-            var qualities = _ivsPlayerView?.player?.qualities
-            var qualitytobechange = qualities?.first(where: { $0.name == quality } )
+            let qualities = _ivsPlayerView?.player?.qualities
+            let qualitytobechange = qualities?.first(
+                where: { $0.name == quality
+                } )
             _ivsPlayerView?.player?.setQuality(qualitytobechange!, adaptive: true)
         }
     }
