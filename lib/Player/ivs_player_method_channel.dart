@@ -77,7 +77,7 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
 
   /// Stops the player and cancels the player state subscription.
   @override
-  void stopPlayer() async {
+  void stopPlayer({String? url}) async {
     try {
       await _methodChannel.invokeMethod("stopPlayer");
 
@@ -91,7 +91,7 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
 
   /// Retrieves the list of available streaming qualities.
   @override
-  Future<List<String>> getQualities() async {
+  Future<List<String>> getQualities({String? url}) async {
     try {
       final data = await _methodChannel.invokeMethod("qualities");
 
@@ -166,5 +166,19 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
       throw Exception(
           "Unable to retrieve the current playback position [Get Position]");
     }
+  }
+
+  @override
+  void createPlayer(String url) async {
+    await _methodChannel.invokeMethod("createPlayer", {
+      "playerId": url,
+    });
+  }
+
+  @override
+  void selectPlayer(String url) async {
+    await _methodChannel.invokeMethod("selectPlayer", {
+      "playerId": url,
+    });
   }
 }

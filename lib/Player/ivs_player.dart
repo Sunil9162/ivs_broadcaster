@@ -104,6 +104,7 @@ class IvsPlayer {
   /// This method initializes the player and begins streaming the content from the specified URL.
   /// It listens for various events such as player state changes, quality updates, and errors, and broadcasts them via the respective streams.
   void startPlayer(String url, {bool autoPlay = true}) {
+    _controller.createPlayer(url);
     _controller.startPlayer(
       url,
       autoPlay: autoPlay,
@@ -184,5 +185,9 @@ class IvsPlayer {
   /// Seeks the player to the specified [duration].
   Future<void> seekTo(Duration duration) async {
     await _controller.seekTo(duration);
+  }
+
+  void selectPlayer(String s) async {
+    _controller.selectPlayer(s);
   }
 }

@@ -15,6 +15,10 @@ class _PlayerPageState extends State<PlayerPage> {
   late IvsPlayer _player;
   ValueNotifier<bool> autoPlay = ValueNotifier(true);
   final urlController = TextEditingController();
+  final player1 =
+      "https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8";
+  final player2 =
+      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.JmLwVqcdvTLO.m3u8";
 
   @override
   void initState() {
@@ -22,6 +26,16 @@ class _PlayerPageState extends State<PlayerPage> {
     super.initState();
     urlController.text =
         "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.JmLwVqcdvTLO.m3u8";
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        _player.startPlayer(
+          player1,
+        );
+        _player.startPlayer(
+          player2,
+        );
+      },
+    );
   }
 
   ValueNotifier<bool> isFullScreen = ValueNotifier(false);
@@ -38,10 +52,13 @@ class _PlayerPageState extends State<PlayerPage> {
                 return Stack(
                   fit: value ? StackFit.expand : StackFit.loose,
                   children: [
-                    Transform.rotate(
-                      angle: 0,
-                      child: IvsPlayerView(
-                        controller: _player,
+                    AspectRatio(
+                      aspectRatio: 16 / 9,
+                      child: Transform.rotate(
+                        angle: 0,
+                        child: IvsPlayerView(
+                          controller: _player,
+                        ),
                       ),
                     ),
                     if (!value)
@@ -261,6 +278,22 @@ class _PlayerPageState extends State<PlayerPage> {
                                 },
                               ),
                             ],
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _player.selectPlayer(
+                                player1,
+                              );
+                            },
+                            child: const Text("Select Player 1"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _player.selectPlayer(
+                                player2,
+                              );
+                            },
+                            child: const Text("Select Player 2"),
                           ),
                         ],
                       )

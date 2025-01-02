@@ -42,6 +42,9 @@ abstract class IvsPlayerInterface extends PlatformInterface {
     void Function(dynamic)? onError,
   });
 
+  void createPlayer(String url);
+  void selectPlayer(String url);
+
   /// Resumes the playback if the player was paused.
   void resume();
 

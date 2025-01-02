@@ -1,3 +1,6 @@
+## 0.0.16
+  * Bugs fixes
+
 ## 0.0.15
   * Added Ivs Player to android 
   * IVS Broadcasting in android still in development

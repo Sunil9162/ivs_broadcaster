@@ -9,9 +9,9 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     private var _methodChannel: FlutterMethodChannel?
     private var _eventChannel: FlutterEventChannel?
     private var _eventSink: FlutterEventSink?
-    let player =  IVSPlayer()
-    private var _ivsPlayerView: IVSPlayerView?
-    
+    private var players: [String: IVSPlayer] = [:] // Dictionary to manage multiple players
+    private var playerViews: [String: IVSPlayerView] = [:]
+    private var playerId: String?
     
     func view() -> UIView {
         return playerView;
@@ -90,114 +90,165 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             name: "ivs_player", binaryMessenger: messenger
         );
         _eventChannel = FlutterEventChannel(name: "ivs_player_event", binaryMessenger: messenger)
-        playerView =  UIView(frame: frame)
+        playerView = UIView(frame: frame)
         super.init();
-        player.delegate = self
         _methodChannel?.setMethodCallHandler(onMethodCall)
         _eventChannel?.setStreamHandler(self)
     }
     
     
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
-        switch(call.method){
+        switch(call.method) {
+        case "createPlayer":
+            let args = call.arguments as? [String: Any]
+            let playerId = args?["playerId"] as? String
+            createPlayer(playerId: playerId!)
+            result(true)
+        case "selectPlayer":
+            let args = call.arguments as? [String: Any]
+            let playerId = args?["playerId"] as? String
+            selectPlayer(playerId: playerId!)
+            result(true)
         case "startPlayer":
             let args = call.arguments as? [String: Any]
             let url = args?["url"] as? String
             let autoPlay = args?["autoPlay"] as? Bool
-            startPlayer(url!, autoPlay!)
+            startPlayer(  url: url!, autoPlay: autoPlay!)
             result(true)
         case "stopPlayer":
-            stopPlayer()
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            stopPlayer(playerId: playerId!)
             result(true)
         case "mute":
-            mutePlayer()
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            mutePlayer(playerId: playerId!)
             result(true)
         case "pause":
-            pausePlayer()
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            pausePlayer(playerId: playerId!)
             result(true)
         case "resume":
-            resumePlayer()
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            resumePlayer(playerId: playerId!)
             result(true)
         case "seek":
             let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
             let time = args?["time"] as? String
-            seekPlayer(time!)
+            seekPlayer(playerId: playerId!, time!)
             result(true)
         case "position":
-            result(getPosition())
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            result(getPosition(playerId: playerId!))
         case "qualities":
-            let qualities = getQualities()
-            print(qualities)
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            let qualities = getQualities(playerId: playerId!)
             result(qualities)
         case "setQuality":
             let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
             let quality = args?["quality"] as? String
-            setQuality(quality!)
+            setQuality(playerId: playerId!, quality!)
             result(true)
         case "autoQuality":
-            toggleAutoQuality()
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            toggleAutoQuality(playerId: playerId!)
             result(true)
         case "isAuto":
-            result(isAuto())
+            let args = call.arguments as? [String: Any]
+            let playerId = self.playerId
+            result(isAuto(playerId: playerId!))
         default:
             result(FlutterMethodNotImplemented)
         }
     }
     
-    func isAuto()-> Bool{
-        if _ivsPlayerView != nil {
-            return  _ivsPlayerView?.player?.autoQualityMode ?? false
-        }
-        return false
+    func selectPlayer(playerId: String) {
+        guard let player = players[playerId] else { return }
+        let playerView = playerViews[playerId]!
+        player.delegate = self
+        attachPreview(container: self.playerView, preview: playerView)
     }
     
-    func toggleAutoQuality(){
-        if _ivsPlayerView != nil {
-            _ivsPlayerView?.player?.autoQualityMode.toggle()
-        }
+    func stopPlayer(playerId: String) {
+        guard let player = players[playerId] else { return }
+        player.pause()
+        players.removeValue(forKey: playerId)
+        playerViews.removeValue(forKey: playerId)
     }
     
-    func setQuality(_ quality: String) {
-        if _ivsPlayerView != nil {
-            let qualities = _ivsPlayerView?.player?.qualities
-            let qualitytobechange = qualities?.first(
-                where: { $0.name == quality
-                } )
-            _ivsPlayerView?.player?.setQuality(qualitytobechange!, adaptive: true)
-        }
+    func mutePlayer(playerId: String) {
+        guard let player = players[playerId] else { return }
+        player.volume = player.volume == 0 ? 1 : 0
     }
     
-    func getQualities() -> Array<String> {
-        if _ivsPlayerView != nil {
-            return _ivsPlayerView?.player?.qualities.map{$0.name} as! Array<String>
-        }
-        return []
+    func pausePlayer(playerId: String) {
+        guard let player = players[playerId] else { return }
+        player.pause()
     }
     
-    func getPosition ()-> String {
-        if _ivsPlayerView != nil {
-            return _ivsPlayerView?.player?.position.seconds.description ?? "0"
-        }
-        return "0";
+    func resumePlayer(playerId: String) {
+        guard let player = players[playerId] else { return }
+        player.play()
     }
     
-    
-    func seekPlayer(_ time: String){
-        if _ivsPlayerView != nil {
-            _ivsPlayerView?.player?.seek(to:  CMTimeMake(value: Int64(time) ?? 0, timescale: 1))
-        }
+    func seekPlayer(playerId: String, _ time: String) {
+        guard let player = players[playerId] else { return }
+        player.seek(to: CMTimeMake(value: Int64(time) ?? 0, timescale: 1))
     }
     
-    func startPlayer(_ url:String, _ autoPlay:Bool){
-        do{
-            _ivsPlayerView = IVSPlayerView()
-            _ivsPlayerView?.player = player
-            player.load(URL(string: url))
-            if autoPlay {
-                player.play()
-            }
-            attachPreview(container: playerView, preview: _ivsPlayerView!)
+    func getPosition(playerId: String) -> String {
+        guard let player = players[playerId] else { return "0" }
+        return player.position.seconds.description
+    }
+    
+    func getQualities(playerId: String) -> [String] {
+        guard let player = players[playerId] else { return [] }
+        return player.qualities.map { $0.name }
+    }
+    
+    func setQuality(playerId: String, _ quality: String) {
+        guard let player = players[playerId] else { return }
+        let qualities = player.qualities
+        let qualityToChange = qualities.first { $0.name == quality }
+        player.setQuality(qualityToChange!, adaptive: true)
+    }
+    
+    func toggleAutoQuality(playerId: String) {
+        guard let player = players[playerId] else { return }
+        player.autoQualityMode.toggle()
+    }
+    
+    func isAuto(playerId: String) -> Bool {
+        guard let player = players[playerId] else { return false }
+        return player.autoQualityMode
+    }
+    func createPlayer(playerId: String) {
+        let player = IVSPlayer()
+        player.delegate = self
+        self.playerId = playerId
+        players[playerId] = player
+        playerViews[playerId] = IVSPlayerView()
+        playerViews[playerId]?.player = player
+    }
+    
+    func startPlayer(url: String, autoPlay: Bool){
+        guard let player = players[self.playerId!], let playerView = playerViews[playerId!] else {
+            return
         }
+        player.load(URL(string: url))
+        if autoPlay {
+            player.play()
+        }
+        attachPreview(container: self.playerView, preview: playerView)
+      
     }
     
     func attachPreview(container: UIView, preview: UIView) {
@@ -212,31 +263,5 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             preview.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
         ])
     }
-    
-    func stopPlayer(){
-        player.pause()
-        _ivsPlayerView?.player = nil
-    }
-    
-    func mutePlayer(){
-        do {
-            if player.volume == 0 {
-                player.volume = 1
-            }else{
-                player.volume = 0
-            }
-        }
-    }
-    
-    func pausePlayer(){
-        if _ivsPlayerView != nil {
-            _ivsPlayerView?.player?.pause()
-        }
-    }
-    
-    func resumePlayer(){
-        if _ivsPlayerView != nil {
-            _ivsPlayerView?.player?.play()
-        }
-    }
+     
 }
