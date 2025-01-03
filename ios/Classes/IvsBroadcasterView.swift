@@ -706,9 +706,9 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
                     value: 1, timescale: 15)
                 videoDevice.activeVideoMaxFrameDuration = CMTimeMake(
                     value: 1, timescale: 30)
-                if #available(iOS 18.0, *) {
-                    videoDevice.isAutoVideoFrameRateEnabled = false
-                }
+//                if #available(iOS 18.0, *) {
+//                    videoDevice.isAutoVideoFrameRateEnabled = false
+//                }
                 videoDevice.unlockForConfiguration()
             } catch {
                 print("Error setting frame rate: \(error)")
