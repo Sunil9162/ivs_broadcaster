@@ -181,4 +181,26 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
       "playerId": url,
     });
   }
+
+  @override
+  void multiPlayer(List<String> urls) {
+    _methodChannel.invokeMethod("multiPlayer", {
+      "urls": urls,
+    });
+  }
+
+  @override
+  Future<Uint8List> getThumbnail({
+    String? url,
+  }) async {
+    try {
+      final data = await _methodChannel.invokeMethod("getScreenshot", {
+        "url": url,
+      });
+      return data;
+    } catch (e) {
+      log(e.toString());
+      throw Exception("Unable to get the screenshot [Get Screenshot]");
+    }
+  }
 }

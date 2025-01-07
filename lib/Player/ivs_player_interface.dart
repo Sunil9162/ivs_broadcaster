@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'ivs_player_method_channel.dart';
@@ -88,4 +90,14 @@ abstract class IvsPlayerInterface extends PlatformInterface {
   ///
   /// Returns a [Future] that resolves to a [Duration] representing the current playback position.
   Future<Duration> getPosition();
+
+  /// Sets the player to play multiple streams simultaneously.
+  ///
+  /// - [urls]: A list of streaming URLs to play simultaneously.
+  void multiPlayer(List<String> urls);
+
+  /// Get Screenshot of the player.
+  /// Returns a [Future] that resolves to a [Uint8List] representing the path of the screenshot.
+  ///
+  Future<Uint8List> getThumbnail({String? url});
 }

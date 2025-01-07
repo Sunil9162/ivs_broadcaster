@@ -16,9 +16,13 @@ class _PlayerPageState extends State<PlayerPage> {
   ValueNotifier<bool> autoPlay = ValueNotifier(true);
   final urlController = TextEditingController();
   final player1 =
-      "https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8";
+      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.TgUC9BcpWMIK.m3u8?player_version=1.19.0";
   final player2 =
-      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.JmLwVqcdvTLO.m3u8";
+      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.vz7GFGP6M3xJ.m3u8?player_version=1.19.0";
+  final player3 =
+      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.7hL7yiiFH0Q1.m3u8?player_version=1.19.0";
+  final player4 =
+      "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.NUiimXpVUGyr.m3u8?player_version=1.19.0";
 
   @override
   void initState() {
@@ -28,14 +32,20 @@ class _PlayerPageState extends State<PlayerPage> {
         "https://4c62a87c1810.us-west-2.playback.live-video.net/api/video/v1/us-west-2.049054135175.channel.JmLwVqcdvTLO.m3u8";
     WidgetsBinding.instance.addPostFrameCallback(
       (timeStamp) {
-        _player.startPlayer(
+        _player.multiPlayer([
           player1,
-        );
-        _player.startPlayer(
           player2,
-        );
+          player3,
+          player4,
+        ]);
       },
     );
+  }
+
+  @override
+  void dispose() {
+    _player.stopPlayer();
+    super.dispose();
   }
 
   ValueNotifier<bool> isFullScreen = ValueNotifier(false);
@@ -279,21 +289,39 @@ class _PlayerPageState extends State<PlayerPage> {
                               ),
                             ],
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _player.selectPlayer(
-                                player1,
+                          ListView.builder(
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                onTap: () async {
+                                  final playerid = [
+                                    player1,
+                                    player2,
+                                    player3,
+                                    player4,
+                                  ][index];
+                                  _player.selectPlayer(playerid);
+                                  final image = await _player.getThumbnail(
+                                    url: playerid,
+                                  );
+                                  if (context.mounted) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: Image.memory(
+                                            image,
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  }
+                                },
+                                title: Text("Select Player $index"),
                               );
                             },
-                            child: const Text("Select Player 1"),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _player.selectPlayer(
-                                player2,
-                              );
-                            },
-                            child: const Text("Select Player 2"),
+                            itemCount: 4,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                           ),
                         ],
                       )

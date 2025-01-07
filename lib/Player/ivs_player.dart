@@ -190,4 +190,12 @@ class IvsPlayer {
   void selectPlayer(String s) async {
     _controller.selectPlayer(s);
   }
+
+  void multiPlayer(List<String> s) async {
+    _controller.multiPlayer(s);
+  }
+
+  Future<Uint8List> getThumbnail({String? url}) async {
+    return await _controller.getThumbnail(url: url);
+  }
 }

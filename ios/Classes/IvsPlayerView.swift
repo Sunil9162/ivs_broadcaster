@@ -104,6 +104,11 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             let playerId = args?["playerId"] as? String
             createPlayer(playerId: playerId!)
             result(true)
+        case "multiPlayer":
+            let args = call.arguments as? [String: Any]
+            let urls = args?["urls"] as? [String]
+            multiPlayer( urls!)
+            result("Players created successfully")
         case "selectPlayer":
             let args = call.arguments as? [String: Any]
             let playerId = args?["playerId"] as? String
@@ -116,22 +121,18 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             startPlayer(  url: url!, autoPlay: autoPlay!)
             result(true)
         case "stopPlayer":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             stopPlayer(playerId: playerId!)
             result(true)
         case "mute":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             mutePlayer(playerId: playerId!)
             result(true)
         case "pause":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             pausePlayer(playerId: playerId!)
             result(true)
         case "resume":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             resumePlayer(playerId: playerId!)
             result(true)
@@ -142,11 +143,9 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             seekPlayer(playerId: playerId!, time!)
             result(true)
         case "position":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             result(getPosition(playerId: playerId!))
         case "qualities":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             let qualities = getQualities(playerId: playerId!)
             result(qualities)
@@ -157,22 +156,88 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             setQuality(playerId: playerId!, quality!)
             result(true)
         case "autoQuality":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             toggleAutoQuality(playerId: playerId!)
             result(true)
         case "isAuto":
-            let args = call.arguments as? [String: Any]
             let playerId = self.playerId
             result(isAuto(playerId: playerId!))
+        case "getScreenshot":
+            let args = call.arguments as? [String: Any]
+            let url = args?["url"] as? String
+            result(getScreenShot(url: url!))
         default:
             result(FlutterMethodNotImplemented)
         }
     }
     
+    func getScreenShot(url: String) -> [UInt8]? {
+        // Ensure the URL is valid
+        guard let videoURL = URL(string: url) else {
+            print("Invalid URL")
+            return nil
+        }
+        
+        // Create an AVAsset from the URL
+        let asset = AVAsset(url: videoURL)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        imageGenerator.appliesPreferredTrackTransform = true
+        
+        // Capture a frame at 1 second
+        let time = CMTime(seconds: 1, preferredTimescale: 600)
+        do {
+            // Generate a CGImage from the video
+            let cgImage = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+            let uiImage = UIImage(cgImage: cgImage)
+            
+            // Convert the UIImage to PNG data
+            if let imageData = uiImage.pngData() {
+                // Convert the Data to [UInt8]
+                let byteArray = [UInt8](imageData)
+                return byteArray
+            } else {
+                print("Failed to convert UIImage to PNG data")
+                return nil
+            }
+        } catch {
+            print("Error generating image: \(error)")
+            return nil
+        }
+    }
+    
+    func multiPlayer(_ urls:[String]) {
+        for url in urls {
+            let player = IVSPlayer()
+            player.delegate = self
+            let playerId = url
+            players[playerId] = player
+            playerViews[playerId] = IVSPlayerView()
+            playerViews[playerId]?.player = player
+            player.load(URL(string: url))
+            player.volume = 0
+        }
+        // Play All Players and attach to the first player to preview
+        for (index, player) in players.enumerated() {
+            if index == 0 {
+                player.value.play()
+                player.value.volume = 1
+                attachPreview(container: self.playerView, preview: playerViews[player.key]!)
+            } else {
+                player.value.play()
+            }
+        }
+    }
+    
     func selectPlayer(playerId: String) {
         guard let player = players[playerId] else { return }
+        let previousPlayer = playerId == self.playerId ? nil : self.playerId
+        if let previousPlayer {
+            players[previousPlayer]?.delegate = nil
+            players[previousPlayer]?.volume = 0
+        }
+        self.playerId = playerId
         let playerView = playerViews[playerId]!
+        player.volume = 1
         player.delegate = self
         attachPreview(container: self.playerView, preview: playerView)
     }
@@ -230,6 +295,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         guard let player = players[playerId] else { return false }
         return player.autoQualityMode
     }
+    
     func createPlayer(playerId: String) {
         let player = IVSPlayer()
         player.delegate = self
