@@ -29,7 +29,7 @@
       "name": "collection",
       "rootUri": "file:///Users/giteshdang/.pub-cache/hosted/pub.dev/collection-1.19.0",
       "packageUri": "lib/",
-      "languageVersion": "3.4""languageVersion": "3.4"
+      "languageVersion": "3.4"
     },
     {
       "name": "fake_async",
@@ -218,7 +218,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-12-26T04:58:21.501284Z",
+  "generated": "2025-01-07T11:14:00.200124Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/giteshdang/Documents/Development/flutter",
