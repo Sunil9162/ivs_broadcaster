@@ -18,57 +18,45 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     }
     
     func player(_ player: IVSPlayer, didChangeState state: IVSPlayer.State) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["state"] = state.rawValue
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["state": state.rawValue]
+        print(dict)
+        eventSink(dict)
     }
-    
+
     func player(_ player: IVSPlayer, didChangeDuration time: CMTime) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["duration"] = time.seconds
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["duration": time.seconds]
+        print(dict)
+        eventSink(dict)
     }
-    
+
     func player(_ player: IVSPlayer, didChangeSyncTime time: CMTime) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["syncTime"] = time.seconds
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["syncTime": time.seconds]
+        print(dict)
+        eventSink(dict)
     }
-    
+
     func player(_ player: IVSPlayer, didChangeQuality quality: IVSQuality?) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["quality"] = quality?.name
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["quality": quality?.name ?? ""]
+        print(dict)
+        eventSink(dict)
     }
-    
+
     func player(_ player: IVSPlayer, didFailWithError error: any Error) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["error"] = error.localizedDescription
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["error": error.localizedDescription]
+        print(dict)
+        eventSink(dict)
     }
-    
+
     func player(_ player: IVSPlayer, didSeekTo time: CMTime) {
-        if _eventSink != nil {
-            var dict = [String: Any]()
-            dict = [:]
-            dict["seekedtotime"] = time.seconds
-            self._eventSink!(dict)
-        }
+        guard let eventSink = _eventSink else { return }
+        let dict: [String: Any] = ["seekedToTime": time.seconds]
+        print(dict)
+        eventSink(dict)
     }
     
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
@@ -98,6 +86,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     
     
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
+        print(call.method)
         switch(call.method) {
         case "createPlayer":
             let args = call.arguments as? [String: Any]
@@ -107,7 +96,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         case "multiPlayer":
             let args = call.arguments as? [String: Any]
             let urls = args?["urls"] as? [String]
-            multiPlayer( urls!)
+            multiPlayer(urls!)
             result("Players created successfully")
         case "selectPlayer":
             let args = call.arguments as? [String: Any]
@@ -122,7 +111,9 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             result(true)
         case "stopPlayer":
             let playerId = self.playerId
-            stopPlayer(playerId: playerId!)
+            if (playerId != nil){
+                stopPlayer(playerId: playerId!)
+            }
             result(true)
         case "mute":
             let playerId = self.playerId
@@ -147,8 +138,12 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             result(getPosition(playerId: playerId!))
         case "qualities":
             let playerId = self.playerId
-            let qualities = getQualities(playerId: playerId!)
-            result(qualities)
+            if(playerId != nil){
+                let qualities = getQualities(playerId: playerId!)
+                result(qualities)
+            }else {
+                result([])
+            }
         case "setQuality":
             let args = call.arguments as? [String: Any]
             let playerId = self.playerId
@@ -161,6 +156,7 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             result(true)
         case "isAuto":
             let playerId = self.playerId
+            
             result(isAuto(playerId: playerId!))
         case "getScreenshot":
             let args = call.arguments as? [String: Any]
@@ -178,34 +174,37 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             return nil
         }
         
-        // Create an AVAsset from the URL
-        let asset = AVAsset(url: videoURL)
-        let imageGenerator = AVAssetImageGenerator(asset: asset)
-        imageGenerator.appliesPreferredTrackTransform = true
+        //        let playerid = self.playerId
+        //        let player = playerViews[playerid!]!
+        //        let playerLayer = player.layer
+        //        let videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: nil)
+        //        playerItem?.add(videoOutput)
+        //        let currentTime = playerLayer.player?.currentTime()
+        //        guard let pixelBuffer = videoOutput.copyPixelBuffer(forItemTime: currentTime!, itemTimeForDisplay: nil) else {
+        //            print("Failed to capture pixel buffer")
+        //            return nil
+        //        }
+        //
+        //        // Convert pixel buffer to UIImage
+        //        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
+        //        let context = CIContext()
+        //        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
+        //            print("Failed to create CGImage")
+        //            return nil
+        //        }
+        //
+        //        let uiImage = UIImage(cgImage: cgImage)
+        //        guard let imageData = uiImage.pngData() else {
+        //            print("Failed to convert UIImage to PNG data")
+        //            return nil
+        //        }
         
-        // Capture a frame at 1 second
-        let time = CMTime(seconds: 1, preferredTimescale: 600)
-        do {
-            // Generate a CGImage from the video
-            let cgImage = try imageGenerator.copyCGImage(at: time, actualTime: nil)
-            let uiImage = UIImage(cgImage: cgImage)
-            
-            // Convert the UIImage to PNG data
-            if let imageData = uiImage.pngData() {
-                // Convert the Data to [UInt8]
-                let byteArray = [UInt8](imageData)
-                return byteArray
-            } else {
-                print("Failed to convert UIImage to PNG data")
-                return nil
-            }
-        } catch {
-            print("Error generating image: \(error)")
-            return nil
-        }
+        return [UInt8]([])
+        
     }
     
     func multiPlayer(_ urls:[String]) {
+        self.playerId = urls.first!
         for url in urls {
             let player = IVSPlayer()
             player.delegate = self
@@ -239,7 +238,26 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         let playerView = playerViews[playerId]!
         player.volume = 1
         player.delegate = self
-        attachPreview(container: self.playerView, preview: playerView)
+        UIView.animate(withDuration: 0.1, animations: {
+            self.playerView.alpha = 0
+        }) { _ in
+            // Update the preview
+            self.attachPreview(container: self.playerView, preview: playerView)
+            
+            // Fade in the new preview
+            UIView.animate(withDuration: 0.5) {
+                self.playerView.alpha = 1
+            }
+        }
+        updateEventsOfCurrentPlayer()
+    }
+    
+    func updateEventsOfCurrentPlayer() {
+        guard let player = players[self.playerId!] else { return }
+        player.delegate = self 
+        let dict: [String: Any] = ["state": player.state.rawValue, "duration": player.duration.seconds, "syncTime": player.syncTime.seconds, "quality": player.quality?.name ?? ""]
+        print(dict)
+        _eventSink?(dict)
     }
     
     func stopPlayer(playerId: String) {
@@ -297,24 +315,27 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     }
     
     func createPlayer(playerId: String) {
+        if( players[playerId] != nil ){
+            return
+        }
         let player = IVSPlayer()
         player.delegate = self
         self.playerId = playerId
         players[playerId] = player
         playerViews[playerId] = IVSPlayerView()
         playerViews[playerId]?.player = player
+        player.load(URL(string: playerId))
     }
     
     func startPlayer(url: String, autoPlay: Bool){
-        guard let player = players[self.playerId!], let playerView = playerViews[playerId!] else {
+        guard let player = players[url], let _ = playerViews[url] else {
             return
         }
-        player.load(URL(string: url))
+        self.playerId = url
         if autoPlay {
             player.play()
         }
-        attachPreview(container: self.playerView, preview: playerView)
-      
+        selectPlayer(playerId: self.playerId!)
     }
     
     func attachPreview(container: UIView, preview: UIView) {
@@ -329,5 +350,5 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             preview.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 0),
         ])
     }
-     
+    
 }

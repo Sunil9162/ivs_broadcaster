@@ -183,10 +183,20 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
   }
 
   @override
-  void multiPlayer(List<String> urls) {
+  void multiPlayer(
+    List<String> urls, {
+    required bool autoPlay,
+    void Function(dynamic)? onData,
+    void Function(dynamic)? onError,
+  }) {
     _methodChannel.invokeMethod("multiPlayer", {
       "urls": urls,
     });
+
+    // Cancel any existing subscription before creating a new one.
+    playerStateSubscription?.cancel();
+    playerStateSubscription =
+        _eventChannel.receiveBroadcastStream().listen(onData, onError: onError);
   }
 
   @override
@@ -197,7 +207,7 @@ class IvsPlayerMethodChannel extends IvsPlayerInterface {
       final data = await _methodChannel.invokeMethod("getScreenshot", {
         "url": url,
       });
-      return data;
+      return Uint8List.fromList(List<int>.from(data));
     } catch (e) {
       log(e.toString());
       throw Exception("Unable to get the screenshot [Get Screenshot]");

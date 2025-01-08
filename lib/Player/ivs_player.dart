@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -99,6 +100,10 @@ class IvsPlayer {
     _controller.resume();
   }
 
+  void createPlayer(String url) {
+    _controller.createPlayer(url);
+  }
+
   /// Starts the player with a given [url] and optional [autoPlay] flag.
   ///
   /// This method initializes the player and begins streaming the content from the specified URL.
@@ -109,32 +114,7 @@ class IvsPlayer {
       url,
       autoPlay: autoPlay,
       onData: (data) async {
-        // Parse incoming data and add relevant information to the appropriate streams.
-        final Map<String, dynamic> parsedData = Map<String, dynamic>.from(data);
-        if (parsedData.containsKey(AppStrings.state)) {
-          final value = parsedData[AppStrings.state];
-          playeStateStream.add(PlayerState.values[value]);
-        } else if (parsedData.containsKey(AppStrings.quality)) {
-          final value = parsedData[AppStrings.quality];
-          qualityStream.add(value);
-          isAutoQualityStream.add(await isAutoQuality());
-        } else if (parsedData.containsKey(AppStrings.duration)) {
-          final value = parsedData[AppStrings.duration];
-          final duration = double.tryParse(value.toString());
-          durationStream.add(
-            Duration(
-              seconds: (duration?.isFinite ?? false) ? duration!.toInt() : 0,
-            ),
-          );
-          getQualities();
-        } else if (parsedData.containsKey(AppStrings.syncTime)) {
-          final value = parsedData[AppStrings.syncTime];
-          syncTimeStream
-              .add(Duration(seconds: double.parse(value.toString()).toInt()));
-        } else if (parsedData.containsKey(AppStrings.error)) {
-          final value = parsedData[AppStrings.error];
-          errorStream.add(value);
-        }
+        _parseEvents(data);
       },
       onError: (error) {},
     );
@@ -148,6 +128,35 @@ class IvsPlayer {
         positionStream.add(await _controller.getPosition());
       },
     );
+  }
+
+  void _parseEvents(dynamic data) async {
+    // Parse incoming data and add relevant information to the appropriate streams.
+    final Map<String, dynamic> parsedData = Map<String, dynamic>.from(data);
+    if (parsedData.containsKey(AppStrings.state)) {
+      final value = parsedData[AppStrings.state];
+      playeStateStream.add(PlayerState.values[value]);
+    } else if (parsedData.containsKey(AppStrings.quality)) {
+      final value = parsedData[AppStrings.quality];
+      qualityStream.add(value);
+      isAutoQualityStream.add(await isAutoQuality());
+    } else if (parsedData.containsKey(AppStrings.duration)) {
+      final value = parsedData[AppStrings.duration];
+      final duration = double.tryParse(value.toString());
+      durationStream.add(
+        Duration(
+          seconds: (duration?.isFinite ?? false) ? duration!.toInt() : 0,
+        ),
+      );
+      getQualities();
+    } else if (parsedData.containsKey(AppStrings.syncTime)) {
+      final value = parsedData[AppStrings.syncTime];
+      syncTimeStream
+          .add(Duration(seconds: double.parse(value.toString()).toInt()));
+    } else if (parsedData.containsKey(AppStrings.error)) {
+      final value = parsedData[AppStrings.error];
+      errorStream.add(value);
+    }
   }
 
   /// Stops the player and cancels the position update stream subscription.
@@ -191,8 +200,19 @@ class IvsPlayer {
     _controller.selectPlayer(s);
   }
 
-  void multiPlayer(List<String> s) async {
-    _controller.multiPlayer(s);
+  void multiPlayer(
+    List<String> s, {
+    bool autoPlay = true,
+  }) async {
+    _controller.multiPlayer(
+      s,
+      autoPlay: true,
+      onData: (data) async {
+        log("PlayerData: $data");
+        _parseEvents(data);
+      },
+      onError: (error) {},
+    );
   }
 
   Future<Uint8List> getThumbnail({String? url}) async {

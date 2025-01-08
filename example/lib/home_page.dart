@@ -33,15 +33,15 @@ class _HomePageState extends State<HomePage> {
       DeviceOrientation.landscapeRight,
     ]);
     ivsBroadcaster = IvsBroadcaster.instance;
-    // ivsBroadcaster!.broadcastState.stream.listen((event) {
-    //   log(event.name.toString(), name: "IVS Broadcaster");
-    // });
-    // ivsBroadcaster!.broadcastQuality.stream.listen((event) {
-    //   log(event.name.toString(), name: "IVS Broadcaster Quality");
-    // });
-    // ivsBroadcaster!.broadcastHealth.stream.listen((event) {
-    //   log(event.name.toString(), name: "IVS Broadcaster Health");
-    // });
+    ivsBroadcaster!.broadcastState.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster");
+    });
+    ivsBroadcaster!.broadcastQuality.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster Quality");
+    });
+    ivsBroadcaster!.broadcastHealth.stream.listen((event) {
+      log(event.name.toString(), name: "IVS Broadcaster Health");
+    });
     init();
   }
 

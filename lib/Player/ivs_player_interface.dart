@@ -94,7 +94,12 @@ abstract class IvsPlayerInterface extends PlatformInterface {
   /// Sets the player to play multiple streams simultaneously.
   ///
   /// - [urls]: A list of streaming URLs to play simultaneously.
-  void multiPlayer(List<String> urls);
+  void multiPlayer(
+    List<String> urls, {
+    required bool autoPlay,
+    void Function(dynamic)? onData,
+    void Function(dynamic)? onError,
+  });
 
   /// Get Screenshot of the player.
   /// Returns a [Future] that resolves to a [Uint8List] representing the path of the screenshot.
