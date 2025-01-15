@@ -78,20 +78,25 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         } else if output == audioOutput {
             // Store the latest audio timestamp for comparison
             self.audioPTS = currentPTS
-
+            
             // Calculate the time difference between video and audio
-           
-                let timeDifference = CMTimeSubtract(self.videoPTS!, self.audioPTS!).seconds
-                print("Time Difference is \(timeDifference)")
-                if timeDifference < 0 {
-                    DispatchQueue.main
-                        .asyncAfter(deadline: .now() + timeDifference) {
-                            self.customAudioSource?.onSampleBuffer(sampleBuffer)
-                        }
-                } else {
-                    // Audio is ahead or aligned; process the audio buffer immediately
-                    customAudioSource?.onSampleBuffer(sampleBuffer)
-                }
+            var timeDifference  : Double = 0.0
+            if(self.videoPTS != nil && self.audioPTS != nil){
+                timeDifference = CMTimeSubtract(self.videoPTS!, self.audioPTS!).seconds
+            }else{
+                timeDifference = 0;
+            }
+            
+            print("Time Difference is \(timeDifference)")
+            if timeDifference < 0 {
+                DispatchQueue.main
+                    .asyncAfter(deadline: .now() + timeDifference) {
+                        self.customAudioSource?.onSampleBuffer(sampleBuffer)
+                    }
+            } else {
+                // Audio is ahead or aligned; process the audio buffer immediately
+                customAudioSource?.onSampleBuffer(sampleBuffer)
+            }
             
         }
     }
