@@ -168,38 +168,30 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
     }
     
     func getScreenShot(url: String) -> [UInt8]? {
-        // Ensure the URL is valid
         guard let videoURL = URL(string: url) else {
             print("Invalid URL")
             return nil
         }
         
-        //        let playerid = self.playerId
-        //        let player = playerViews[playerid!]!
-        //        let playerLayer = player.layer
-        //        let videoOutput = AVPlayerItemVideoOutput(pixelBufferAttributes: nil)
-        //        playerItem?.add(videoOutput)
-        //        let currentTime = playerLayer.player?.currentTime()
-        //        guard let pixelBuffer = videoOutput.copyPixelBuffer(forItemTime: currentTime!, itemTimeForDisplay: nil) else {
-        //            print("Failed to capture pixel buffer")
-        //            return nil
-        //        }
-        //
-        //        // Convert pixel buffer to UIImage
-        //        let ciImage = CIImage(cvPixelBuffer: pixelBuffer)
-        //        let context = CIContext()
-        //        guard let cgImage = context.createCGImage(ciImage, from: ciImage.extent) else {
-        //            print("Failed to create CGImage")
-        //            return nil
-        //        }
-        //
-        //        let uiImage = UIImage(cgImage: cgImage)
-        //        guard let imageData = uiImage.pngData() else {
-        //            print("Failed to convert UIImage to PNG data")
-        //            return nil
-        //        }
+        // Create an AVAsset and AVAssetImageGenerator
+        let asset = AVAsset(url: URL(string: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        imageGenerator.appliesPreferredTrackTransform = true // Adjust for orientation
         
-        return [UInt8]([])
+        // Define the time for the screenshot (e.g., at the 1-second mark)
+        let time = CMTime(seconds: 1.0, preferredTimescale: 600)
+        
+        do {
+            // Generate the CGImage
+            let cgImage = try imageGenerator.copyCGImage(at: time, actualTime: nil)
+            // Convert to UIImage
+            let image =  UIImage(cgImage: cgImage)
+            guard let imageData = image.pngData() else { return nil }
+            return [UInt8](imageData)
+        } catch {
+            print("Failed to generate screenshot: \(error.localizedDescription)")
+            return nil
+        }
         
     }
     

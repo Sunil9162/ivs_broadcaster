@@ -80,24 +80,22 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             self.audioPTS = currentPTS
             
             // Calculate the time difference between video and audio
-            var timeDifference  : Double = 0.0
-            if(self.videoPTS != nil && self.audioPTS != nil){
-                timeDifference = CMTimeSubtract(self.videoPTS!, self.audioPTS!).seconds
-            }else{
-                timeDifference = 0;
+            var timeDifference: Double = 0.0
+            if let videoPTS = self.videoPTS, let audioPTS = self.audioPTS {
+                timeDifference = CMTimeSubtract(videoPTS, audioPTS).seconds
             }
             
             print("Time Difference is \(timeDifference)")
+            
+            // Add a dynamic delay to audio processing based on the observed time difference
             if timeDifference < 0 {
-                DispatchQueue.main
-                    .asyncAfter(deadline: .now() + timeDifference) {
-                        self.customAudioSource?.onSampleBuffer(sampleBuffer)
-                    }
+                DispatchQueue.main.asyncAfter(deadline: .now() + abs(timeDifference)) {
+                    self.customAudioSource?.onSampleBuffer(sampleBuffer)
+                }
             } else {
                 // Audio is ahead or aligned; process the audio buffer immediately
                 customAudioSource?.onSampleBuffer(sampleBuffer)
             }
-            
         }
     }
 
