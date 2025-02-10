@@ -16,14 +16,15 @@ rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 34
-
+    compileSdkVersion 35
+    namespace 'com.example.ivs_broadcaster'
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
