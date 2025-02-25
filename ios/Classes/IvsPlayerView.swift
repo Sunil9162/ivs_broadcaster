@@ -44,6 +44,17 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
         print(dict)
         eventSink(dict)
     }
+    
+    func player(_ player: IVSPlayer, didOutputCue cue: IVSCue) {
+        if let textMetadataCue = cue as? IVSTextMetadataCue {
+            let dict: [String: Any] = [
+                "metadata": textMetadataCue.text,
+                "startTime": textMetadataCue.startTime.epoch,
+                "endTime": textMetadataCue.endTime.epoch,
+            ]
+            _eventSink?(dict)
+        }
+    }
 
     func player(_ player: IVSPlayer, didFailWithError error: any Error) {
         guard let eventSink = _eventSink else { return }
@@ -166,6 +177,9 @@ class IvsPlayerView: NSObject, FlutterPlatformView, FlutterStreamHandler , IVSPl
             result(FlutterMethodNotImplemented)
         }
     }
+    
+    
+    
     
     func getScreenShot(url: String) -> [UInt8]? {
         guard let videoURL = URL(string: url) else {

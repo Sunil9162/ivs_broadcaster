@@ -96,9 +96,20 @@ public class StreamView implements PlatformView, MethodChannel.MethodCallHandler
             case "isMuted":
                 result.success(isMuted);
                 break;
+            case "sendTimeMetaData":
+                sendMetaData(
+                        call.argument("metadata")
+                );
+                result.success(true);
             default:
                 result.notImplemented();
                 break;
+        }
+    }
+
+    private  void sendMetaData(String metadata) {
+        if (broadcastSession != null) {
+            broadcastSession.sendTimedMetadata(metadata);
         }
     }
 

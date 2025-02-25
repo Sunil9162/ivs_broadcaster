@@ -67,6 +67,7 @@ enum IvsQuality {
   q360,
   q720,
   q1080,
+  auto,
 }
 
 extension IvsQualityExtension on IvsQuality {
@@ -78,6 +79,8 @@ extension IvsQualityExtension on IvsQuality {
         return '720';
       case IvsQuality.q1080:
         return '1080';
+      case IvsQuality.auto:
+        return 'auto';
     }
   }
 }
