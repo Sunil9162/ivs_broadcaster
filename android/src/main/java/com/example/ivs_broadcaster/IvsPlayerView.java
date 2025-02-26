@@ -3,6 +3,7 @@ package com.example.ivs_broadcaster;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,6 +17,7 @@ import com.amazonaws.ivs.player.Player;
 import com.amazonaws.ivs.player.PlayerException;
 import com.amazonaws.ivs.player.PlayerView;
 import com.amazonaws.ivs.player.Quality;
+import com.amazonaws.ivs.player.TextMetadataCue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -235,7 +237,14 @@ public class IvsPlayerView extends Player.Listener implements PlatformView, Surf
 
     @Override
     public void onCue(@NonNull Cue cue) {
-
+        if(cue instanceof TextMetadataCue) {
+            Log.i("Timed Metadata: ", ((TextMetadataCue)cue).text);
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("metadata", ((TextMetadataCue)cue).text);
+            data.put("startTime", cue.startTime);
+            data.put("endTime", cue.endTime);
+            sendEvent(data);
+        }
     }
 
     @Override

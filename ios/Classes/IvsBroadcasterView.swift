@@ -205,8 +205,20 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         case "stopVideoCapture":
             stopVideoCapturing()
             result(true)
+        case "sendTimeMetaData":
+            let args = call.arguments as! String
+            sendMetaData(metadata: args)
+            result("")
         default:
             result(FlutterMethodNotImplemented)
+        }
+    }
+    
+    func sendMetaData( metadata:String){
+        do {
+            try self.broadcastSession?.sendTimedMetadata(metadata);
+        } catch {
+            print("Unable to Send Timed Metadata")
         }
     }
 
@@ -855,13 +867,8 @@ extension IvsBroadcasterView: IVSMicrophoneDelegate {
 
         default:
             try config.video.setSize(CGSize(width: 1280, height: 720))
-            try config.video.setMaxBitrate(3_500_000)  // 3.5 Mbps
-            try config.video.setMinBitrate(1_500_000)  // 1.5 Mbps
-            try config.video.setInitialBitrate(2_500_000)  // 2.5 Mbps
-            try config.video.setTargetFramerate(30)
-            try config.video.setKeyframeInterval(2)
+            config.video.useAutoBitrate =  true
         }
-
         // Set audio bitrate
         try config.audio.setBitrate(128000)  // 128 kbps
 
