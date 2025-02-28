@@ -45,7 +45,10 @@ IVS_EXPORT
 ///
 /// The returned pixel buffer is +1 retained and it is the responsibility of the host application
 /// to appropriately release it.
-- (nullable CVPixelBufferRef)copyDisplayedPixelBuffer CF_RETURNS_RETAINED API_AVAILABLE(ios(13.0)) NS_SWIFT_NAME(displayedPixelBuffer());
+///
+/// @note Calling this API at high frequencies (e.g., the video framerate, etc.) **is not** supported
+/// and may result in undefined behavior.
+- (nullable CVPixelBufferRef)copyDisplayedPixelBuffer CF_RETURNS_RETAINED NS_SWIFT_NAME(displayedPixelBuffer());
 
 @end
 

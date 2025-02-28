@@ -11,6 +11,7 @@
 #import <AmazonIVSPlayer/IVSBase.h>
 #import <AmazonIVSPlayer/IVSCue.h>
 #import <AmazonIVSPlayer/IVSErrors.h>
+#import <AmazonIVSPlayer/IVSImageFrameMessage.h>
 #import <AmazonIVSPlayer/IVSPlayer.h>
 #import <AmazonIVSPlayer/IVSPlayerDelegate.h>
 #import <AmazonIVSPlayer/IVSPlayerLayer.h>

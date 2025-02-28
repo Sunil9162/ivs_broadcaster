@@ -4,8 +4,6 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <AmazonIVSPlayer/IVSBase.h>
-
-#if __has_include(<UIKit/UIKit.h>)
 #import <UIKit/UIKit.h>
 
 @class IVSPlayer;
@@ -44,5 +42,3 @@ IVS_EXPORT
 @end
 
 NS_ASSUME_NONNULL_END
-
-#endif // __has_include(<UIKit/UIKit.h>)

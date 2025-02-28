@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
       imgset: url,
       streamKey: key,
       quality: IvsQuality.q1080,
+      autoReconnect: true,
     );
     final zoomFactor = await ivsBroadcaster?.getZoomFactor();
     if (zoomFactor != null) {

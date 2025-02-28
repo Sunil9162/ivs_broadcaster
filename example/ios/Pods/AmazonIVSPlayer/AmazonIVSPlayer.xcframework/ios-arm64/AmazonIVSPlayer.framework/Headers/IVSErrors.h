@@ -24,4 +24,10 @@ IVS_EXPORT NSErrorUserInfoKey const IVSSourceDescriptionErrorKey;
 /// `NSString`, short text describing the type of error encountered.
 IVS_EXPORT NSErrorUserInfoKey const IVSResultDescriptionErrorKey;
 
+/// `NSNumber` containing `NSInteger`, a unique integer identifying the type of error encountered.
+IVS_EXPORT NSErrorUserInfoKey const IVSResultCodeIdentifierErrorKey;
+
+/// `NSNumber` containing `NSInteger`, an integer providing some secondary internal identifier for the error type.
+IVS_EXPORT NSErrorUserInfoKey const IVSResultValueIdentifierErrorKey;
+
 NS_ASSUME_NONNULL_END

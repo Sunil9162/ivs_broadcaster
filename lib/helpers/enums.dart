@@ -8,6 +8,25 @@ enum BroadCastState {
   ERROR;
 }
 
+enum RetryState {
+  NotRetrying,
+
+  /// The SDK is waiting to for the internet connection to be restored before starting to backoff timer to attempt a reconnect.
+  WaitingForInternet,
+
+  /// The SDK is waiting to for the backoff timer to trigger a reconnect attempt.
+  WaitingForBackoffTimer,
+
+  /// The SDK is actively trying to reconnect a failed broadcast.
+  Retrying,
+
+  /// The SDK successfully reconnected a failed broadcast.
+  Success,
+
+  /// The SDK was unable to reconnect a failed broadcast within the maximum amount of allowed retries.
+  Failure,
+}
+
 enum BroadcastQuality {
   NearMaximum,
   High,

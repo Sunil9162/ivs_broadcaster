@@ -92,6 +92,7 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
     CameraType cameraType = CameraType.BACK,
     void Function(dynamic)? onData,
     void Function(dynamic)? onError,
+    bool autoReconnect = false,
   }) async {
     try {
       // Request permissions before starting the preview.
@@ -111,6 +112,7 @@ class MethodChannelIvsBroadcaster extends IvsBroadcasterPlatform {
         'streamKey': streamKey,
         'cameraType': cameraType.index.toString(),
         "quality": quality.description,
+        'autoReconnect': autoReconnect,
       });
       // Cancel any existing event stream before starting a new one.
       try {

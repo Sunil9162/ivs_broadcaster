@@ -6,11 +6,15 @@
 	<dict>
 		<key>Headers/AVPictureInPictureController+IVSPlayer.h</key>
 		<data>
-		bBdjdOz3adjrgEqAx+oSzZhFqJI=
+		v+Wuo7+jBoMXFnnzle43TgU2kI0=
+		</data>
+		<key>Headers/AmazonIVSPlayer-Swift.h</key>
+		<data>
+		U62TSKn02gedAI5UVSsyIdhVwzk=
 		</data>
 		<key>Headers/AmazonIVSPlayer.h</key>
 		<data>
-		6y4B0DOKH1TzRqT1kfma1GXUBLQ=
+		MzP6EKEgKVto9W32lczLGLcIqYE=
 		</data>
 		<key>Headers/IVSBase.h</key>
 		<data>
@@ -22,7 +26,11 @@
 		</data>
 		<key>Headers/IVSErrors.h</key>
 		<data>
-		tcxLRYHaos2TO6BQ97LK/MtG0n0=
+		dem1uCqFyqnHl5dEDjOqmXfwLy4=
+		</data>
+		<key>Headers/IVSImageFrameMessage.h</key>
+		<data>
+		saV85k9N+bIVS1ceK34qYiCq34s=
 		</data>
 		<key>Headers/IVSPlayer.h</key>
 		<data>
@@ -34,11 +42,11 @@
 		</data>
 		<key>Headers/IVSPlayerLayer.h</key>
 		<data>
-		puSf/u6CHHYyhF5/1H3eE3Bf4fw=
+		vpm2vJOZsh7jc3vxRyeGeLfwfY0=
 		</data>
 		<key>Headers/IVSPlayerView.h</key>
 		<data>
-		WRkOXClvJjPVcu6hoeFOSujVX0k=
+		Na+UPQ9yTFdxi7T2c5GaCcAABuM=
 		</data>
 		<key>Headers/IVSQuality.h</key>
 		<data>
@@ -46,7 +54,7 @@
 		</data>
 		<key>Headers/IVSSEIMessage.h</key>
 		<data>
-		kqmr9BQVlJuTGnwGHoLNXSIAE3k=
+		fCuphMb4Mj96JwLjJsH5K3yXxL4=
 		</data>
 		<key>Headers/IVSTextCue.h</key>
 		<data>
@@ -60,13 +68,53 @@
 		<data>
 		KmwrQCjLrMQtthXp2X+pHM9/dKQ=
 		</data>
+		<key>IVSEN2F16.mlmodelc/analytics/coremldata.bin</key>
+		<data>
+		RZGLzRXbJEBJud5bEheiFXLlrKQ=
+		</data>
+		<key>IVSEN2F16.mlmodelc/coremldata.bin</key>
+		<data>
+		KLHET/6ODKH6UeCdQ67V/ZsvT48=
+		</data>
+		<key>IVSEN2F16.mlmodelc/metadata.json</key>
+		<data>
+		U5IQjWjmCqHf8tHZ+PF+BOwRVY4=
+		</data>
+		<key>IVSEN2F16.mlmodelc/model.mil</key>
+		<data>
+		m2/Xtxd+yxepVvRoZkplexoIglw=
+		</data>
+		<key>IVSEN2F16.mlmodelc/weights/weight.bin</key>
+		<data>
+		ilmu56L96o5SaWS2q8P+H6En0AU=
+		</data>
 		<key>Info.plist</key>
 		<data>
-		1qiCEYRKUrFxryTtoKAdwaV2kMY=
+		G+l22o51sy6ZzWxAKdlBtoGoqps=
+		</data>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.abi.json</key>
+		<data>
+		Bd6KyM7yCvQBecNXWadCazQaY78=
+		</data>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
+		<data>
+		Flj0KtBJcE0+tB+Mdcn5Oa3Gktw=
+		</data>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftdoc</key>
+		<data>
+		s0uzIDInEGNYEFruk0QyDjdiChU=
+		</data>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftinterface</key>
+		<data>
+		Flj0KtBJcE0+tB+Mdcn5Oa3Gktw=
+		</data>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<data>
+		v4c5FYntV4mHSaLVwskG3KdnK2c=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
-		kI1GPp3WOjxAlYXmPAK3/Z3EXq4=
+		P4fUgR/Xc9IZK4Qo+bWlzGSGAmY=
 		</data>
 		<key>Modules/module.private.modulemap</key>
 		<data>
@@ -74,11 +122,11 @@
 		</data>
 		<key>PrivacyInfo.xcprivacy</key>
 		<data>
-		+9/9uPgk4kVuJmU0cSOs0sSlM2E=
+		sPhBNaDDoCcqu0sPeiYNRhlMgek=
 		</data>
 		<key>PrivateHeaders/AmazonIVSPlayer_Private.h</key>
 		<data>
-		6lj5mHUWvLR2M1fuU9R7PqweQew=
+		q3AKPw+E8MF/ocM6AwQ+wohPvYs=
 		</data>
 		<key>PrivateHeaders/IVSErrors+Internal.h</key>
 		<data>
@@ -86,7 +134,7 @@
 		</data>
 		<key>PrivateHeaders/IVSPlayer+Internal.h</key>
 		<data>
-		3ZC5cyd7hmcxWjnVUjuK9mVvEd4=
+		pshtDyIMznc0NE3f8lV8z9+VkMI=
 		</data>
 		<key>PrivateHeaders/IVSSource.h</key>
 		<data>
@@ -99,14 +147,21 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			CY4nIAWpW8qhyTGJ9NvxIeedxLM5TMdIkyzJnhUYxIo=
+			SqzJNorQ3VBSr7CWBkH3i7Xz8KMm+GByHyog2yE5IZI=
+			</data>
+		</dict>
+		<key>Headers/AmazonIVSPlayer-Swift.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			byBRHZxyPnCncDVmU/Xw3e2EsnEmtWRHP4WSeAM7NYQ=
 			</data>
 		</dict>
 		<key>Headers/AmazonIVSPlayer.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			b79uc5Y4cefePtw3ZhGe52+Ks+VsUv2fa+oPZGuIxCw=
+			+3Wa1AOj8Mnc19jvAKkY/7LfhcqhGkUpjvEXRZHjNww=
 			</data>
 		</dict>
 		<key>Headers/IVSBase.h</key>
@@ -127,7 +182,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			98veYssoQDpwBZ9MXN0fNyNWESoQa0jnzo8gdUN4mRU=
+			y6icK27ImXGYo5uhsrhALyvQQVw8BgPo+A/59G5YHKw=
+			</data>
+		</dict>
+		<key>Headers/IVSImageFrameMessage.h</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			W8Smzml0NsMc5igLum5JuC2fPB7FsCxz/AYzMxfZ9bE=
 			</data>
 		</dict>
 		<key>Headers/IVSPlayer.h</key>
@@ -148,14 +210,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8LaY6u7GA7N81WK4PpxOnmxwvkD6P8nJmlmJubwUWYY=
+			xDAJ8vpHyccgYq0uU5me5z3dv3B4bUwVH8sODEmALK4=
 			</data>
 		</dict>
 		<key>Headers/IVSPlayerView.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			OGyQG8JDXaUKS/Wnfm7M7uPek/B3uNs45HkPLeuAwwU=
+			skhwZn2wWyMdKCBeFx2Ja03CDKI5pT0+51xMYc+2GGI=
 			</data>
 		</dict>
 		<key>Headers/IVSQuality.h</key>
@@ -169,7 +231,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			cmsXIy6piP0V/2bK6i4EoJ4tznTHrG/nzEr2FPmNlcY=
+			15OuWIjIvOL+TLEGZw3YSMk3u2+iAbyJNYfBkLhUQA8=
 			</data>
 		</dict>
 		<key>Headers/IVSTextCue.h</key>
@@ -193,11 +255,81 @@
 			vrQnnCECWJWUu9gRF9ZLe15fvy8lIWYN9uf8C519j2U=
 			</data>
 		</dict>
+		<key>IVSEN2F16.mlmodelc/analytics/coremldata.bin</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			DeGbmgrr9ywZ529C3vvMMsbprUXc+viULORMQUWTE9k=
+			</data>
+		</dict>
+		<key>IVSEN2F16.mlmodelc/coremldata.bin</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			ClTmrOGX/8uF4fErGB+uUVu/+5TCqbqNKUQrR1HoJF8=
+			</data>
+		</dict>
+		<key>IVSEN2F16.mlmodelc/metadata.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			pnXiJHnJ9z8tXqs7XPqtOkvjB9zHpmkd5XjopW5zdLw=
+			</data>
+		</dict>
+		<key>IVSEN2F16.mlmodelc/model.mil</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			/oL5xyFq8TJ3dzNlPc6Z3W0qHQdC2NZJabL0YNKlmFI=
+			</data>
+		</dict>
+		<key>IVSEN2F16.mlmodelc/weights/weight.bin</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			8+J5i/hR6XBVImQN6F27lbBzKdbLgaCagRiNfHJk/KU=
+			</data>
+		</dict>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.abi.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			C7keHK4h6R8uUnnLkSRyvNaHyRO0bs0/HxFQVucuRiw=
+			</data>
+		</dict>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.private.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			YW2mfkkTaxPlS+g+X+R8Fx7SdGJcB/bwEtNtf/sn2Nc=
+			</data>
+		</dict>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftdoc</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			lgyqFQxS/2p5doccDH6u45v44pXzthmfUv0tGN1lQbE=
+			</data>
+		</dict>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftinterface</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			YW2mfkkTaxPlS+g+X+R8Fx7SdGJcB/bwEtNtf/sn2Nc=
+			</data>
+		</dict>
+		<key>Modules/AmazonIVSPlayer.swiftmodule/arm64-apple-ios.swiftmodule</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			lwVMAkpxIdMW5n/+MRoHv3KOXQG2qJ2By5xoruEyvwM=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Zp1Z6XTaXX5KA8bcU0uBC/c0OQDZOqux6V4edwxnWxA=
+			nMTUA3l+4M3Sa4uo/pruHxEAOcLZ2tvmMhxAIPzFQj4=
 			</data>
 		</dict>
 		<key>Modules/module.private.modulemap</key>
@@ -211,14 +343,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			zpJ8ZxJN4LeWzDaa6QC7pC76RKXKXzlsFvCTwoLPSEU=
+			7gEFhXg7yCf3rbc0Ah9YYxr5hdke0oKfV4uHxiuvcTM=
 			</data>
 		</dict>
 		<key>PrivateHeaders/AmazonIVSPlayer_Private.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			S9sHPyYHHfFw2QNlknn95Ft36R8DPl9s8kTOICRgxLw=
+			6cLO5RW+hAqkYT7STjdz78LWWmnw/BHMTL0vbkatThQ=
 			</data>
 		</dict>
 		<key>PrivateHeaders/IVSErrors+Internal.h</key>
@@ -232,7 +364,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			EkD6NBZAEWw3GyouZjD5Fyd20iFfwUEUHjAz0gSMJhQ=
+			gARQJAv9t4lEMUsZeiGb+dmBqxuz0JAK5TtX8aV5EmU=
 			</data>
 		</dict>
 		<key>PrivateHeaders/IVSSource.h</key>

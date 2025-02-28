@@ -4,6 +4,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AmazonIVSBroadcast/IVSBase.h>
+#import <AmazonIVSBroadcast/IVSImageFrameMessage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,12 @@ IVS_EXPORT
 
 /// The size of the current frame.
 @property (nonatomic, readonly) CGSize size;
+
+/// The messages embedded in the current frame.
+/// For h264 frames, these are SEI messages (See `IVSBroadcastSEIMessage`).
+/// Only populated by the subscribe-side `IVSImageDevice` implementations in 
+/// the Real-Time Stages SDK (not by the Broadcast SDK alone).
+@property (nonatomic, strong, readonly) NSArray<id<IVSBroadcastImageFrameMessage>> *embeddedMessages;
 
 @end
 

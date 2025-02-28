@@ -9,7 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class IVSPlayerLayer;
 
 /// Extends `AVPictureInPictureController` with `IVSPlayerLayer` support.
-API_AVAILABLE(ios(15.0))
+API_AVAILABLE(ios(15.0), tvos(15.0))
 @interface AVPictureInPictureController (IVSPlayer)
 
 /// Create an instance of `AVPictureInPictureController` with an `IVSPlayerLayer` instance.

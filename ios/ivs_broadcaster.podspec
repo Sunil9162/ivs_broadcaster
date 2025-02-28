@@ -15,8 +15,8 @@ A new Flutter project.
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'AmazonIVSBroadcast', '~> 1.24.0'
-  s.dependency 'AmazonIVSPlayer', '~> 1.29.0'
+  s.dependency 'AmazonIVSBroadcast', '~> 1.27.0'
+  s.dependency 'AmazonIVSPlayer', '~> 1.37.0'
   s.frameworks       = ['CoreMedia']
   s.platform = :ios, '12.0'
 

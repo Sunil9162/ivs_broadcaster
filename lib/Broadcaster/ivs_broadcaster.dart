@@ -28,6 +28,10 @@ class IvsBroadcaster {
   StreamController<BroadCastState> broadcastState =
       StreamController<BroadCastState>.broadcast();
 
+  /// A stream controller to handle the broadcast retry State.
+  StreamController<RetryState> retryState =
+      StreamController<RetryState>.broadcast();
+
   /// A stream controller to handle the broadcast quality events.
   StreamController<BroadcastQuality> broadcastQuality =
       StreamController<BroadcastQuality>.broadcast();
@@ -79,6 +83,11 @@ class IvsBroadcaster {
       if (settings.containsKey("quality")) {
         broadcastQuality.add(
           BroadcastQuality.values[settings["quality"] as int],
+        );
+      }
+      if (settings.containsKey("retrystate")) {
+        retryState.add(
+          RetryState.values[settings["retrystate"] as int],
         );
       }
       if (settings.containsKey("network")) {
@@ -138,12 +147,14 @@ class IvsBroadcaster {
     required String streamKey,
     IvsQuality quality = IvsQuality.q720,
     CameraType cameraType = CameraType.BACK,
+    bool autoReconnect = false,
   }) async {
     return await broadcater.startPreview(
       imgset: imgset,
       streamKey: streamKey,
       cameraType: cameraType,
       quality: quality,
+      autoReconnect: autoReconnect,
       onData: (data) {
         _parseRawData(data);
       },

@@ -61,6 +61,7 @@ abstract class IvsBroadcasterPlatform extends PlatformInterface {
     CameraType cameraType = CameraType.BACK,
     void Function(dynamic)? onData,
     void Function(dynamic)? onError,
+    bool autoReconnect,
   });
 
   /// Starts the broadcast.

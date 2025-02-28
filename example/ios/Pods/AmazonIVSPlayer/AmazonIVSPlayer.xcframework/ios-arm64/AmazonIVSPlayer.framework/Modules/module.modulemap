@@ -4,3 +4,8 @@ framework module AmazonIVSPlayer {
 
   module * { export * }
 }
+
+module AmazonIVSPlayer.Swift {
+  header "AmazonIVSPlayer-Swift.h"
+  requires objc
+}

@@ -85,8 +85,6 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
                 timeDifference = CMTimeSubtract(videoPTS, audioPTS).seconds
             }
             
-            print("Time Difference is \(timeDifference)")
-            
             // Add a dynamic delay to audio processing based on the observed time difference
             if timeDifference < 0 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + abs(timeDifference)) {
@@ -159,7 +157,8 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             let url = args?["imgset"] as? String
             let key = args?["streamKey"] as? String
             let quality = args?["quality"] as? String
-            setupSession(url!, key!, quality!)
+            let autoReconnect = args?["autoReconnect"] as? Bool
+            setupSession(url!, key!, quality!,autoReconnect ?? false)
             result(true)
         case "startBroadcast":
             startBroadcast()
@@ -501,7 +500,8 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
     private func setupSession(
         _ url: String,
         _ key: String,
-        _ quality: String
+        _ quality: String,
+        _ autoReconnect: Bool
     ) {
 
         do {
@@ -510,10 +510,13 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             IVSBroadcastSession.applicationAudioSessionStrategy = .playAndRecord
             let config = try createBroadcastConfiguration(for: quality)
             let customSlot = IVSMixerSlotConfiguration()
-            customSlot.size = config.video.size
+            customSlot.size =  CGSize(width: 1920, height: 1080)
             customSlot.position = CGPoint(x: 0, y: 0)
             customSlot.preferredAudioInput = .userAudio
             customSlot.preferredVideoInput = .userImage
+            let reconnect  = IVSBroadcastAutoReconnectConfiguration()
+            reconnect.enabled = autoReconnect
+            config.autoReconnect = reconnect
             try customSlot.setName("custom-slot")
             config.mixer.slots = [customSlot]
             IVSBroadcastSession.applicationAudioSessionStrategy = .noAction
@@ -776,7 +779,7 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         _ session: IVSBroadcastSession,
         didChange state: IVSBroadcastSession.State
     ) {
-        print("IVSBroadcastSession state did change to \(state.rawValue)")
+        print("IVSBroadcastSession state did change to \(state)")
         DispatchQueue.main.async {
             var data = [String: String]()
             switch state {
@@ -795,6 +798,17 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             }
             self.sendEvent(data)
         }
+    }
+    
+    func broadcastSession(
+        _ session: IVSBroadcastSession,
+        didChange state: IVSBroadcastSession.RetryState
+    ) {
+        print("RetyryState change to \(state)")
+        var data = [String: Any]()
+        data = ["retrystate": state.rawValue]
+        self._eventSink?(data)
+        
     }
 //258013
     func sendEvent(_ event: Any) {
@@ -866,8 +880,11 @@ extension IvsBroadcasterView: IVSMicrophoneDelegate {
             try config.video.setKeyframeInterval(2)
 
         default:
-            try config.video.setSize(CGSize(width: 1280, height: 720))
-            config.video.useAutoBitrate =  true
+            try config.video.setMaxBitrate(10_500_000)  // 3.5 Mbps
+            try config.video.setMinBitrate(1_500_000)  // 1.5 Mbps
+            try config.video.setInitialBitrate(2_500_000)  // 2.5 Mbps
+            try config.video.setTargetFramerate(30)
+            try config.video.setKeyframeInterval(2)
         }
         // Set audio bitrate
         try config.audio.setBitrate(128000)  // 128 kbps
