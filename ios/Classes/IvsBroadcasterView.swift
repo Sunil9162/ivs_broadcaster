@@ -505,9 +505,10 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
     ) {
 
         do {
+            print("AutoReconnect: \(autoReconnect)")
             self.streamKey = key
             self.rtmpsKey = url
-            IVSBroadcastSession.applicationAudioSessionStrategy = .playAndRecord
+            IVSBroadcastSession.applicationAudioSessionStrategy = .noAction
             let config = try createBroadcastConfiguration(for: quality)
             let customSlot = IVSMixerSlotConfiguration()
             customSlot.size =  CGSize(width: 1920, height: 1080)
@@ -519,7 +520,6 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             config.autoReconnect = reconnect
             try customSlot.setName("custom-slot")
             config.mixer.slots = [customSlot]
-            IVSBroadcastSession.applicationAudioSessionStrategy = .noAction
             let broadcastSession = try IVSBroadcastSession(
                 configuration: config,
                 descriptors: nil,
@@ -537,6 +537,10 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
             self.broadcastSession = broadcastSession
             startSession()
         } catch {
+            print("Unable to setup session: \(error.localizedDescription)")
+            // For more detailed error information
+            print("Error domain: \(error._domain)")
+            print("Error code: \(error._code)")
             print("Unable to setup session")
         }
     }
@@ -880,7 +884,8 @@ extension IvsBroadcasterView: IVSMicrophoneDelegate {
             try config.video.setKeyframeInterval(2)
 
         default:
-            try config.video.setMaxBitrate(10_500_000)  // 3.5 Mbps
+//            try config.video.setSize(CGSize(width: 1920, height: 1080))
+            try config.video.setMaxBitrate(8_500_000)  // 8.5 Mbps
             try config.video.setMinBitrate(1_500_000)  // 1.5 Mbps
             try config.video.setInitialBitrate(2_500_000)  // 2.5 Mbps
             try config.video.setTargetFramerate(30)
