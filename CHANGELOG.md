@@ -1,3 +1,12 @@
+## 1.0.0
+  * Feature: getZoomFactor - Get Max and Min Camera Zoom
+  * Feature: getAvailableCameraLenses- Get Available Camera Lenses
+  * Feature: setFocusMode - Set Focus Mode
+  * Feature: setFoucsPoint - Set Focus Point
+  * Feature: captureVideo - Capture a localvideo to save to the device for given duration
+  * Added autoQuality for broadcasting 
+  * Feature: Added AutoReconnect for broadcasting
+
 ## 0.0.16
   * Bugs fixes
 

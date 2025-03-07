@@ -5,7 +5,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ivs_broadcaster/Broadcaster/Classes/video_capturing_model.dart';
 import 'package:ivs_broadcaster/Broadcaster/Widgets/preview_widget.dart';
 import 'package:ivs_broadcaster/Broadcaster/ivs_broadcaster.dart';
@@ -29,9 +28,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.landscapeRight,
+    //   DeviceOrientation.landscapeLeft,
+    // ]);
     ivsBroadcaster = IvsBroadcaster.instance;
     ivsBroadcaster!.broadcastState.stream.listen((event) {
       log(event.name.toString(), name: "IVS Broadcaster");
@@ -48,9 +48,9 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     ivsBroadcaster?.stopBroadcast();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-    ]);
+    // SystemChrome.setPreferredOrientations([
+    //   DeviceOrientation.portraitUp,
+    // ]);
     super.dispose();
   }
 

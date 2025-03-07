@@ -150,68 +150,109 @@ class IvsBroadcasterView: NSObject, FlutterPlatformView, FlutterStreamHandler,
         self.videoDevice?.unlockForConfiguration()
     }
 
+    // Define constants for method names
+    private let METHOD_START_PREVIEW = "startPreview"
+    private let METHOD_START_BROADCAST = "startBroadcast"
+    private let METHOD_GET_CAMERA_ZOOM_FACTOR = "getCameraZoomFactor"
+    private let METHOD_ZOOM_CAMERA = "zoomCamera"
+    private let METHOD_UPDATE_CAMERA_LENS = "updateCameraLens"
+    private let METHOD_MUTE = "mute"
+    private let METHOD_IS_MUTED = "isMuted"
+    private let METHOD_CHANGE_CAMERA = "changeCamera"
+    private let METHOD_GET_AVAILABLE_CAMERA_LENS = "getAvailableCameraLens"
+    private let METHOD_STOP_BROADCAST = "stopBroadcast"
+    private let METHOD_SET_FOCUS_MODE = "setFocusMode"
+    private let METHOD_CAPTURE_VIDEO = "captureVideo"
+    private let METHOD_STOP_VIDEO_CAPTURE = "stopVideoCapture"
+    private let METHOD_SEND_TIME_METADATA = "sendTimeMetaData"
+
+    // Define constants for argument keys
+    private let ARG_IMGSET = "imgset"
+    private let ARG_STREAM_KEY = "streamKey"
+    private let ARG_QUALITY = "quality"
+    private let ARG_AUTO_RECONNECT = "autoReconnect"
+    private let ARG_ZOOM = "zoom"
+    private let ARG_LENS = "lens"
+    private let ARG_TYPE = "type"
+    private let ARG_SECONDS = "seconds"
+
     func onMethodCall(call: FlutterMethodCall, result: FlutterResult) {
         switch call.method {
-        case "startPreview":
+        case METHOD_START_PREVIEW:
             let args = call.arguments as? [String: Any]
-            let url = args?["imgset"] as? String
-            let key = args?["streamKey"] as? String
-            let quality = args?["quality"] as? String
-            let autoReconnect = args?["autoReconnect"] as? Bool
-            setupSession(url!, key!, quality!,autoReconnect ?? false)
+            let url = args?[ARG_IMGSET] as? String
+            let key = args?[ARG_STREAM_KEY] as? String
+            let quality = args?[ARG_QUALITY] as? String
+            let autoReconnect = args?[ARG_AUTO_RECONNECT] as? Bool
+            setupSession(url!, key!, quality!, autoReconnect ?? false)
             result(true)
-        case "startBroadcast":
+
+        case METHOD_START_BROADCAST:
             startBroadcast()
             result(true)
-        case "getCameraZoomFactor":
+
+        case METHOD_GET_CAMERA_ZOOM_FACTOR:
             result(getCameraZoomFactor())
-        case "zoomCamera":
+
+        case METHOD_ZOOM_CAMERA:
             let args = call.arguments as? [String: Any]
-            onZoomCamera(value: args?["zoom"] as? Double ?? 0.0)
+            onZoomCamera(value: args?[ARG_ZOOM] as? Double ?? 0.0)
             result("Success")
-        case "updateCameraLens":
+
+        case METHOD_UPDATE_CAMERA_LENS:
             let args = call.arguments as? [String: Any]
-            let data = updateCameraType(args?["lens"] as? String ?? "0")
+            let data = updateCameraType(args?[ARG_LENS] as? String ?? "0")
             result(data)
-        case "mute":
+
+        case METHOD_MUTE:
             applyMute()
             result(true)
-        case "isMuted":
+
+        case METHOD_IS_MUTED:
             result(isMuted)
-        case "changeCamera":
+
+        case METHOD_CHANGE_CAMERA:
             let args = call.arguments as? [String: Any]
-            let type = args?["type"] as? String
+            let type = args?[ARG_TYPE] as? String
             changeCamera(type: type!)
             result(true)
-        case "getAvailableCameraLens":
+
+        case METHOD_GET_AVAILABLE_CAMERA_LENS:
             if #available(iOS 13.0, *) {
                 result(getAvailableCameraLens())
             } else {
                 result([])
             }
-        case "stopBroadcast":
+
+        case METHOD_STOP_BROADCAST:
             stopBroadCast()
             result(true)
-        case "setFocusMode":
+
+        case METHOD_SET_FOCUS_MODE:
             let args = call.arguments as? [String: Any]
-            let type = args?["type"] as? String
+            let type = args?[ARG_TYPE] as? String
             result(setFocusMode(type!))
-        case "captureVideo":
+
+        case METHOD_CAPTURE_VIDEO:
             let args = call.arguments as? [String: Any]
-            let seconds = args?["seconds"] as? Int
+            let seconds = args?[ARG_SECONDS] as? Int
             captureVideo(seconds!)
             result("Starting Video Recording")
-        case "stopVideoCapture":
+
+        case METHOD_STOP_VIDEO_CAPTURE:
             stopVideoCapturing()
             result(true)
-        case "sendTimeMetaData":
+
+        case METHOD_SEND_TIME_METADATA:
             let args = call.arguments as! String
             sendMetaData(metadata: args)
             result("")
+
         default:
             result(FlutterMethodNotImplemented)
         }
     }
+
     
     func sendMetaData( metadata:String){
         do {

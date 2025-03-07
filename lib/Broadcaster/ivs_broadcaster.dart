@@ -180,44 +180,78 @@ class IvsBroadcaster {
     return broadcater.zoomCamera(zoomValue);
   }
 
+  /// Checks if the broadcaster is muted.
+  ///
+  /// Returns a [Future] that completes with a boolean indicating whether the broadcaster is muted.
   Future<bool> isMuted() {
     return broadcater.isMuted();
   }
 
+  /// Toggles the mute state of the broadcaster.
+  ///
+  /// Returns a [Future] that completes when the mute state has been toggled.
   Future<void> toggleMute() {
     return broadcater.toggleMute();
   }
 
+  /// Updates the camera lens to the specified [IOSCameraLens].
+  ///
+  /// * [cameraLens]: The camera lens to switch to.
+  ///
+  /// Returns a [Future] that completes with a string indicating the result of the operation.
   Future<String?> updateCameraLens(IOSCameraLens cameraLens) {
     return broadcater.updateCameraLens(cameraLens);
   }
 
+  /// Gets the current zoom factor of the camera.
+  ///
+  /// Returns a [Future] that completes with the current [ZoomFactor].
   Future<ZoomFactor?> getZoomFactor() async {
     return await broadcater.getZoomFactor();
   }
 
+  /// Gets the available camera lenses.
+  ///
+  /// Returns a [Future] that completes with a list of available [IOSCameraLens].
   Future<List<IOSCameraLens>> getAvailableCameraLens() async {
     return await broadcater.getAvailableCameraLens();
   }
 
+  /// Sets the focus mode of the camera.
+  ///
+  /// * [focusMode]: The focus mode to set.
+  ///
+  /// Returns a [Future] that completes with a boolean indicating whether the focus mode was set successfully.
   Future<bool?> setFocusMode(FocusMode focusMode) async {
     return await broadcater.setFocusMode(focusMode);
   }
 
+  /// Sets the focus point of the camera.
+  ///
+  /// * [x]: The x-coordinate of the focus point.
+  /// * [y]: The y-coordinate of the focus point.
+  ///
+  /// Returns a [Future] that completes with a boolean indicating whether the focus point was set successfully.
   Future<bool?> setFocusPoint(double x, double y) async {
     return await broadcater.setFocusPoint(x, y);
   }
 
-  /// Capture the video for given seconds
+  /// Captures a video for the specified number of seconds.
+  ///
+  /// * [seconds]: The duration of the video capture in seconds, default is 30 seconds.
+  ///
+  /// Returns a [Future] that completes when the video capture has started.
   Future<void> captureVideo({int seconds = 30}) async {
     return await broadcater.captureVideo(seconds);
   }
 
-  //Stream of capturing video
+  /// A stream controller to handle video capturing events.
   StreamController<VideoCapturingModel> onVideoCapturingStream =
       StreamController<VideoCapturingModel>.broadcast();
 
-  // Stop the video capturing
+  /// Stops the ongoing video capture.
+  ///
+  /// Returns a [Future] that completes when the video capture has stopped.
   Future<void> stopVideoCapture() async {
     await broadcater.stopVideoCapture();
   }

@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.example.ivs_broadcaster">
   <meta-data android:name="flutterEmbedding" android:value="2"/>
+    <uses-permission android:name="android.permission.CAMERA" />
 </manifest>

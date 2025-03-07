@@ -196,10 +196,20 @@ class IvsPlayer {
     await _controller.seekTo(duration);
   }
 
+  /// Selects a player using the given identifier.
+  ///
+  /// This function asynchronously invokes `_controller.selectPlayer`
+  /// with the provided player identifier `s`.
   void selectPlayer(String s) async {
     _controller.selectPlayer(s);
   }
 
+  /// Initiates multi-player mode with a list of player identifiers.
+  ///
+  /// This function calls `_controller.multiPlayer` with the provided list `s`.
+  /// - `autoPlay` determines if playback should start automatically (default: true).
+  /// - `onData` callback handles incoming player data and logs it.
+  /// - `onError` handles any errors that occur.
   void multiPlayer(
     List<String> s, {
     bool autoPlay = true,
@@ -215,7 +225,12 @@ class IvsPlayer {
     );
   }
 
-  Future<Uint8List> getThumbnail({String? url}) async {
-    return await _controller.getThumbnail(url: url);
-  }
+  /// Retrieves a thumbnail image for the provided media URL.
+  ///
+  /// This asynchronous function calls `_controller.getThumbnail`
+  /// with an optional `url` parameter and returns a `Uint8List`
+  /// containing the image data.
+  // Future<Uint8List> getThumbnail({String? url}) async {
+  //   return await _controller.getThumbnail(url: url);
+  // }
 }
